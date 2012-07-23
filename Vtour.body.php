@@ -44,14 +44,16 @@ class VtourHooks {
 	 */
 	public static function redirectAliasToSpecial( $title, $request,
 			&$ignoreRedirect, &$target ) {
-		$subpage = VtourUtils::extractParamsFromPrefixed( $title );
-		if ( $subpage !== null ) {
-			$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
-			$target = $specialPageTitle->getFullURL();
-			return false;
-		} else {
-			return true;
+		global $wgVtourAllowLinkAlias;
+		if ( $wgVtourAllowLinkAlias ) {
+			$subpage = VtourUtils::extractParamsFromPrefixed( $title );
+			if ( $subpage !== null ) {
+				$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
+				$target = $specialPageTitle->getFullURL();
+				return false;
+			}
 		}
+		return true;
 	}
 
 	/**
@@ -64,6 +66,10 @@ class VtourHooks {
 	 * @return bool true to continue, false to stop and show a error page
 	 */
 	public static function disableLinkAliasPages( $title, $user, $action, &$result ) {
+		global $wgVtourAllowLinkAlias;
+		if ( !$wgVtourAllowLinkAlias ) {
+			return true;
+		}
 		if ( $action === 'read' ) {
 			// redirectAliasToSpecial will handle it.
 			return true;

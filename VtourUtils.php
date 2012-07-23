@@ -79,15 +79,12 @@ class VtourUtils {
 	 * null if it doesn't containt parameters
 	 */
 	public static function extractParamsFromPrefixed( $title ) {
-		global $wgVtourAllowLinkAlias;
-		if ( $wgVtourAllowLinkAlias ) {
-			$linkAlias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
-			$lenAlias = strlen( $linkAlias );
-			$titleText = $title->getText();
-			if ( $lenAlias !== 0
-					&& substr( $titleText, 0, $lenAlias ) === $linkAlias ) {
-				return substr( $titleText, $lenAlias );
-			}
+		$linkAlias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
+		$lenAlias = strlen( $linkAlias );
+		$titleText = $title->getText();
+		if ( $lenAlias !== 0
+				&& substr( $titleText, 0, $lenAlias ) === $linkAlias ) {
+			return substr( $titleText, $lenAlias );
 		}
 		return null;
 	}
