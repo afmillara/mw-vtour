@@ -54,13 +54,13 @@ var Link = Class.extend({
 	 * X and Y coordinates of the "tooltip" popup relative to the mouse pointer.
 	 * @var {Array} distanceToPointer
 	 */
-	distanceToPointer: [0, -10],
+	distanceToPointer: [12, 5],
 
 	/**
 	 * Time, in milliseconds since the hovering started, before the "tooltip" appears.
 	 * @var {Number} waitToShow
 	 */
-	waitToShow: 500,
+	waitToShow: 300,
 
 	/**
 	 * Time, in milliseconds since the hovering ended, before the "tooltip" disappears.

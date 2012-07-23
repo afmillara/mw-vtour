@@ -14,6 +14,8 @@ var TextLink = Link.extend( {
 	init: function( tour, destination, $link ) {
 		this._super( tour, destination );
 		this.$link = $link;
+		// We don't want the native tooltip to appear along with our "tooltip".
+		$link.removeAttr( 'title' );
 	},
 
 	addToElement: function() {
@@ -23,10 +25,10 @@ var TextLink = Link.extend( {
 			that.follow();
 			event.preventDefault();
 		} );
-		this.$link.bind('mouseover mousemove', function( event ) {
+		this.$link.bind('mouseenter mousemove', function( event ) {
 			that.hover( [event.pageX, event.pageY] );
 		} ).mouseleave( function() {
-			that.nohover();
+			that.noHover();
 		} );
 	}
 } );

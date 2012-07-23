@@ -6,6 +6,11 @@
 var TextPlace = Place.extend( {
 
 	spClass: 'vtour-textnode',
+
+	/**
+	 * Whether the TextPlace should fade in gradually.
+	 * @var {Boolean} useFx
+	 */
 	useFx: true,
 
 	/**
@@ -23,10 +28,6 @@ var TextPlace = Place.extend( {
 		this.content = content;
 	},
 
-	generate: function() {
-		return $( '<div></div>' );
-	},
-
 	move: function( movement ) {
 		var absoluteMovement = [];
 		var size = [ this.$html.width(), this.$html.height() ]; 
@@ -39,7 +40,7 @@ var TextPlace = Place.extend( {
 
 	addTo: function( parent ) {
 		if ( this.$html === null ) {
-			this.$html = this.generate();
+			this.$html = $( '<div></div>' );
 			var element = this;
 			$.each( this.links, function( i, link ) {
 				link.addToElement( element );
@@ -53,7 +54,7 @@ var TextPlace = Place.extend( {
 	cleanup: function( $parent ) {
 		// Make the content stay attached to the document.
 		// Some scripts might break otherwise.
-		this.content.append(this.$html.children());
+		this.content.append( this.$html.children() );
 	}
 } );
 

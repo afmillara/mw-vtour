@@ -72,16 +72,16 @@ var PanoPlace = Place.extend( {
 			}	
 			this.view = new PanoView( null, this.$image );
 			this.$html = this.view.generate();
-			this.onMouseUp = function(){
+			this.onMouseUp = function() {
 				this.view.onMouseUp.call( this.view );
 			};
-			this.onMouseMove = function( x, y ){
+			this.onMouseMove = function( x, y ) {
 				this.view.onMouseMove.call( this.view, x, y );
 			};
 			if (this.baseAngle !== null){
-				$(this.view).bind( 'panoOrientationChanged', function(){
+				$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
 					that.angle = that.view.orientation[0] + that.baseAngle;
-					$(that).trigger('angleChanged.vtour');
+					$( that ).trigger('angleChanged.vtour');
 				});
 			}
 			$.each( this.links, function( i, link ) {

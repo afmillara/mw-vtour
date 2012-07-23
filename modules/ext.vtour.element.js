@@ -39,7 +39,7 @@ var Element = Class.extend( {
 	 * @return Boolean true if the image has been loaded, false otherwise
 	 */
 	checkImage: function( $image, $parent ) {
-		if ( $image.data( 'notFound' ) ) {
+		if ( $image.data( 'error' ) ) {
 			var message = mw.message( 'vtour-errordesc-filenotfound',
 				imageNameFromPath( $image.attr( 'src' ) ) );
 			this.showError( message, $parent );

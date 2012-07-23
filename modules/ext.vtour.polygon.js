@@ -5,9 +5,22 @@
  */
 var Polygon = Class.extend( {
 
+	/**
+	 * Canvas where the polygon is drawn.
+	 * @var {$Canvas} $canvas
+	 */
 	$canvas: null,
+
+	/**
+	 * Array of vertices.
+	 * @var {Array} vertices
+	 */
 	vertices: [[0, 0]],
 	
+	/**
+	 * Create a new Polygon.
+	 * @constructor
+	 */
 	init: function() {
 		var that = this;
 		var $canvas = this.$canvas = $( '<canvas></canvas>' ).addClass( 'vtour-polygon' );

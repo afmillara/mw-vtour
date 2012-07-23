@@ -1,17 +1,21 @@
+
 /**
- * Miscellaneous utility functions.
+ * Miscellaneous utility functions and constants.
  */
 
+/**
+ * Radians in a degree.
+ * @var {Number} DEG2RAD
+ */
 var DEG2RAD = Math.PI/180;
 
 /**
- * Resize one or more elements so they fit in a box of a provided size, while preserving their proportions.
- *
- * @param {$Element} $elements  jQuery object containing DOM elements
- * @param {Number} width    maximum possible width of the elements after resizing
- * @param {Number} height   maximum possible height of the elements after resizing
- *
- * @return {$Image} original image (modified in place)
+ * Resize one or more elements so they fit in a box of a provided size, while
+ * preserving their proportions.
+ * @param {$HTML} $elements jQuery object containing DOM elements
+ * @param {Number} width Maximum possible width of the elements after resizing
+ * @param {Number} height Maximum possible height of the elements after resizing
+ * @return $Image Original image (modified in place)
  */
 var resizeToFit = function( $elements, width, height ) {
 	var nativeWidth = $elements.data( 'nativeWidth' );
@@ -26,30 +30,30 @@ var resizeToFit = function( $elements, width, height ) {
 		// The new image height must be the specified height.
 		$elements.width( height / nativeHeight * nativeWidth );
 		$elements.height( height );
-
 	}
 	return $elements;
 };
 
 /**
  * Center a node (both horizontally and vertically) in its parent.
- *
- * @param {$Node} $node jQuery object containing one or more nodes to center
- * @param {$Node} $parent   jQuery object containing the parent node
- * @return {$Node} original node (modified in place)
+ * @param {$HTML} $node jQuery object containing one or more nodes to center
+ * @param {$HTML} $parent jQuery object containing the parent node
+ * @return $HTML Original node (modified in place)
  */
 var center = function( $node, $parent ) {
 	$node.addClass( 'vtour-centered' );
 	if ( $parent.height() > $node.height() ) {
 		$node.css( {'top': '50%',
 			'margin-top': -$node.height() / 2} );
-	} else { // No need to center horizontally
+	} else {
+		// No need to center horizontally
 		$node.css( {'top': 0, 'margin-top': 0} );
 	}
 	if ( $parent.width() > $node.width() ) {
 		$node.css( {'left': '50%',
 			'margin-left': -$node.width() / 2} );
-	} else { // No need to center vertically
+	} else {
+		// No need to center vertically
 		$node.css( {'left': 0, 'margin-left': 0} );
 	}
 	return $node;
@@ -57,11 +61,10 @@ var center = function( $node, $parent ) {
 
 /**
  * Create a button.
- *
- * @param {String} text desired text content of the button
- * @param {Boolean} enabled whether the created button must be enabled
- * @param {function} callback  function that will be called when the button is clicked
- * @return {$Element} a jQuery object which contains a button element
+ * @param {String} text Desired text content of the button
+ * @param {Boolean} enabled Whether the created button must be enabled
+ * @param {function} callback Function that will be called when the button is clicked
+ * @return $HTML A jQuery object which contains a button element
  */
 var createButton = function( text, enabled, callback ) {
 	return $( '<input></input>', {'type': 'button', 'value': text} )
@@ -72,65 +75,87 @@ var createButton = function( text, enabled, callback ) {
  * Calculate a minimum bounding rectangle for a given set
  * of points: the rectangle with the smallest area which contains
  * all the points.
- *
- * @param {Number[][]} points   array of pairs of coordinates
+ * @param {Array} points Array of pairs of coordinates
  * @return minimum bounding rectangle:
- * {Number} x   left coordinate of the box
- * {Number} y   top coordinate of the box
- * {Number} width   width of the box
- * {Number} height  height of the box
+ * {"x": left coordinate of the box, "y": top coordinate of the box,
+ * "width": width of the box, "height": height of the box}
  */
 var calculateBoundingBox = function( points ) {
 	var maxX = -Infinity;
 	var maxY = -Infinity;
 	var minX = Infinity;
 	var minY = Infinity;
-	for ( var i = 0; i < points.length; i++ ) {
-		maxX = Math.max( maxX, points[i][0] );
-		maxY = Math.max( maxY, points[i][1] );
-		minX = Math.min( minX, points[i][0] );
-		minY = Math.min( minY, points[i][1] );
+	var index, current;
+	for ( index = 0; index < points.length; index++ ) {
+		current = points[index];
+		maxX = Math.max( maxX, current[0] );
+		maxY = Math.max( maxY, current[1] );
+		minX = Math.min( minX, current[0] );
+		minY = Math.min( minY, current[1] );
 	}
-	return {'x': minX, 'y': minY,
+	return {
+		'x': minX,
+		'y': minY,
 		'width': maxX - minX,
-		'height': maxY - minY};
+		'height': maxY - minY
+	};
 };
 
+/**
+ * Calculate the dot product of two vectors.
+ * @param {Array} v1 First vector
+ * @param {Array} v2 Seconde vector
+ * @return Number Dot product
+ */
 var dotProduct = function(v1, v2){
 	var product = 0;
-	var pos;
-
+	var index;
 	if (v1.length !== v2.length){
 		throw new Error( 'Vectors must be the same length' );
 	}
-
-	for ( pos = 0; pos < v1.length; pos++ ){
-		product += v1[pos]*v2[pos];
+	for ( index = 0; index < v1.length; index++ ){
+		product += v1[index] * v2[index];
 	}
-
 	return product;
 }
 
+/**
+ * Calculate the length of the hypotenuse of a right-angled triangle,
+ * given the catheti.
+ * @param {Number} Lenght of one cathetus
+ * @param {Number} Lenght of the other cathetus
+ * @return Number Lenght of the hypotenuse
+ */
 var hypotenuse = function( c1, c2 ) {
 	var powC1 = c1 * c1;
 	var powC2 = c2 * c2;
 	return Math.sqrt( powC1 + powC2 );
 }
 
+/**
+ * Set the position of an element.
+ * @param {$HTML} $element Element that will be moved
+ * @param {Array} position New position of the element ([x, y])
+ * @param {Boolean} center true if the center of the element is to be placed
+ * on the given coordinates, false if the upper left corner of the element
+ * will be put there. The default value is true
+ */
 var setPosition = function( $element, position, center ) {
 	if ( center === undefined ) {
 		center = true;
 	}
-	$element.css( {'position': 'absolute',
+	$element.css( {
+		'position': 'absolute',
 		'left': position[0] - ( center ? ( $element.width() / 2 ) : 0 ),
-		'top': position[1] - ( center ? ( $element.height() / 2 ) : 0 )} );
+		'top': position[1] - ( center ? ( $element.height() / 2 ) : 0 )
+	} );
 }
 
 /**
  * Scroll a view to reveal a different area of its contents.
- * @param {$Node} $element jQuery collection of DOM nodes to scroll
- * @param {Number[]} movement	movement ([x, y])
- * @param {Boolean} isAbsolute if true, the first argument is the new
+ * @param {$HTML} $element jQuery collection of DOM nodes to scroll
+ * @param {Array} movement Movement ([x, y])
+ * @param {Boolean} isAbsolute If true, the first argument is the new
  * center of the view. Otherwise, it is added to the current position
  */
 var scroll = function( $element, movement, isAbsolute ) {
@@ -146,13 +171,29 @@ var scroll = function( $element, movement, isAbsolute ) {
 	$element.scrollTop( topLeftScroll[1] );
 }
 
+/**
+ * Calculate a point in a circumference.
+ * @param {Array} center Center point of the circumference ([x, y])
+ * @param {Number} radius Radius of the circumference
+ * @param {Number} angle Angle formed by the line from the center
+ * to the calculated point and the line from the center to 12 o'clock
+ * (in radians)
+ * @return Array Coordinates of the point in the circumference ([x, y])
+ */
 var calculateCircumferencePoint = function( center, radius, angle ) {
 	return [
-		center[0] + radius * Math.cos( angle - Math.PI/2 ),
-		center[1] + radius * Math.sin( angle - Math.PI/2 ),
+		center[0] + radius * Math.cos( angle - Math.PI / 2 ),
+		center[1] + radius * Math.sin( angle - Math.PI / 2 ),
 	];
 }
 
+/**
+ * Calculate the angle between the line from a reference point to another point
+ * and the line from the reference point to 3 o'clock.
+ * @param {Array} reference Reference point ([x, y])
+ * @param {Array} point Other point ([x, y])
+ * @return {Number|null} Angle (in radians), or null if the two points are the same
+ */
 var calculateAngle = function( reference, point ) {
 	var delta = sum( point, mult( reference, -1 ) );
 
@@ -163,6 +204,13 @@ var calculateAngle = function( reference, point ) {
 	}
 }
 
+/**
+ * Sum the elements of two arrays (a[i] + b[i]) of the same length, or the elements
+ * of an array and a fixed number (a[i] + b).
+ * @param {Array} a First array
+ * @param {Array|Number} b Second array or number
+ * @return Array Result
+ */
 var sum = function( a, b ) {
 	var tmp, index;
 	var c = [];
@@ -184,6 +232,12 @@ var sum = function( a, b ) {
 	return c;
 }
 
+/**
+ * Multiply all the elements of an array by a given factor (array[i] * factor).
+ * @param {Array} array Array of numbers
+ * @param {Number} factor Factor
+ * @return Array Result
+ */
 var mult = function( array, factor ) {
 	var result = [];
 	if ( !$.isArray( array ) ) {
@@ -195,17 +249,33 @@ var mult = function( array, factor ) {
 	return result;
 }
 
+/**
+ * Make a shallow copy of an object.
+ * @param {Object} object Object that will be cloned
+ * @return Object New object
+ */
 var clone = function( object ) {
 	var Clone = function(){};
 	Clone.prototype = object;
 	return new Clone();
 }
 
+/**
+ * Extract an image name from a path to a file in MediaWiki.
+ * @param {String} path URL
+ * @return String Name of the image
+ */
 var imageNameFromPath = function( path ) {
 	var lastSlash = path.lastIndexOf( '/' );
 	return decodeURIComponent( path.substr( lastSlash + 1 ) );
 }
 
+/**
+ * Find whether the browser supports the HTML5 Canvas element.
+ * @return Boolean true if the browser supports the Canvas element,
+ * false otherwise
+ */
 var supports2DCanvas = function() {
 	return !!window.CanvasRenderingContext2D;
 }
+
