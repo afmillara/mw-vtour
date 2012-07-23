@@ -44,7 +44,7 @@ class VtourRoot extends VtourElement {
 	public function parse() {
 		$this->parseAttributes();
 
-		$tags = VtourUtils::getAllTags( $this->content );
+		$tags = VtourUtils::getAllTags( $this->content, $this->getParseStrict() );
 		foreach ( $tags as $index => $tag ) {
 			try {
 				if ( $tag['name'] === 'map' ) {

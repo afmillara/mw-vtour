@@ -19,31 +19,29 @@ class VtourUtils {
 	 * Also, this regex can't handle nested elements with the same name, but we
 	 * won't need them anyway.
 	 * @param string $text Raw text
+	 * @param bool $parseStrict Whether it is an error for the text to contain anything
+	 * other than tags and comments
 	 * @return array Array of associative arrays
 	 * ('name' => string, 'attributes' => array, 'content' => string).
 	 */
-	public static function getAllTags( $text ) {
+	public static function getAllTags( $text, $parseStrict ) {
 		$tagRegex = '/ \s*? < \s* ( \w+? ) # Open tag
 			( (?: [^"\'>] | (?: " [^"]* " ) | (?: \' [^\']* \' ) )* ) # Attributes
 			(?: > ( .* ) <\/ \s* \\1 \s* > | \/> ) \s*? # Optional content, close tag
 			/ixsuU';
-
 		$pos = 0;
 		$length = strlen( $text );
 		$tags = array();
-
 		while ( $pos < $length ) {
 			$matches = array();
 			$found = preg_match( $tagRegex, substr( $text, $pos ), $matches,
 				PREG_OFFSET_CAPTURE );
-
 			if ( $found === 0 || $matches[0][1] !== 0 ) {
 				if ( $found === 0 ) {
 					$badContent = substr( $text, $pos );
 				} else {
 					$badContent = substr( $text, $pos, $matches[0][1] );
 				}
-
 				if ( preg_match( '/^ \s* <!-- /xs', $badContent ) ) {
 					if ( preg_match( '/ --> \s* /xs', substr( $text, $pos ),
 							$matches, PREG_OFFSET_CAPTURE ) ) {
@@ -51,8 +49,7 @@ class VtourUtils {
 						continue;
 					}
 				}
-
-				if ( VtourUtils::getParseStrict() ) {
+				if ( $parseStrict ) {
 					$badContent = preg_replace( '/\s+/', ' ', $badContent ); 
 					$badContent = trim( $badcontent );
 					$this->throwBadFormat( 'vtour-errordesc-badcontent',
@@ -63,14 +60,12 @@ class VtourUtils {
 					}
 				}
 			}
-
 			$tag = array();
 			$tag['name'] = strtolower( $matches[1][0] );
 			$tag['attributes'] = Sanitizer::decodeTagAttributes( $matches[2][0] );
 			$tag['content'] = count( $matches ) > 3 ?
-					html_entity_decode( trim( $matches[3][0] ) ) : '';
+				html_entity_decode( trim( $matches[3][0] ) ) : '';
 			$tags[] = $tag;
-
 			$pos += strlen( $matches[0][0] );
 		}
 		return $tags;
@@ -335,16 +330,6 @@ class VtourUtils {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * @return bool $parseStrict True if the parser should throw an exception
-	 * if unexpected or invalid tags or attributes are found. False if they are
-	 * to be ignored.
-	 */
-	public static function getParseStrict() {
-		global $wgVtourParseStrict;
-		return $wgVtourParseStrict;
 	}
 
 	/**

@@ -137,6 +137,15 @@ abstract class VtourElement {
 	}
 
 	/**
+	 * Return whether to throw an exception if unexpected or invalid tags
+	 * or attributes are found; false if they are to be ignored.
+	 * @return bool true if in strict mode, false otherwise
+	 */
+	public function getParseStrict() {
+		return $this->vtourParser->getParseStrict();
+	}
+
+	/**
 	 * Return a Message object that identifies the type of the element.
 	 * @return Message Message object for the element type
 	 */
@@ -297,7 +306,7 @@ abstract class VtourElement {
 	 * @param string $tag Name of the tag
 	 */
 	protected function throwBadTagIfStrict( $tag ) {
-		if ( VtourUtils::getParseStrict() ) {
+		if ( $this->getParseStrict() ) {
 			$this->throwBadFormat( 'vtour-errordesc-badtag', $tag['name'] );
 		}
 	}
@@ -309,7 +318,7 @@ abstract class VtourElement {
 	 * @param array $validAttrs Associative array whose keys are expected attribute names
 	 */
 	protected function checkValidAttributes( $tagAttrs, $validAttrs ) {
-		if ( VtourUtils::getParseStrict() ) {
+		if ( $this->getParseStrict() ) {
 			foreach ( $tagAttrs as $key => $value ) {
 				if ( !array_key_exists( $key, $validAttrs ) ) {
 					$this->throwBadFormat( 'vtour-errordesc-badattrs',

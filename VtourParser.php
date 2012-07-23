@@ -47,6 +47,14 @@ class VtourParser {
 	 * @var array $tourHTMLElements 
 	 */
 	protected $tourHTMLElements = array();
+
+	/**
+	 * true if the vtour markup parser should throw an exception if
+	 * unexpected or invalid tags or attributes are found; false if
+	 * they are to be ignored.
+	 * @var bool $parseStrict
+	 */
+	protected $parseStrict;
 	
 	/**
 	 * Create a new VtourParser.
@@ -55,11 +63,27 @@ class VtourParser {
 	 * @param Parser $parser MediaWiki parser
 	 * @param PPFrame $frame Frame for template substitutions
 	 */
-	public function __construct( $content, array $args, Parser $parser, PPFrame $frame ) {
+	public function __construct( $content, array $args, Parser $parser, PPFrame $frame,
+			$parseStrict = null ) {
+		global $wgVtourParseStrict;
 		$this->parser = $parser;
 		$this->frame = $frame;
 		$this->content = $content;
 		$this->args = $args;
+		if ( $parseStrict === null ) {
+			$parseStrict = $wgVtourParseStrict;
+		}
+		$this->parseStrict = $parseStrict;
+	}
+
+	/**
+	 * Return whether the Vtour markup parser should throw an exception if
+	 * unexpected or invalid tags or attributes are found; false if they
+	 * are to be ignored.
+	 * @return bool true if in strict mode, false otherwise
+	 */
+	public function getParseStrict() {
+		return $this->parseStrict;
 	}
 
 	/**

@@ -27,8 +27,8 @@ abstract class VtourLink extends VtourElement {
 	public function __construct( $content, array $args, VtourParser $vtourParser ) {
 		parent::__construct( $content, $args, $vtourParser );
 
-		if ( VtourUtils::getParseStrict() ) {
-			$tags = VtourUtils::getAllTags( $content );
+		if ( $this->getParseStrict() ) {
+			$tags = VtourUtils::getAllTags( $content, true );
 			if ( count( $tags ) !== 0 ) {
 				$this->throwBadTagIfStrict( $tags[0] );
 			}

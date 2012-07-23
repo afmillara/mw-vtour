@@ -46,7 +46,7 @@ abstract class VtourPlace extends VtourElement {
 				|| $this->result['visible'] )
 			&& $this->result['location'] !== null;
 
-		$placeSubtags = VtourUtils::getAllTags( $this->content );
+		$placeSubtags = VtourUtils::getAllTags( $this->content, $this->getParseStrict() );
 		foreach ( $placeSubtags as $index => $placeSubtag ) {
 			try {
 				$this->parseSinglePlaceSubtag( $placeSubtag );

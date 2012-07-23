@@ -30,7 +30,7 @@ $wgExtensionCredits['parserhook'][] = array(
 
 /**
  * true if the vtour markup parser should throw an exception if unexpected or
- * invalid tags or attributes are found. false if they are to be ignored.
+ * invalid tags or attributes are found; false if they are to be ignored.
  * @var bool $wgVtourParseStrict
  */
 $wgVtourParseStrict = true;

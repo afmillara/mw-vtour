@@ -32,7 +32,7 @@ class VtourMap extends VtourElement {
 
 		$this->registerMap( $this );
 
-		$mapSubtags = VtourUtils::getAllTags( $content );
+		$mapSubtags = VtourUtils::getAllTags( $content, $this->getParseStrict() );
 		foreach ( $mapSubtags as $index => $mapSubtag ) {
 			try {
 				if ( !$this->vtourParser->tryAddPlace( $mapSubtag, $this ) ) {
