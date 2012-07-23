@@ -1,0 +1,145 @@
+
+.vtour-frame {
+	display: inline-block;
+	border: 1px solid;
+}
+
+.vtour-centered {
+	display: block;
+	position: absolute;
+}
+
+.vtour-main {
+	position: relative;
+	overflow: auto;
+}
+
+.vtour-map {
+	position: relative;
+}
+
+.vtour-textnode {
+	background-color: #ffffff;
+	height: 100%;
+	width: 100%;
+}
+
+.vtour-imagenode {
+	background-color: #000000;
+}
+
+.vtour-panonode .vtour-movable {
+	overflow: hidden;
+}
+
+.vtour-textnode {
+	overflow: auto;
+}
+
+.vtour-nodelayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+
+.vtour-buttonlayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 11;
+}
+
+.vtour-viewcontainer {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.vtour-background {
+	display: block;
+	z-index: 1;
+}
+
+.vtour-movable {
+	overflow: auto;
+	cursor: move;
+}
+
+.vtour-polygon {
+	position: absolute;
+}
+
+.vtour-arealink {
+	color: #0000ff;
+}
+
+.vtour-canvasanglemarker {
+	color: #0000ff;
+}
+
+.vtour-arealink-hover {
+	cursor: pointer;
+}
+
+.vtour-placeicon {
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/iconoElemento.gif) 0 0 no-repeat;
+}
+
+.vtour-currentplacemarker {
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/iconoElementoActual.gif) 0 0 no-repeat;
+}
+
+.vtour-angleicon {
+	display: inline-block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/ojo.gif) 0 0 no-repeat;
+}
+
+.vtour-popup {
+	position: absolute;
+	z-index: 100;
+	background-color: white;
+	border-style: solid;
+	border-width: thin;
+	border-color: blue;
+}
+
+.vtour-incompletepopup {
+	border-bottom-style: dotted;
+	border-bottom-width: thin;
+	border-bottom-color: black;
+}
+
+.vtour-fading {
+	position: absolute;
+	z-index: 50;
+}
+
+.vtour-popupinfo > div {
+	overflow: hidden;
+}
+
+.vtour-error {
+	text-align: center;
+	font-weight: bold;
+}
+
+.vtour-errorimage {
+	display: block;
+	height: 50px;
+	width: 50px;
+	margin: auto;
+	/* @embed */
+	background: url(img/error.png) 0 0 no-repeat;
+}
