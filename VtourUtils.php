@@ -21,10 +21,12 @@ class VtourUtils {
 	 * @param string $text Raw text
 	 * @param bool $parseStrict Whether it is an error for the text to contain anything
 	 * other than tags and comments
+	 * @param string $badContent If an error occurs, part of the string that caused the error
 	 * @return array Array of associative arrays
-	 * ('name' => string, 'attributes' => array, 'content' => string).
+	 * ('name' => string, 'attributes' => array, 'content' => string), or null if an error
+	 * occurs
 	 */
-	public static function getAllTags( $text, $parseStrict ) {
+	public static function getAllTags( $text, $parseStrict = true, &$badContent = null ) {
 		$tagRegex = '/ \s*? < \s* ( \w+? ) # Open tag
 			( (?: [^"\'>] | (?: " [^"]* " ) | (?: \' [^\']* \' ) )* ) # Attributes
 			(?: > ( .* ) <\/ \s* \\1 \s* > | \/> ) \s*? # Optional content, close tag
@@ -51,9 +53,8 @@ class VtourUtils {
 				}
 				if ( $parseStrict ) {
 					$badContent = preg_replace( '/\s+/', ' ', $badContent ); 
-					$badContent = trim( $badcontent );
-					$this->throwBadFormat( 'vtour-errordesc-badcontent',
-						$badContent );
+					$badContent = trim( $badContent );
+					return null;
 				} else {
 					if ( $found === 0 ) {
 						break;
@@ -101,6 +102,10 @@ class VtourUtils {
 	 * 'article' => article title,
 	 * 'tour' => tour id,
 	 * 'place' => place name/id,
+	 * 'zoom' => zoom value (number),
+	 * 'center' => center (pair of coordinates),
+	 * 'ambiguous' => whether the tour name would be understood as the place name
+	 * if the link were inside a tour: whether the 'place' was not set at all
 	 * where all the values are either strings or null (if empty or not defined)
 	 */
 	public static function parseTextLinkParams( $linkParamsText ) {
@@ -135,14 +140,17 @@ class VtourUtils {
 
 		$firstColon = strpos( $vtourIdentifiers, ':' );
 
+		$tour = null;
+		$place = null;
 		$ambiguous = null;
-		if ( $firstColon === false ) {
-			$tour = $vtourIdentifiers;
-			$place = null;
-			$ambiguous = true;
-		} else {
-			$tour = substr( $vtourIdentifiers, 0, $firstColon );
-			$place = substr( $vtourIdentifiers, $firstColon + 1 );
+		if ( $vtourIdentifiers ) {
+			if ( $firstColon === false ) {
+				$tour = $vtourIdentifiers;
+				$ambiguous = true;
+			} else {
+				$tour = substr( $vtourIdentifiers, 0, $firstColon );
+				$place = substr( $vtourIdentifiers, $firstColon + 1 );
+			}
 		}
 
 		return array(

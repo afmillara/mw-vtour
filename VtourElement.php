@@ -141,8 +141,24 @@ abstract class VtourElement {
 	 * or attributes are found; false if they are to be ignored.
 	 * @return bool true if in strict mode, false otherwise
 	 */
-	public function getParseStrict() {
+	protected function getParseStrict() {
 		return $this->vtourParser->getParseStrict();
+	}
+
+	/**
+	 * Extract the tags from a given string (using VtourUtils::getAllTags),
+	 * and throw an appropriate exception if an error occurs.
+	 * @param string $text Raw text
+	 * @return array Array of tags
+	 */
+	protected function getAllTags( $text ) {
+		$badContent = null;
+		$result = VtourUtils::getAllTags( $text, $this->getParseStrict(), $badContent );
+		if ( $result === null ) {
+			$this->throwBadFormat( 'vtour-errordesc-badcontent', $badContent );
+		} else {
+			return $result;
+		}
 	}
 
 	/**
