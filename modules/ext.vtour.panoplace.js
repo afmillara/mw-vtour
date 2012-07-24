@@ -1,8 +1,8 @@
 /**
  * Place whose main content is a panorama.
- * @class PanoPlace
+ * @class CanvasPanoPlace
  */
-var PanoPlace = Place.extend( {
+var CanvasPanoPlace = Place.extend( {
 
 	initialPosition: {
 		zoom: 200,
@@ -70,7 +70,7 @@ var PanoPlace = Place.extend( {
 			if ( !this.checkImage( this.$image, parent ) ) {
 				return;
 			}	
-			this.view = new PanoView( null, this.$image );
+			this.view = new PanoView( this.$image );
 			this.$html = this.view.generate();
 			this.onMouseUp = function() {
 				this.view.onMouseUp.call( this.view );
@@ -93,4 +93,23 @@ var PanoPlace = Place.extend( {
 		this._super( parent );
 	}
 } );
+
+/**
+ * Place whose main content is a panorama, for browser that don't support the
+ * Canvas element.
+ * @class FallbackPanoPlace
+ */
+var FallbackPanoPlace = ImagePlace.extend( {
+
+	setBaseAngle: function( angle ){
+		this.baseAngle = angle*DEG2RAD;
+		this.angle = this.baseAngle;
+	},
+
+	createView: function() {
+		return new FallbackPanoView( this.$image );
+	}
+} );
+
+var PanoPlace = supports2DCanvas() ? CanvasPanoPlace : FallbackPanoPlace;
 

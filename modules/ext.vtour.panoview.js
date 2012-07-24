@@ -1,4 +1,8 @@
 
+/**
+ * GraphicView that contains a spherical panorama.
+ * @class PanoView
+ */ 
 var PanoView = GraphicView.extend( {
 
 	/**
@@ -23,6 +27,7 @@ var PanoView = GraphicView.extend( {
 	/**
 	 * Canvas that contains the panoramic image.
 	 * @var {$Canvas} imageCanvas
+	 */
 	imageCanvas: null,
 
 	/**
@@ -60,7 +65,7 @@ var PanoView = GraphicView.extend( {
 	 * @param {Array} extraButtons Extra buttons for the view
 	 * @param {$Image} Equirectangular panoramic image
 	 */
-	init: function( extraButtons, $image ){
+	init: function( $image, extraButtons ){
 		this._super( extraButtons );
 		this.$image = $image;
 		this.image = $image[0];
@@ -372,4 +377,52 @@ var PanoView = GraphicView.extend( {
 		}
 	}
 });
+
+/**
+ * GraphicView that contains a spherical panorama, for browser that don't support
+ * the Canvas element.
+ * @class FallbackPanoView
+ */
+var FallbackPanoView = ImageView.extend( {
+
+	getFOV: function() {
+		// FIXME: Duplicated code.
+		var FOV = [Math.PI*2, Math.PI];
+		var width = this.$image.width();
+		var height = this.$image.height();
+		var ratio = width / height / 2;
+		if (ratio > 1){
+			FOV[1] /= ratio - 0.1;
+		} else if ( ratio < 1 ) {
+			FOV[0] *= ratio;
+		}
+		return FOV;
+	},
+
+	contentPointToLinkPoint: function( contentPoint ) {
+		var FOV = this.getFOV();
+		var width = this.$image.width();
+		var height = this.$image.height();
+		contentPoint = sum( contentPoint, [-width / 2, -height / 2] );
+		return [
+			contentPoint[0] / width * FOV[0] / DEG2RAD,
+			contentPoint[1] / height * FOV[1] / DEG2RAD
+		];
+		
+	},
+
+	updateSinglePoint: function( delta ) {
+		var width = this.$image.width();
+		var height = this.$image.height();
+		var FOV = this.getFOV();
+		var distanceToCenter = [
+			normalizeAngle( delta[0] * DEG2RAD + FOV[0] / 2 ),
+			normalizeAngle( delta[1] * DEG2RAD + FOV[1] / 2 )
+		];
+		return [
+			distanceToCenter[0] / FOV[0] * width,
+			distanceToCenter[1] / FOV[1] * height
+		];
+	}
+} );
 

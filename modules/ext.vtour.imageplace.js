@@ -47,25 +47,30 @@ var ImagePlace = Place.extend( {
 			if ( !this.checkImage( this.$image, parent ) ) {
 				return;
 			}	
-
-			this.view = new ImageView( null, this.$image );
+			this.view = this.createView();
 			this.$html = this.view.generate();
-
 			this.onMouseUp = function(){
 				this.view.onMouseUp.call( this.view );
 			};
 			this.onMouseMove = function( x, y ){
 				this.view.onMouseMove.call( this.view, x, y );
 			};
-
 			view = this.view;
 			$.each( this.links, function( i, link ) {
 				view.addLink( link );
 			} );
 		}
 		parent.css( 'position', 'relative' ).append( this.$html[0], this.$html[1] );
-		this._super( parent );
 		this.view.update();
+		this._super( parent );
+	},
+
+	/**
+	 * Create a view for this place.
+	 * @return GraphicView New view
+	 */
+	createView: function() {
+		return new ImageView( this.$image );
 	}
 } );
 

@@ -194,20 +194,10 @@ var VirtualTour = Class.extend( {
 					break;
 				case 'pano':
 					image = that.preloader.add( jsonPlace.image );
-					place;
-					if ( supports2DCanvas() ) {
-						place = new PanoPlace
-							( that, name, description, visible, location, map, image )
-						if (jsonPlace.baseangle !== null){
-							place.setBaseAngle(jsonPlace.baseangle);
-						}
-					} else {
-						place = new ImagePlace
-							( that, name, description, visible, location, map, image );
-						// TODO: Fix links.
-						if ( jsonPlace.baseangle !== null ) {
-							place.setAngle( jsonPlace.baseangle );
-						}
+					place = new PanoPlace
+						( that, name, description, visible, location, map, image )
+					if (jsonPlace.baseangle !== null){
+						place.setBaseAngle(jsonPlace.baseangle);
 					}
 					break;
 				case 'text':

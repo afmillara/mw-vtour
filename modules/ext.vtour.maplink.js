@@ -92,8 +92,7 @@ var MapLink = PointLink.extend( {
 		ret = [this.$nodeIcon];
 
 		if ( this.destination.angle !== null ) {
-			AngleMarkerToUse = supports2DCanvas() ? CanvasAngleMarker : ImageAngleMarker;
-			this.angleMarker = new AngleMarkerToUse( this.destination.variableAngle );
+			this.angleMarker = new AngleMarker( this.destination.variableAngle );
 			this.updateAngleMarker();
 			$( this.angleMarker ).bind( 'press.vtour', function() {
 				that.follow();

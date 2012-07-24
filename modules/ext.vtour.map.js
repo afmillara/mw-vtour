@@ -77,10 +77,11 @@ var Map = Element.extend( {
 				} )
 			];
 			if ( this.location ) {
-				this.view = new MapImageView( this.extraButtons, this.$image,
-					this.location );
+				this.view = new MapImageView( this.$image,
+					this.extraButtons, this.location );
 			} else {
-				this.view = new ImageView( this.extraButtons, this.$image );
+				this.view = new ImageView( this.$image,
+					this.extraButtons );
 			}
 			this.html = this.view.generate();
 			this.onMouseUp = function(){

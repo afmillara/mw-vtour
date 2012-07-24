@@ -271,11 +271,25 @@ var imageNameFromPath = function( path ) {
 }
 
 /**
+ * Calculate an angle that is equivalent to a given one and is contained
+ * in the interval [0, 2*PI).
+ * @param {Number} angle Angle in radians
+ * @return Number "Normalized" angle in radians
+ */
+var normalizeAngle = function( angle ) {
+	angle %= Math.PI * 2;
+	if ( angle < 0 ) {
+		angle = Math.PI * 2 + angle;
+	}
+	return angle;
+}
+
+/**
  * Find whether the browser supports the HTML5 Canvas element.
  * @return Boolean true if the browser supports the Canvas element,
  * false otherwise
  */
 var supports2DCanvas = function() {
-	return !!window.CanvasRenderingContext2D;
+	return !window.CanvasRenderingContext2D;
 }
 

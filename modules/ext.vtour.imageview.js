@@ -8,10 +8,11 @@ var ImageView = GraphicView.extend( {
 	/**
 	 * Create a new ImageView.
 	 * @constructor
-	 * @param {Array} extraButtons Buttons to add to the interface along the default ones
 	 * @param {$Image} $image Image that will be shown in this view
+	 * @param {Array} extraButtons Buttons to add to the interface along
+	 * the default ones (optional)
 	 */
-	init: function( extraButtons, $image ) {
+	init: function( $image, extraButtons ) {
 		this._super( extraButtons );
 		this.$image = $image;
 	},
@@ -57,10 +58,7 @@ var ImageView = GraphicView.extend( {
 		// If absolute: in pixels of the original image. Otherwise, in pixels of the
 		// current image.
 		if ( isAbsolute ) {
-			movement = [
-				movement[0] / $image.data( 'nativeWidth' ) * $image.width(),
-				movement[1] / $image.data( 'nativeHeight' ) * $image.height()	
-			];
+			movement = this.updateSinglePoint( movement );
 		}
 		scroll( this.html[0], movement, isAbsolute );
 	},
@@ -71,20 +69,24 @@ var ImageView = GraphicView.extend( {
 	 */
 	getScroll: function() {
 		var $repMovable = this.html[0];
-		var $image = this.$image;
 		var relativeCenter = [
 			this.html[0].scrollLeft() + $repMovable.width() / 2,
 			this.html[0].scrollTop() + $repMovable.height() / 2
 		];
+		return this.contentPointToLinkPoint( relativeCenter );
+	},
+
+	contentPointToLinkPoint: function( contentPoint ) {
+		var $image = this.$image;
 		return [
-			relativeCenter[0] / $image.width() * $image.data( 'nativeWidth' ),
-			relativeCenter[1] / $image.height() * $image.data( 'nativeHeight' )
+			contentPoint[0] / $image.width() * $image.data( 'nativeWidth' ),
+			contentPoint[1] / $image.height() * $image.data( 'nativeHeight' )
 		];
 	},
 
 	updateSinglePoint: function( delta ) {
 		return [delta[0] * this.$image.width() / this.$image.data( 'nativeWidth' ),
-				delta[1] * this.$image.height() / this.$image.data( 'nativeHeight' )];
+			delta[1] * this.$image.height() / this.$image.data( 'nativeHeight' )];
 	}
 } );
 

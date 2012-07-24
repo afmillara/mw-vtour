@@ -1,3 +1,4 @@
+
 /**
  * ImageView with an external map as a background.
  * @class MapImageView
@@ -17,13 +18,13 @@ var MapImageView = ImageView.extend( {
 	 * Create a new MapImageView.
 	 * @constructor
 	 * @param {$Input[]} extraButtons buttons to add to the interface along the default ones
-	 * @param {$Image} $image image that will be shown in this view
-	 * @param {Number[][]} location	geographical coordinates ([[lat, lon]
+	 * @param {Array} location	geographical coordinates ([[lat, lon]
 	 * lower left corner of the image, [lat, lon] upper right corner]) of the
 	 * map (optional)
+	 * @param {$Image} $image image that will be shown in this view
 	 */
-	init: function( extraButtons, $image, location ) {
-		this._super( extraButtons, $image );
+	init: function( $image, location, extraButtons ) {
+		this._super( $image, extraButtons );
 		this.location = location;
 	},
 
