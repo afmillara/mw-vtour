@@ -190,6 +190,7 @@ var GraphicView = Class.extend( {
 	 * @param {$Node} HTML node
 	 */
 	addOver: function( htmlNode ) {
+		console.log(htmlNode);
 		this.html[0].children( ':nth-child(2)' ).append( htmlNode );
 	},
 
@@ -199,6 +200,7 @@ var GraphicView = Class.extend( {
 	 */
 	addLink: function( link ) {
 		var that = this;
+		var elements, index;
 		this.links.push( link );
 		link.setPosCallback( function( position ) {
 			var result, current, index;
@@ -209,7 +211,13 @@ var GraphicView = Class.extend( {
 			}
 
 		} );
-		this.addOver( link.getHTML() );
+		elements = link.getHTML();
+		if ( !$.isArray( elements ) ) {
+			elements = [elements];
+		}
+		for ( var index = 0; index < elements.length; index++ ) {
+			this.addOver( elements[index] );
+		}
 	},
 
 	/**

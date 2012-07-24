@@ -92,7 +92,8 @@ var Link = Class.extend({
 
 	/**
 	 * Generate and return a DOM node that acts as a link.
-	 * @return {$HTML} jQuery collection wrapping an HTML element
+	 * @return {$Element|Array} jQuery collection containing a DOM node, or array of jQuery
+	 * collections containing DOM nodes
 	 */
 	getHTML: function() {
 		throw new Error( 'Not implemented: getHTML' );

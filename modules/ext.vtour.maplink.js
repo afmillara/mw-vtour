@@ -84,21 +84,17 @@ var MapLink = PointLink.extend( {
 		this.angleMarker.show();
 	},
 
-	/**
-	 * Add this link to an Element.
-	 * @param element {Element} element to which this link will be added
-	 */
-	addToElement: function( element ) {
+	getHTML: function( element ) {
 		var that = this;
 		var AngleMarkerToUse;
+		var ret;
 		this.$nodeIcon = this.generate();
-		element.addOver( this.$nodeIcon );
+		ret = [this.$nodeIcon];
 
-		if (this.destination.angle !== null){
+		if ( this.destination.angle !== null ) {
 			AngleMarkerToUse = supports2DCanvas() ? CanvasAngleMarker : ImageAngleMarker;
 			this.angleMarker = new AngleMarkerToUse( this.destination.variableAngle );
 			this.updateAngleMarker();
-
 			$( this.angleMarker ).bind( 'press.vtour', function() {
 				that.follow();
 			} );
@@ -108,9 +104,9 @@ var MapLink = PointLink.extend( {
 			$( this.destination ).bind( 'angleChanged.vtour', function() {
 				that.updateAngleMarker();
 			} );
-
-			element.addOver( this.angleMarker.getHTML() );
+			ret.push( this.angleMarker.getHTML() );
 		}
+		return ret;
 	},
 } );
 
