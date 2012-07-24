@@ -69,8 +69,6 @@ $wgResourceModules['ext.vtour'] = array(
 		'ext.vtour.preloader.js',
 		'ext.vtour.polygon.js',
 		'ext.vtour.anglemarker.js',
-		'ext.vtour.imageanglemarker.js',
-		'ext.vtour.canvasanglemarker.js',
 		'ext.vtour.popup.js',
 		'ext.vtour.externalmap.js',
 		'ext.vtour.googleexternalmap.js',
