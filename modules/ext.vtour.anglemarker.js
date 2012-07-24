@@ -321,5 +321,9 @@ var ImageAngleMarker = BaseAngleMarker.extend( {
 	}
 } );
 
+/**
+ * Best available implementation of AngleMarker.
+ * @var AngleMarker
+ */
 var AngleMarker = supports2DCanvas() ? CanvasAngleMarker : ImageAngleMarker;
 

@@ -111,5 +111,9 @@ var FallbackPanoPlace = ImagePlace.extend( {
 	}
 } );
 
+/**
+ * Best available implementation of PanoPlace.
+ * @var PanoPlace
+ */
 var PanoPlace = supports2DCanvas() ? CanvasPanoPlace : FallbackPanoPlace;
 

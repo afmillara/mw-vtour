@@ -3,7 +3,7 @@
  * Link in the shape of a polygon.
  * @class AreaLink
  */
-var AreaLink = Link.extend( {
+var CanvasAreaLink = Link.extend( {
 
 	/**
 	 * Opacity when the mouse pointer is over the area (0-1).
@@ -99,4 +99,28 @@ var AreaLink = Link.extend( {
 		}
 	}
 } );
+
+var FallbackAreaLink = PointLink.extend( {
+
+	/**
+	 * Create a new FallbackAreaLink.
+	 * @param {VirtualTour} tour Tour to which the link belongs
+	 * @param {Place} destination Destination of the link
+	 * @param {Array} location Array of vertices of the polygon ([x, y])
+	 */
+	init: function( tour, destination, location ) {
+		this._super( tour, destination );
+		this.location = location;
+	},
+
+	updatePosition: function() {
+		var htmlPos = this.posCallback( this.location );
+		this.$nodeIcon.toggle( htmlPos !== null );
+		if ( htmlPos !== null ) {
+			setPosition( this.$nodeIcon, calculateMeanPoint( htmlPos ) );
+		}
+	}
+} );
+
+var AreaLink = supports2DCanvas() ? CanvasAreaLink : FallbackAreaLink;
 

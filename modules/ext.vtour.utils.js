@@ -285,11 +285,28 @@ var normalizeAngle = function( angle ) {
 }
 
 /**
+ * Calculate a "mean point" of a series of 2D points, defined as the point
+ * with mean X and mean Y.
+ * @param {Array} points Array of points (pairs of coordinates: [x, y])
+ * @return Array Mean point ([x, y])
+ */
+var calculateMeanPoint = function( points ) {
+	var total = [0, 0];
+	var ii, jj;
+	for ( ii = 0; ii < points.length; ii++ ) {
+		for ( jj = 0; jj < points[ii].length; jj++ ) {
+			total[jj] += points[ii][jj];
+		}
+	}
+	return mult( total, 1 / points.length );
+}
+
+/**
  * Find whether the browser supports the HTML5 Canvas element.
  * @return Boolean true if the browser supports the Canvas element,
  * false otherwise
  */
 var supports2DCanvas = function() {
-	return !window.CanvasRenderingContext2D;
+	return !!window.CanvasRenderingContext2D;
 }
 
