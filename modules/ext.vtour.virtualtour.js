@@ -68,7 +68,7 @@ var VirtualTour = Class.extend( {
 					position = that.createPositionFromStrings( linkParts );		
 					textlink = new TextLink( that, place, $link );
 					textlink.setDestinationPosition( position );
-					textlink.addToElement();
+					textlink.getHTML();
 					// TODO: Attach textlink to origin element, if it exists.
 				}
 			}

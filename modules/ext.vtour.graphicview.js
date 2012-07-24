@@ -209,7 +209,7 @@ var GraphicView = Class.extend( {
 			}
 
 		} );
-		link.addToElement( this );
+		this.addOver( link.getHTML() );
 	},
 
 	/**

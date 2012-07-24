@@ -1,7 +1,7 @@
 
 /**
- * Base class for links inside a Vtour. Implementations must define addToElement
- * and updateCoordinates.
+ * Base class for links inside a Vtour. Implementations must define getHTML
+ * and updatePosition.
  *
  * @class Link
  */
@@ -91,11 +91,11 @@ var Link = Class.extend({
 	},
 
 	/**
-	 * Add this link to an Element.
-	 * @param {Element} element element to which this link will be added
+	 * Generate and return a DOM node that acts as a link.
+	 * @return {$HTML} jQuery collection wrapping an HTML element
 	 */
-	addToElement: function( element ) {
-		throw new Error( 'Not implemented: addToElement' );
+	getHTML: function() {
+		throw new Error( 'Not implemented: getHTML' );
 	},
 
 	/**

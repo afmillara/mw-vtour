@@ -44,15 +44,13 @@ var PointLink = Link.extend( {
 		return $nodeIcon;
 	},
 
-	/**
-	 * Add this link to an Element.
-	 * @param {Element} element Element to which this link will be added
-	 */
-	addToElement: function( element ) {
-		this.$nodeIcon = this.generate();
-		element.addOver( this.$nodeIcon );
+	getHTML: function() {
+		if ( this.$nodeIcon === null ) {
+			this.$nodeIcon = this.generate();
+		}
+		return this.$nodeIcon;
 	},
-
+	
 	updatePosition: function() {
 		var htmlPos = this.posCallback( this.location );
 		this.$nodeIcon.toggle( htmlPos !== null );

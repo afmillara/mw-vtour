@@ -71,9 +71,11 @@ var AreaLink = Link.extend( {
 		return $canvas;
 	},
 
-	addToElement: function( element ) {
-		this.$canvas = this.generate();
-		element.addOver( this.$canvas );
+	getHTML: function() {
+		if ( this.$canvas === null ) {
+			this.$canvas = this.generate();
+		}
+		return this.$canvas;
 	},
 
 	updatePosition: function() {

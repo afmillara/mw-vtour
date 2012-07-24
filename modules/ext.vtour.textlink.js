@@ -18,7 +18,7 @@ var TextLink = Link.extend( {
 		$link.removeAttr( 'title' );
 	},
 
-	addToElement: function() {
+	getHTML: function() {
 		var that = this;
 		this.$link.click( function( event ) {
 			that.$link[0].scrollIntoView( 'vtour-tour-' + that.tour.id );
@@ -30,5 +30,6 @@ var TextLink = Link.extend( {
 		} ).mouseleave( function() {
 			that.noHover();
 		} );
+		return this.$link;
 	}
 } );
