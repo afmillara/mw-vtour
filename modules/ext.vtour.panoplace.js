@@ -4,11 +4,6 @@
  */
 var CanvasPanoPlace = Place.extend( {
 
-	initialPosition: {
-		zoom: 200,
-		center: [0, 0]
-	},
-
 	spClass: 'vtour-panonode',
 
 	variableAngle: true,
@@ -42,7 +37,7 @@ var CanvasPanoPlace = Place.extend( {
 	},
 
 	changeZoom: function( zoom ) {
-		this.view.changeZoom( zoom, true );
+		this.view.changeExternalZoom( zoom );
 	},
 
 	move: function( center ) {

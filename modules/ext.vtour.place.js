@@ -10,7 +10,7 @@ var Place = Element.extend( {
 	 * @var {Position} initialPosition
 	 */
 	initialPosition: {
-		zoom: 0,
+		zoom: 1,
 		center: [0, 0]
 	},
 

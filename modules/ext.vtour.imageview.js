@@ -71,10 +71,20 @@ var ImageView = GraphicView.extend( {
 		}
 	},
 
+	/**
+	 * Set the zoom level by specifying the external (1 => real size) zoom
+	 * value.
+	 * @param {Number} zoom Zoom level
+	 */
 	changeExternalZoom: function( zoom ) {
 		this.changeZoom( zoom * this.getRealSizeZoom(), true );
 	},
 
+	/**
+	 * Calculate the internal (1 => filling the parent element) zoom level that
+	 * matches an external (1 => real size of the image) zoom level of 1.
+	 * @return Number Zoom level
+	 */
 	getRealSizeZoom: function() {
 		var $image = this.$image;
 		var $repMovable = this.html[0];

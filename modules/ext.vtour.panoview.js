@@ -11,11 +11,23 @@ var PanoView = GraphicView.extend( {
 	 */
 	MAX_FOV: [Math.PI*2, Math.PI],
 
-	zoomGranularity: 30,
-	moveSensitivity: 0.005,
+	zoomGranularity: 50,
+	moveSensitivity: 0.01,
 
-	maxZoom: 1000,
-	minZoom: 200,
+	maxZoom: 100,
+	minZoom: 100,
+
+	/**
+	 * Relation between the maximum zoom and the image quality.
+	 * @var {Number} maxZoomMultiplier
+	 */
+	maxZoomMultiplier: 3,
+
+	/**
+	 * Internal zoom/external zoom ratio.
+	 * @var {Number} baseZoom
+	 */
+	baseZoom: 200,
 
 	/**
  	 * Current angle of the panorama viewer.
@@ -81,6 +93,15 @@ var PanoView = GraphicView.extend( {
 		return this.$canvas.addClass( 'vtour-background' );
 	},
 
+	/**
+	 * Set the zoom level by specifying the external (1 => default) zoom
+	 * value.
+	 * @param {Number} zoom Zoom level
+	 */
+	changeExternalZoom: function( zoom ) {
+		this.changeZoom( zoom * this.baseZoom, true );
+	},
+
 	update: function() {
 		var $repMovable = this.html[0];
 		var wRatio, hRatio;
@@ -127,6 +148,8 @@ var PanoView = GraphicView.extend( {
 	 * Create the image buffer and precalculate the field of view.
 	 */
 	prepare: function() {
+		var possibleMaxZoom;
+
 		this.html[0].addClass( 'vtour-movable' );
 
 		this.imageCanvas = $( '<canvas></canvas>' )[0];
@@ -156,6 +179,12 @@ var PanoView = GraphicView.extend( {
 
 		this.hsFOV = this.FOV[0] / 2;
 		this.vsFOV = this.FOV[1] / 2;
+
+		possibleMaxZoom = Math.max(
+			this.image.width / this.FOV[0],
+			this.image.height / this.FOV[1]
+		) * this.maxZoomMultiplier;
+		this.maxZoom = Math.max( possibleMaxZoom, this.baseZoom );
 	},
 
 	updateZoom: function() {
@@ -169,7 +198,6 @@ var PanoView = GraphicView.extend( {
 				|| hRatio * this.zoom < this.canvas.height ) {
 			this.zoom = Math.max( this.canvas.width / wRatio, this.canvas.height / hRatio);
 		}
-
 		this.updateLinks();
 		this.show();
 	},
@@ -184,6 +212,7 @@ var PanoView = GraphicView.extend( {
 		var orientation = this.orientation;
 		var MAX_FOV = this.MAX_FOV;
 		for (var i = 0; i < 2; i++ ) {
+			movement[i] *= this.baseZoom / this.zoom;
 			if ( isAbsolute ) {
 				orientation[i] = movement[i];
 			} else {
