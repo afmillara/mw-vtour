@@ -84,6 +84,9 @@ var CanvasAreaLink = Link.extend( {
 		if ( htmlPos !== null ) {
 			this.polygon.setVertices( htmlPos );
 			this.drawCanvas();
+			return true;
+		} else {
+			return false;
 		}
 	},
 

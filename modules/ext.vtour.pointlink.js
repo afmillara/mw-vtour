@@ -56,6 +56,9 @@ var PointLink = Link.extend( {
 		this.$nodeIcon.toggle( htmlPos !== null );
 		if ( htmlPos !== null ) {
 			setPosition( this.$nodeIcon, htmlPos );
+			return true;
+		} else {
+			return false;
 		}
 	}
 } );

@@ -124,6 +124,7 @@ var Link = Class.extend({
 	 * Update the location of this element in the HTML node where it is installed.
 	 * @param {function([x, y]): [x, y]} posCallback    function to translate
 	 * link coordinates to coordinates for the HTML node
+	 * @return Boolean Whether the link is visible in its new location
 	 */
 	updatePosition: function() {
 		throw new Error( 'Not implemented: updatePosition');

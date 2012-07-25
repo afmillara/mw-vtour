@@ -69,19 +69,26 @@ var MapLink = PointLink.extend( {
 	},
 
 	updatePosition : function() {
-		this._super();
-		this.$currentPlaceMarker.toggle( this.isSelected() );
-		if (this.angleMarker !== null){
-			this.updateAngleMarker();
-			//this.$angleIcon.fadeTo(0, 1);
-			this.angleMarker.toggle( this.isSelected() );
+		if ( this._super() ) {
+			this.$currentPlaceMarker.toggle( this.isSelected() );
+			if (this.angleMarker !== null){
+				this.updateAngleMarker();
+				//this.$angleIcon.fadeTo(0, 1);
+				this.angleMarker.toggle( this.isSelected() );
+			}
+			return true;
+		} else {
+			return false;
 		}
 	},
 
 	updateAngleMarker: function() {
-		this.angleMarker.setLocation( this.posCallback( this.location ) );
-		this.angleMarker.setAngle( this.destination.angle );
-		this.angleMarker.show();
+		var htmlLocation = this.posCallback( this.location );
+		if ( htmlLocation !== null ) {
+			this.angleMarker.setLocation( htmlLocation );
+			this.angleMarker.setAngle( this.destination.angle );
+			this.angleMarker.show();
+		}
 	},
 
 	getHTML: function( element ) {

@@ -122,6 +122,7 @@ var GraphicView = Class.extend( {
 		this.incButton.prop( 'disabled', !this.canZoomIn() );
 		this.decButton.prop( 'disabled', !this.canZoomOut() );
 	},
+
 	onMouseUp: function() {
 	    this.mouseLast = null;
 	},
@@ -174,7 +175,7 @@ var GraphicView = Class.extend( {
 	 * @return {Boolean} true if the zoom level can be increased, false otherwise
 	 */
 	canZoomIn: function() {
-		return this.zoom + this.zoomGranularity <= this.maxZoom;
+		return this.zoom < this.maxZoom;
 	},
 
 	/**
@@ -182,7 +183,7 @@ var GraphicView = Class.extend( {
 	 * @return {Boolean} true if the zoom level can be decreased, false otherwise
 	 */
 	canZoomOut: function() {
-		return this.zoom - this.zoomGranularity >= this.minZoom;
+		return this.zoom > this.minZoom;
 	},
 
 	/**
@@ -190,7 +191,6 @@ var GraphicView = Class.extend( {
 	 * @param {$Node} HTML node
 	 */
 	addOver: function( htmlNode ) {
-		console.log(htmlNode);
 		this.html[0].children( ':nth-child(2)' ).append( htmlNode );
 	},
 
@@ -238,13 +238,17 @@ var GraphicView = Class.extend( {
 	 */
 	updateMultiplePoints: function( position ) {
 		var index;
+		var current;
 		var result = [];
 		for ( index = 0; index < position.length; index++ ) {
-			result.push( this.updateSinglePoint( position[index] ) );
+			current = this.updateSinglePoint( position[index] );
+			if ( current === null ) {
+				return null;
+			}
+			result.push( current );
 		}
 		return result;
 	},
-
 	/**
 	 * Translate a pair of coordinates.
 	 * @param {Array} position Pair of coordinates

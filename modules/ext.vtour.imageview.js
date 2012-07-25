@@ -5,6 +5,9 @@
  */
 var ImageView = GraphicView.extend( {
 
+	typicalMinZoom: 0.1,
+	maxZoomMultiplier: 2,
+
 	/**
 	 * Create a new ImageView.
 	 * @constructor
@@ -29,6 +32,9 @@ var ImageView = GraphicView.extend( {
 	 * Update the ImageView.
 	 */
 	update: function() {
+		var realSizeZoom = this.getRealSizeZoom();
+		this.minZoom = Math.min( this.typicalMinZoom, realSizeZoom );
+		this.maxZoom = Math.max( 1, this.maxZoomMultiplier * realSizeZoom );
 		this.updateZoom();
 		this.updateLinks();
 	},
@@ -60,7 +66,22 @@ var ImageView = GraphicView.extend( {
 		if ( isAbsolute ) {
 			movement = this.updateSinglePoint( movement );
 		}
-		scroll( this.html[0], movement, isAbsolute );
+		if ( movement !== null ) {
+			scroll( this.html[0], movement, isAbsolute );
+		}
+	},
+
+	changeExternalZoom: function( zoom ) {
+		this.changeZoom( zoom * this.getRealSizeZoom(), true );
+	},
+
+	getRealSizeZoom: function() {
+		var $image = this.$image;
+		var $repMovable = this.html[0];
+		return Math.min(
+			$image.data( 'nativeWidth' ) / $repMovable.parent().width(),
+			$image.data( 'nativeHeight' ) / $repMovable.parent().height()
+		);
 	},
 
 	/**
@@ -69,6 +90,7 @@ var ImageView = GraphicView.extend( {
 	 */
 	getScroll: function() {
 		var $repMovable = this.html[0];
+		// FIXME: Scrolling doesn't always work as it should. $repMovable -> $image in some cases?
 		var relativeCenter = [
 			this.html[0].scrollLeft() + $repMovable.width() / 2,
 			this.html[0].scrollTop() + $repMovable.height() / 2
@@ -85,8 +107,17 @@ var ImageView = GraphicView.extend( {
 	},
 
 	updateSinglePoint: function( delta ) {
-		return [delta[0] * this.$image.width() / this.$image.data( 'nativeWidth' ),
-			delta[1] * this.$image.height() / this.$image.data( 'nativeHeight' )];
+		var $image = this.$image;
+		var result = [
+			delta[0] * $image.width() / $image.data( 'nativeWidth' ),
+			delta[1] * $image.height() / $image.data( 'nativeHeight' )
+		];
+		if ( result[0] < 0 || result[0] >= $image.width()
+				|| result[1] < 0 || result[1] >= $image.height() ) {
+			return null;
+		} else {
+			return result;
+		}
 	}
 } );
 

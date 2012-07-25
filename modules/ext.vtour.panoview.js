@@ -289,20 +289,6 @@ var PanoView = GraphicView.extend( {
 		this.ctx.putImageData( this.destBuffer, 0, 0 );
 	},
 
-	updateMultiplePoints: function( position ) {
-		var index;
-		var current;
-		var result = [];
-		for ( index = 0; index < position.length; index++ ) {
-			current = this.updateSinglePoint( position[index] );
-			if ( current === null ) {
-				return null;
-			}
-			result.push( current );
-		}
-		return result;
-	},
-
 	updateSinglePoint: function( delta ) { // TODO: Implement again, but in a sane way.
 		var x, y;
 

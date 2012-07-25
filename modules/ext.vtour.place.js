@@ -151,18 +151,19 @@ var Place = Element.extend( {
 		if ( this.error ) {
 			return;
 		}
-
-		if ( position.zoom === null ) {
-			position.zoom = this.initialPosition.zoom;
-		}
-		if ( position.center === null ) {
-			position.center = this.initialPosition.center;
-		}
 		if ( this.installed ) {
-			this.changeZoom( position.zoom );
-			this.move( position.center );
+			this.applyPosition( position );	
 		} else {
 			this.movePending = position;
+		}
+	},
+
+	applyPosition: function( position ) {
+		if ( position.zoom !== null ) {
+			this.changeZoom( position.zoom );
+		}
+		if ( position.center !== null ) {
+			this.move( position.center );
 		}
 	},
 
@@ -203,10 +204,10 @@ var Place = Element.extend( {
 
 		this.installed = true;
 		if ( this.movePending !== null ) {
-			this.setPosition( this.movePending );
+			this.applyPosition( this.movePending );
 			this.movePending = null;
 		} else if ( this.initialPosition !== null ) {
-			this.setPosition( this.initialPosition );
+			this.applyPosition( this.initialPosition );
 		}
 	
 		if ( !nofx ) {	

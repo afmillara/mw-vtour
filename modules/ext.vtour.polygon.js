@@ -16,6 +16,13 @@ var Polygon = Class.extend( {
 	 * @var {Array} vertices
 	 */
 	vertices: [[0, 0]],
+
+	/**
+	 * Maximum canvas width/height.
+	 * Some browser crash when large canvases are used.
+	 * @var {Number} maxCanvasSize
+	 */
+	maxCanvasSize: 1000,
 	
 	/**
 	 * Create a new Polygon.
@@ -95,6 +102,15 @@ var Polygon = Class.extend( {
 		var firstVertex = this.vertices[0];
 		var vertexIndex, currentVertex;
 		var boundingBox = calculateBoundingBox( this.vertices );
+
+		if ( boundingBox.width >= this.maxCanvasSize
+			|| boundingBox.height >= this.maxCanvasSize ) {
+			this.context.clearRect( 0, 0,
+				this.$canvas.attr( 'width' ),
+				this.$canvas.attr( 'height' ) );
+			return;
+		}
+
 		this.$canvas.attr( 'width', boundingBox.width + 1 );
 		this.$canvas.attr( 'height', boundingBox.height + 1 );
 //		this.resizeIfNeeded( boundingBox.width + 1, boundingBox.height + 1 );

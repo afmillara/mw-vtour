@@ -8,7 +8,7 @@ var ImagePlace = Place.extend( {
 	spClass: 'vtour-imagenode',
 
 	initialPosition: {
-		zoom: 1,
+		zoom: null,
 		center: [0, 0]
 	},
 
@@ -34,7 +34,7 @@ var ImagePlace = Place.extend( {
 	},
 
 	changeZoom: function( zoom ) {
-		this.view.changeZoom( zoom, true );
+		this.view.changeExternalZoom( zoom );
 	},
 
 	move: function( center ) {
