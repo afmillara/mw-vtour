@@ -100,6 +100,11 @@ var CanvasAreaLink = Link.extend( {
 	}
 } );
 
+/**
+ * Fallback "AreaLink" for browsers where CanvasAreaLink cannot be used.
+ * It simply shows a PointLink at the mean X and Y coordinates of the vertices.
+ * @class FallbackAreaLink
+ */
 var FallbackAreaLink = PointLink.extend( {
 
 	/**
@@ -122,5 +127,9 @@ var FallbackAreaLink = PointLink.extend( {
 	}
 } );
 
+/**
+ * Best available AreaLink implementation.
+ * @var AreaLink
+ */
 var AreaLink = supports2DCanvas() ? CanvasAreaLink : FallbackAreaLink;
 
