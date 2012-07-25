@@ -4,6 +4,10 @@
  * @class ImageView
  */
 var ImageView = GraphicView.extend( {
+	
+	originalSize: null,
+
+	zoom: null,
 
 	/**
 	 * Create a new ImageView.
@@ -22,34 +26,43 @@ var ImageView = GraphicView.extend( {
 	 * @return {$Image} image Content of the ImageView
 	 */
 	generateBackground: function() {
+		this.originalSize = [
+			this.$image.data( 'nativeWidth' ),
+			this.$image.data( 'nativeHeight' )
+		];
 		return this.$image.addClass( 'vtour-background' );
 	},
 
-	/**
-	 * Update the ImageView.
-	 */
 	update: function() {
+		this.fitParent();
 		this.updateZoom();
-		this.updateLinks();
 	},
 
-	updateZoom: function() {
+	fitParent: function() {
+		this.changeZoom( this.getZoomToFit(), true );
+	},
+
+	getZoomToFit: function() {
+		var $repMovable = this.html[0];
+		var horizontalRatio = $repMovable.parent().width() / this.originalSize[0];
+		var verticalRatio = $repMovable.parent().height() / this.originalSize[1];
+		return Math.min( horizontalRatio, verticalRatio );
+	},
+
+	updateZoom: function( zoom ) {
 		var $repMovable = this.html[0];
 		var width, height;
-		var scroll;
+		var currentScroll;
 
-		this._super();
-		scroll = this.getScroll();
+		currentScroll = this.getScroll();
+		this._super( zoom );
 
-		width = this.zoom * $repMovable.parent().width();
-		height = this.zoom * $repMovable.parent().height();
-		resizeToFit( $repMovable.children(), width, height );
+		resize( $repMovable.children(), this.zoom );
 		center( $repMovable.children(), $repMovable );
+		this.move( currentScroll, true );
 		$repMovable.toggleClass( 'vtour-movable',
 			this.$image.width() > $repMovable.width()
 				|| this.$image.height() > $repMovable.height() );
-
-		this.move( scroll, true );
 		this.updateLinks();
 	},
 
@@ -58,35 +71,45 @@ var ImageView = GraphicView.extend( {
 		// If absolute: in pixels of the original image. Otherwise, in pixels of the
 		// current image.
 		if ( isAbsolute ) {
-			movement = this.updateSinglePoint( movement );
+			movement = this.translateScroll( movement );
 		}
 		scroll( this.html[0], movement, isAbsolute );
 	},
 
 	/**
-	 * Get the current value of the scroll in order to restore it later if needed.
-	 * @return Array Scroll ([horizontal, vertical])
+	 * Get the current center of the image in order to restore it later if needed.
+	 * @return Array Center ([x, y])
 	 */
 	getScroll: function() {
 		var $repMovable = this.html[0];
+		var $image = this.$image;
 		var relativeCenter = [
-			this.html[0].scrollLeft() + $repMovable.width() / 2,
-			this.html[0].scrollTop() + $repMovable.height() / 2
+			$repMovable.width() < $image.width() ?
+				$repMovable.width() / 2 + $repMovable.scrollLeft() :
+					$image.width() / 2,
+			$repMovable.height() < $image.height() ?
+				$repMovable.height() / 2 + $repMovable.scrollTop() :
+					$image.height() / 2
 		];
 		return this.contentPointToLinkPoint( relativeCenter );
 	},
 
-	contentPointToLinkPoint: function( contentPoint ) {
+	translateScroll: function( linkPoint ) {
+		var $repMovable = this.html[0];
 		var $image = this.$image;
+		var imagePoint = this.updateSinglePoint( linkPoint );
 		return [
-			contentPoint[0] / $image.width() * $image.data( 'nativeWidth' ),
-			contentPoint[1] / $image.height() * $image.data( 'nativeHeight' )
+			$repMovable.width() < $image.width() ? imagePoint[0] : 0,
+			$repMovable.height() < $image.height() ? imagePoint[1] : 0,
 		];
 	},
 
+	contentPointToLinkPoint: function( contentPoint ) {
+		return mult( contentPoint, 1/this.zoom );
+	},
+
 	updateSinglePoint: function( delta ) {
-		return [delta[0] * this.$image.width() / this.$image.data( 'nativeWidth' ),
-			delta[1] * this.$image.height() / this.$image.data( 'nativeHeight' )];
+		return mult( delta, this.zoom );
 	}
 } );
 

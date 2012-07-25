@@ -61,6 +61,7 @@ var ImagePlace = Place.extend( {
 			} );
 		}
 		parent.css( 'position', 'relative' ).append( this.$html[0], this.$html[1] );
+		this.initialPosition.zoom = this.view.getZoomToFit();
 		this.view.update();
 		this._super( parent );
 	},

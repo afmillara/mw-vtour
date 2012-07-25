@@ -18,6 +18,7 @@ var DEG2RAD = Math.PI/180;
  * @return $Image Original image (modified in place)
  */
 var resizeToFit = function( $elements, width, height ) {
+	alert("called resizeToFit");
 	var nativeWidth = $elements.data( 'nativeWidth' );
 	var nativeHeight = $elements.data( 'nativeHeight' );
 	if ( width / nativeWidth < height / nativeHeight ) {
@@ -33,6 +34,13 @@ var resizeToFit = function( $elements, width, height ) {
 	}
 	return $elements;
 };
+
+var resize = function( $element, multiplier ) {
+	var nativeWidth = $element.data( 'nativeWidth' );
+	var nativeHeight = $element.data( 'nativeHeight' );
+	$element.width( nativeWidth * multiplier );
+	$element.height( nativeHeight * multiplier );
+}
 
 /**
  * Center a node (both horizontally and vertically) in its parent.

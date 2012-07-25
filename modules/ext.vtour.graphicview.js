@@ -117,11 +117,16 @@ var GraphicView = Class.extend( {
 
 	/**
  	 * Update the zoom level in the view.
+ 	 * @param {Number} zoom New zoom
  	 */
-	updateZoom: function() {
+	updateZoom: function( zoom ) {
+		if ( zoom !== undefined ) {
+			this.zoom = zoom;
+		}
 		this.incButton.prop( 'disabled', !this.canZoomIn() );
 		this.decButton.prop( 'disabled', !this.canZoomOut() );
 	},
+
 	onMouseUp: function() {
 	    this.mouseLast = null;
 	},
@@ -160,13 +165,11 @@ var GraphicView = Class.extend( {
 			zoom += this.zoom;
 		}
 		if ( zoom > this.maxZoom ) {
-			this.zoom = this.maxZoom;
+			zoom = this.maxZoom;
 		} else if ( zoom < this.minZoom ) {
-			this.zoom = this.minZoom;
-		} else {
-			this.zoom = zoom;
+			zoom = this.minZoom;
 		}
-		this.updateZoom();
+		this.updateZoom( zoom );
 	},
 
 	/**

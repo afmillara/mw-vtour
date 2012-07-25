@@ -158,8 +158,8 @@ var PanoView = GraphicView.extend( {
 		this.vsFOV = this.FOV[1] / 2;
 	},
 
-	updateZoom: function() {
-		this._super();
+	updateZoom: function( zoom ) {
+		this._super( zoom );
 		var wRatio = this.FOV[0] < this.MAX_FOV[0] ?
 				Math.abs( 2 * Math.tan( this.FOV[0] / 2 ) ) : Number.POSITIVE_INFINITY;
 		var hRatio = this.FOV[1] < this.MAX_FOV[1] ?
