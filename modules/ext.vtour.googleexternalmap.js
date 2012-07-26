@@ -77,7 +77,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 			'width': '100%',
 			'height': '100%'
 		} );
-
 		this.prepareContainer();
 		return this.$mapContainer;
 	},
@@ -93,6 +92,10 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 	zoom: function( newZoom ) {
 		this.map.setZoom( newZoom );
+
+		// Zooming behaves weirdly in some browsers when no move is made
+		// immediately afterwards. Is it our fault somehow?
+		this.move( [0, 0] );
 	},
 
 	updateBounds: function() {

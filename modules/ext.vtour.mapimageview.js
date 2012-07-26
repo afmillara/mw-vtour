@@ -91,11 +91,8 @@ var MapImageView = ImageView.extend( {
 	},
 
 	move: function( delta ) {
-		var canAddHTML = this.externalMap.canAddHTML;
-		var nw;
 		this.externalMap.move( [-delta[0], -delta[1]] );
-		nw = this.externalMap.geoToPixel( this.topLeft, canAddHTML );
-		setPosition( this.$imageBackground, nw, false );
+		this.updateImageBackground();
 	},
 
 	updateZoom: function() {
@@ -106,20 +103,29 @@ var MapImageView = ImageView.extend( {
 			this.externalMap.zoom( this.zoom );
 			this.updateZoomInterval();
 
-			nw = this.externalMap.geoToPixel( this.topLeft, canAddHTML );
 			sw = this.externalMap.geoToPixel( this.location[0], canAddHTML );
+			ne = this.externalMap.geoToPixel( this.location[1], canAddHTML );
 
-			height = sw[1] - nw[1];
+			height = sw[1] - ne[1];
 			width = height / this.$image.data( 'nativeHeight' )
-					* this.$image.data( 'nativeWidth' );
+				* this.$image.data( 'nativeWidth' );
 
 			this.$imageBackground.width( width );
 			this.$imageBackground.height( height );
-			setPosition( this.$imageBackground, nw, false );
+			this.updateImageBackground();
 		}
 		// FIXME: Change to _super when this class inherits directly from graphicview.
 		this.incButton.prop( 'disabled', !this.canZoomIn() );
 		this.decButton.prop( 'disabled', !this.canZoomOut() );
+	},
+
+	/**
+	 * Update the location of the image that has been overimposed on the map.
+	 */
+	updateImageBackground: function() {
+		var canAddHTML = this.externalMap.canAddHTML;
+		var nw = this.externalMap.geoToPixel( this.topLeft, canAddHTML );
+		setPosition( this.$imageBackground, nw, false );
 	},
 
 	updateZoomInterval: function() {
@@ -128,3 +134,4 @@ var MapImageView = ImageView.extend( {
 		this.maxZoom = interval[1];
 	}
 } );
+

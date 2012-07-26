@@ -78,7 +78,7 @@ var Map = Element.extend( {
 			];
 			if ( this.location ) {
 				this.view = new MapImageView( this.$image,
-					this.extraButtons, this.location );
+					this.location, this.extraButtons );
 			} else {
 				this.view = new ImageView( this.$image,
 					this.extraButtons );
