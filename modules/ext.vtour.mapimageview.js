@@ -20,7 +20,9 @@ var MapImageView = GraphicView.extend( {
 	$imageBackground: null,
 
 	zoomGranularity: 1,
-	pointDisplayThreshold: 3,
+
+	pointDisplayThreshold: 2,
+	imageDisplayThreshold: 3,
 
 	initialZoom: null,
 
@@ -130,8 +132,8 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	move: function( delta ) {
-		this.updateImageBackground();
 		this.externalMap.move( [-delta[0], -delta[1]] );
+		this.updateImageBackground();
 	},
 
 	updateZoom: function() {
@@ -162,7 +164,7 @@ var MapImageView = GraphicView.extend( {
 	updateImageBackground: function() {
 		var canAddHTML = this.externalMap.canAddHTML;
 		var centerPoint;
-		if ( this.zoom >= this.initialZoom - this.pointDisplayThreshold ) {
+		if ( this.zoom >= this.initialZoom - this.imageDisplayThreshold ) {
 			centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
 			this.$imageBackground.show();
 			this.removeTourMarker();
