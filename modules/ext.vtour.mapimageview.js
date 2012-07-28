@@ -3,7 +3,9 @@
  * ImageView with an external map as a background.
  * @class MapImageView
  */
-var MapImageView = ImageView.extend( {
+var MapImageView = GraphicView.extend( {
+
+	$image: null,
 
 	rotationAngle: 0,
 	bounds: null,
@@ -32,7 +34,8 @@ var MapImageView = ImageView.extend( {
 	 * @param {$Image} $image image that will be shown in this view
 	 */
 	init: function( $image, location, extraButtons ) {
-		this._super( $image, extraButtons );
+		this._super( extraButtons );
+		this.$image = $image;
 		this.location = location;
 	},
 
@@ -46,8 +49,8 @@ var MapImageView = ImageView.extend( {
 			'width': '100%',
 			'height': '100%'
 		} );
-		var $imageBackground = this.$imageBackground = this._super();
-
+		var $imageBackground = this.$imageBackground =
+			this.$image.addClass( 'vtour-background' );
 		this.externalMap = new GoogleExternalMap( function() {
 			var externalMapHTML = that.externalMap.getHTML();
 			if ( that.externalMap.canAddHTML ) {
@@ -62,6 +65,9 @@ var MapImageView = ImageView.extend( {
 
 			externalMapWrapper.append( externalMapHTML );
 		} );
+
+		externalMapWrapper.addClass( 'vtour-movable' );
+		$imageBackground.addClass( 'vtour-movable' );
 
 		if ( this.externalMap.canAddHTML ) {
 			return externalMapWrapper;
@@ -147,9 +153,7 @@ var MapImageView = ImageView.extend( {
 			this.$imageBackground.height( height );
 			this.updateImageBackground();
 		}
-		// FIXME: Change to _super when this class inherits directly from graphicview.
-		this.incButton.prop( 'disabled', !this.canZoomIn() );
-		this.decButton.prop( 'disabled', !this.canZoomOut() );
+		this._super();
 	},
 
 	/**
@@ -189,6 +193,14 @@ var MapImageView = ImageView.extend( {
 		var interval = this.externalMap.getZoomInterval();
 		this.minZoom = interval[0];
 		this.maxZoom = interval[1];
+	},
+
+	updateLinks: function() {
+		var that = this;
+		$.each( this.links, function( i, link ) {
+			link.setRotationAngle( that.rotationAngle );
+		} );
+		this._super();
 	},
 
 	updateSinglePoint: function( delta ) {

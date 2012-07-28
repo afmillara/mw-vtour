@@ -28,15 +28,12 @@ var ImageView = GraphicView.extend( {
 		return this.$image.addClass( 'vtour-background' );
 	},
 
-	/**
-	 * Update the ImageView.
-	 */
 	update: function() {
 		var realSizeZoom = this.getRealSizeZoom();
 		this.minZoom = Math.min( this.typicalMinZoom, realSizeZoom );
 		this.maxZoom = Math.max( 1, this.maxZoomMultiplier * realSizeZoom );
 		this.updateZoom();
-		this.updateLinks();
+		this._super();
 	},
 
 	updateZoom: function() {

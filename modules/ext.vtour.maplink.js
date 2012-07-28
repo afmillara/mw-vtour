@@ -4,6 +4,8 @@
  */
 var MapLink = PointLink.extend( {
 
+	rotationAngle: 0,
+
 	/**
 	 * Angle marker of the map link, if an angle has been set.
 	 * @var {AngleMarker} angleMarker
@@ -18,6 +20,10 @@ var MapLink = PointLink.extend( {
 	 */
 	init: function( tour, destination, location ) {
 		this._super( tour, destination, location );
+	},
+
+	setRotationAngle: function( rotationAngle ) {
+		this.rotationAngle = rotationAngle;
 	},
 
 	/**
@@ -72,12 +78,15 @@ var MapLink = PointLink.extend( {
 		if ( this._super() ) {
 			this.$currentPlaceMarker.toggle( this.isSelected() );
 			if (this.angleMarker !== null){
+				this.angleMarker.toggle( this.isSelected() );
 				this.updateAngleMarker();
 				//this.$angleIcon.fadeTo(0, 1);
-				this.angleMarker.toggle( this.isSelected() );
 			}
 			return true;
 		} else {
+			if ( this.angleMarker !== null ) {
+				this.angleMarker.toggle( false );
+			}
 			return false;
 		}
 	},
@@ -86,7 +95,7 @@ var MapLink = PointLink.extend( {
 		var htmlLocation = this.posCallback( this.location );
 		if ( htmlLocation !== null ) {
 			this.angleMarker.setLocation( htmlLocation );
-			this.angleMarker.setAngle( this.destination.angle );
+			this.angleMarker.setAngle( this.destination.angle - this.rotationAngle );
 			this.angleMarker.show();
 		}
 	},
@@ -105,7 +114,7 @@ var MapLink = PointLink.extend( {
 				that.follow();
 			} );
 			$( this.angleMarker ).bind( 'angleChanged.vtour', function( e, angle ) {
-				that.destination.changeAngle( angle );
+				that.destination.changeAngle( angle + that.rotationAngle );
 			} );
 			$( this.destination ).bind( 'angleChanged.vtour', function() {
 				that.updateAngleMarker();

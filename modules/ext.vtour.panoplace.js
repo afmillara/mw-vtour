@@ -44,7 +44,7 @@ var CanvasPanoPlace = Place.extend( {
 		this.view.move( [center[0] * DEG2RAD, center[1] * DEG2RAD], true );
 	},
 
-	setBaseAngle: function( angle ){
+	setAngle: function( angle ){
 		this.baseAngle = angle*DEG2RAD;
 		this.angle = this.baseAngle;
 	},
@@ -73,10 +73,10 @@ var CanvasPanoPlace = Place.extend( {
 			this.onMouseMove = function( x, y ) {
 				this.view.onMouseMove.call( this.view, x, y );
 			};
-			if (this.baseAngle !== null){
+			if ( this.baseAngle !== null ) {
 				$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
 					that.angle = that.view.orientation[0] + that.baseAngle;
-					$( that ).trigger('angleChanged.vtour');
+					$( that ).trigger( 'angleChanged.vtour' );
 				});
 			}
 			$.each( this.links, function( i, link ) {
@@ -95,11 +95,6 @@ var CanvasPanoPlace = Place.extend( {
  * @class FallbackPanoPlace
  */
 var FallbackPanoPlace = ImagePlace.extend( {
-
-	setBaseAngle: function( angle ){
-		this.baseAngle = angle*DEG2RAD;
-		this.angle = this.baseAngle;
-	},
 
 	createView: function() {
 		return new FallbackPanoView( this.$image );

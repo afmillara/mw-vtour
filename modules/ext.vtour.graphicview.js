@@ -98,6 +98,13 @@ var GraphicView = Class.extend( {
 	},
 
 	/**
+	 * Update the GraphicView.
+	 */
+	update: function() {
+		this.updateLinks();
+	},
+
+	/**
 	 * Generate the background of this view.
 	 * @return Array|$HTML An HTML element or an array of HTML elements
 	 */
@@ -224,7 +231,6 @@ var GraphicView = Class.extend( {
 	 * Update the placement of the links in the view.
 	 */
 	updateLinks: function() {
-		var that = this;
 		$.each( this.links, function( i, link ) {
 			link.updatePosition();
 		} );

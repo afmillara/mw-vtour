@@ -183,22 +183,17 @@ var VirtualTour = Class.extend( {
 			if ( jsonPlace.map !== null ) {
 				map = maps[jsonPlace.map];
 			}
+
 			switch (jsonPlace.type) {
 				case 'image':
 					image = that.preloader.add( jsonPlace.image );
 					place = new ImagePlace
 						( that, name, description, visible, location, map, image );
-					if (jsonPlace.angle !== null){
-						place.setAngle(jsonPlace.angle);
-					}
 					break;
 				case 'pano':
 					image = that.preloader.add( jsonPlace.image );
 					place = new PanoPlace
 						( that, name, description, visible, location, map, image )
-					if (jsonPlace.baseangle !== null){
-						place.setBaseAngle(jsonPlace.baseangle);
-					}
 					break;
 				case 'text':
 					place = new TextPlace( that, name, description, visible,
@@ -206,6 +201,10 @@ var VirtualTour = Class.extend( {
 					break;
 				default:
 					throw new Error( 'Invalid place type: ' + jsonPlace.type );
+			}
+
+			if ( jsonPlace.angle !== null ) {
+				place.setAngle( jsonPlace.angle );
 			}
 
 			initialPosition = {

@@ -117,7 +117,6 @@ var PanoView = GraphicView.extend( {
 			this.canvas.height = $repMovable.height();
 
 			this.updateBuffer();	
-			this.updateLinks();
 
 			wRatio = this.FOV[0] < this.MAX_FOV[0]?
 				Math.abs(2*Math.tan(this.FOV[0]/2)): Number.POSITIVE_INFINITY;
@@ -129,6 +128,7 @@ var PanoView = GraphicView.extend( {
 				this.changeZoom( 0 );
 			}
 		}
+		this._super();
 		this.show();
 	},
 

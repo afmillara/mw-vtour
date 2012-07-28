@@ -28,6 +28,7 @@ abstract class VtourPlace extends VtourElement {
 		'down' => null,
 		'center' => 'parseCoordinatePair',
 		'zoom' => 'parseNatural',
+		'angle' => 'parseNumber',
 		'tooltip' => 'parseBool'
 	);
 
@@ -230,7 +231,6 @@ class VtourPanoPlace extends VtourPlace {
 
 	public function __construct( $content, array $args, VtourParser $vtourParser ) {
 		$this->attributesTemplate += array(
-			'baseangle' => 'parseNumber',
 			'hfov' => 'parseNatural',
 			'vfov' => 'parseNatural',
 			'image' => array( 'parseImageTitle', true )
@@ -238,11 +238,6 @@ class VtourPanoPlace extends VtourPlace {
 
 		parent::__construct( $content, $args, $vtourParser );
 		$this->result['type'] = 'pano';
-	}
-	
-	public function resolveReferences( $index ) {
-		$this->checkDependency( 'baseangle', 'location' );
-		parent::resolveReferences( $index );
 	}
 }
 
@@ -253,17 +248,11 @@ class VtourImagePlace extends VtourPlace {
 
 	public function __construct( $content, array $args, VtourParser $vtourParser ) {
 		$this->attributesTemplate += array(
-			'angle' => 'parseNumber',
 			'image' => array( 'parseImageTitle', true )
 		);
 
 		parent::__construct( $content, $args, $vtourParser );
 		$this->result['type'] = 'image';
-	}
-
-	public function resolveReferences( $index ) {
-		$this->checkDependency( 'angle', 'location' );
-		parent::resolveReferences( $index );
 	}
 }
 
