@@ -57,6 +57,24 @@ var ExternalMap = Class.extend( {
 	},
 
 	/**
+	 * Adds a marker to a given location on the map.
+	 * @param {String} text Title of the marker
+	 * @param {Array} location Pair of geographic coordinates (lon, lat)
+	 * @return Object Marker object
+	 */
+	addMarker: function( text, location ) {
+		throw new Error( 'Not implemented: addMarker' );
+	},
+
+	/**
+	 * Removes a marker from a given location on the map.
+	 * @param {Object} marker Marker object returned by addMarker
+	 */
+	removeMarker: function( marker ) {
+		throw new Error( 'Not implemented: removeMarker' );
+	},
+
+	/**
 	 * Change the position in the map by the given values.
 	 * @param {Number} dx X increment (in pixels)
 	 * @param {Number} dy Y increment (in pixels)

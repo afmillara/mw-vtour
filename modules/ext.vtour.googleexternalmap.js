@@ -89,6 +89,20 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return [0, this.maxZoomHere];
 	},
 
+	addMarker: function( title, location ) {
+		var gmaps = GoogleExternalMap.gmaps;
+		var marker = new gmaps.Marker( {
+			position: new gmaps.LatLng( location[1], location[0] ),
+			title: title
+		} );
+		marker.setMap( this.map );
+		return marker;
+	},
+
+	removeMarker: function( marker ) {
+		marker.setMap( null );
+	},
+
 	move: function( delta ) {
 		this.map.panBy( delta[0], delta[1] );
 	},

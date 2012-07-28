@@ -96,7 +96,8 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-erroroutside',
 		'vtour-errorinside',
 		'vtour-runtimeerror',
-		'vtour-errordesc-filenotfound'
+		'vtour-errordesc-filenotfound',
+		'vtour-thismap'
 	),
 	'dependencies' => array( 'ext.vtour.lib' ),
 	'localBasePath' => $wgVtourDir . 'modules/',

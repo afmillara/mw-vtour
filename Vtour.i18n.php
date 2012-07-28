@@ -17,6 +17,8 @@ $messages['en'] = array(
 
 	'vtour-description' => 'A virtual tour system for MediaWiki.',
 
+	'vtour-thismap' => 'Vtour map',
+
 	'vtour-decimalseparator' => '.',
 	'vtour-linkalias' => '@@',
 
@@ -51,7 +53,6 @@ $messages['en'] = array(
 	'vtour-parseerror-idandelement' => '"$1" ($2)',
 	'vtour-parseerror-idnoelement' => '"$1"',
 	'vtour-parseerror-noid' => 'an unnamed tour',
-
 	'vtour-errordesc-badcontent' => 'The text "$1" was not expected in the content of the element.',
 	'vtour-errordesc-badstart' => 'The starting place for the map, "$1", is not contained in it.',
 	'vtour-errordesc-notset' => 'Mandatory attribute "$1" was not defined.',

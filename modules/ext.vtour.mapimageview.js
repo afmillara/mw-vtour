@@ -14,6 +14,7 @@ var MapImageView = ImageView.extend( {
 	mapY: null,
 
 	externalMap: null,
+	marker: null,
 	$imageBackground: null,
 
 	zoomGranularity: 1,
@@ -155,15 +156,33 @@ var MapImageView = ImageView.extend( {
 	 * Update the location of the image that has been overimposed on the map.
 	 */
 	updateImageBackground: function() {
-		if ( this.zoom > this.initialZoom - this.pointDisplayThreshold ) {
-			var canAddHTML = this.externalMap.canAddHTML;
-			var centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
+		var canAddHTML = this.externalMap.canAddHTML;
+		var centerPoint;
+		if ( this.zoom >= this.initialZoom - this.pointDisplayThreshold ) {
+			centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
 			this.$imageBackground.show();
+			this.removeTourMarker();
 			setPosition( this.$imageBackground, centerPoint, true );
 		} else {
 			this.$imageBackground.hide();
+			this.addTourMarker();
 		}
 		this.updateLinks();
+	},
+
+	addTourMarker: function() {
+		var markerTitle;
+		if ( this.marker === null ) {
+			markerTitle = mw.message( 'vtour-thismap' ).toString();
+			this.marker = this.externalMap.addMarker( markerTitle, this.center );
+		}
+	},
+
+	removeTourMarker: function() {
+		if ( this.marker !== null ) {
+			this.externalMap.removeMarker( this.marker );
+			this.marker = null;
+		}
 	},
 
 	updateZoomInterval: function() {
