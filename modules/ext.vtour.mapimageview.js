@@ -7,12 +7,35 @@ var MapImageView = GraphicView.extend( {
 
 	$image: null,
 
+	/**
+	 * Angle between the line from the lower left corner of the image
+	 * to the lower right corner of the image and the line from the
+	 * lower left corner of the image and 3 o'clock.
+	 * @var {Number} rotationAngle
+	 */
 	rotationAngle: 0,
+
+	/**
+	 * Bounding box of the image on the map: [[swLon, swLat], [neLon, neLat]].
+	 * @var {Array} bounds
+	 */
 	bounds: null,
+
 	topLeft: null,
 	center: null,
 
+	/**
+	 * Vector (in geographical coordinates: [lon, lat]) from the lower left
+	 * corner of the image to the lower right corner.
+	 * @var {Array} mapX
+	 */
 	mapX: null,
+
+	/**
+	 * Vector (in geographical coordinates: [lon, lat]) from the lower left
+	 * corner of the image to the upper left corner.
+	 * @var {Array} mapY
+	 */
 	mapY: null,
 
 	externalMap: null,
@@ -21,10 +44,21 @@ var MapImageView = GraphicView.extend( {
 
 	zoomGranularity: 1,
 
-	pointDisplayThreshold: 2,
-	imageDisplayThreshold: 3,
-
 	initialZoom: null,
+	
+	/**
+	 * Difference between the initial zoom and the maximum zoom at which
+	 * links will be displayed.
+	 * @var {Number} pointDisplayThreshold
+	 */
+	pointDisplayThreshold: 2,
+
+	/**
+	 * Difference between the initial zoom and the maximum zoom at which
+	 * the background image will be displayed.
+	 * @var {Number} imageDisplayThreshold
+	 */
+	imageDisplayThreshold: 3,
 
 	/**
 	 * Create a new MapImageView.
@@ -78,59 +112,6 @@ var MapImageView = GraphicView.extend( {
 		}
 	},
 
-	prepareImage: function() {
-		// FIXME: We are working with geographic coordinates here. This
-		// is probably inaccurate for long distances.
-		var dlat = this.location[1][1] - this.location[0][1];
-		var dlon = this.location[1][0] - this.location[0][0];
-
-		var diagonal = hypotenuse( dlon, dlat );
-
-		var diagAngle = Math.atan2( this.$image.height(), this.$image.width() );
-		var totalAngle = Math.atan2( dlat, dlon );
-
-		this.$image.rotate( {angle: this.rotationAngle / DEG2RAD} );
-		this.rotationAngle = totalAngle - diagAngle;
-		this.$image.rotate( {angle: -this.rotationAngle / DEG2RAD} );
-
-		var currentHeight = Math.sin( diagAngle ) * diagonal;
-		var currentWidth = Math.cos( diagAngle ) * diagonal;
-
-		var widthY = Math.sin( this.rotationAngle ) * currentWidth;
-		var widthX = Math.cos( this.rotationAngle ) * currentWidth;
-
-		var complementary = Math.PI/2 - this.rotationAngle;
-		var heightY = Math.sin( complementary ) * currentHeight;
-		var heightX = Math.cos( complementary ) * currentHeight;
-
-		this.topLeft = [
-			this.location[0][0] - heightX,
-			this.location[0][1] + heightY
-		];
-		this.center = [
-			this.location[0][0] - heightX / 2 + widthX / 2,
-			this.location[0][1] + heightY / 2 + widthY / 2
-		];
-		var bottomRight = [
-			this.location[0][0] + widthX,
-			this.location[0][1] + widthY
-		];
-		var boundingBox = calculateBoundingBox( [
-			this.location[0],
-			this.location[1],
-			this.topLeft,
-			bottomRight
-		] );
-
-		this.bounds = [
-			[boundingBox.x, boundingBox.y + boundingBox.height],
-			[boundingBox.x + boundingBox.width, boundingBox.y]
-		];
-
-		this.mapX = [widthX, widthY];
-		this.mapY = [-heightX, heightY];
-	},
-
 	move: function( delta ) {
 		this.externalMap.move( [-delta[0], -delta[1]] );
 		this.updateImageBackground();
@@ -159,6 +140,73 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	/**
+	 * Calculate the rotation angle and position of the image.
+	 */
+	prepareImage: function() {
+		var dlat, dlon;
+		var diagonal;
+		var diagAngle, totalAngle, complementary;
+		var currentWidth, currentHeight;
+		var widthX, widthY;
+		var heightX, heightY;
+		var boundingBox;
+		var bottomRight;
+
+		// FIXME: We are working with geographic coordinates here. This
+		// is probably inaccurate for long distances.
+		dlat = this.location[1][1] - this.location[0][1];
+		dlon = this.location[1][0] - this.location[0][0];
+
+		diagonal = hypotenuse( dlon, dlat );
+
+		diagAngle = Math.atan2( this.$image.height(), this.$image.width() );
+		totalAngle = Math.atan2( dlat, dlon );
+
+		this.$image.rotate( {angle: this.rotationAngle / DEG2RAD} );
+		this.rotationAngle = totalAngle - diagAngle;
+		this.$image.rotate( {angle: -this.rotationAngle / DEG2RAD} );
+
+		currentHeight = Math.sin( diagAngle ) * diagonal;
+		currentWidth = Math.cos( diagAngle ) * diagonal;
+
+		widthY = Math.sin( this.rotationAngle ) * currentWidth;
+		widthX = Math.cos( this.rotationAngle ) * currentWidth;
+
+		complementary = Math.PI/2 - this.rotationAngle;
+		heightY = Math.sin( complementary ) * currentHeight;
+		heightX = Math.cos( complementary ) * currentHeight;
+
+		this.topLeft = [
+			this.location[0][0] - heightX,
+			this.location[0][1] + heightY
+		];
+		bottomRight = [
+			this.location[0][0] + widthX,
+			this.location[0][1] + widthY
+		];
+
+		this.center = [
+			this.location[0][0] - heightX / 2 + widthX / 2,
+			this.location[0][1] + heightY / 2 + widthY / 2
+		];
+
+		boundingBox = calculateBoundingBox( [
+			this.location[0],
+			this.location[1],
+			this.topLeft,
+			bottomRight
+		] );
+
+		this.bounds = [
+			[boundingBox.x, boundingBox.y + boundingBox.height],
+			[boundingBox.x + boundingBox.width, boundingBox.y]
+		];
+
+		this.mapX = [widthX, widthY];
+		this.mapY = [-heightX, heightY];
+	},
+
+	/**
 	 * Update the location of the image that has been overimposed on the map.
 	 */
 	updateImageBackground: function() {
@@ -176,6 +224,9 @@ var MapImageView = GraphicView.extend( {
 		this.updateLinks();
 	},
 
+	/**
+	 * Add a marker to the map.
+	 */
 	addTourMarker: function() {
 		var markerTitle;
 		if ( this.marker === null ) {
@@ -184,6 +235,9 @@ var MapImageView = GraphicView.extend( {
 		}
 	},
 
+	/**
+	 * Remove the marker from the map.
+	 */
 	removeTourMarker: function() {
 		if ( this.marker !== null ) {
 			this.externalMap.removeMarker( this.marker );
@@ -206,17 +260,20 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	updateSinglePoint: function( delta ) {
+		var $image;
+		var nativeWidth, nativeHeight;
+		var vector, mapPoint;
 		if ( this.zoom < this.initialZoom - this.pointDisplayThreshold ) {
 			return null;
 		}
-		var $image = this.$image;
-		var nativeWidth = $image.data( 'nativeWidth' );
-		var nativeHeight = $image.data( 'nativeHeight' );
-		var vector = sum(
+		$image = this.$image;
+		nativeWidth = $image.data( 'nativeWidth' );
+		nativeHeight = $image.data( 'nativeHeight' );
+		vector = sum(
 			mult( this.mapX, delta[0] / nativeWidth ),
 			mult( this.mapY, delta[1] / nativeHeight )
 		);
-		var mapPoint = sum( this.location[0], vector );
+		mapPoint = sum( this.location[0], vector );
 		return this.externalMap.geoToPixel( mapPoint, false );
 	}
 } );

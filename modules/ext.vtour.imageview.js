@@ -5,6 +5,8 @@
  */
 var ImageView = GraphicView.extend( {
 
+	$image: null,
+
 	typicalMinZoom: 0.1,
 	maxZoomMultiplier: 2,
 

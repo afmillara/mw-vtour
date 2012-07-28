@@ -11,6 +11,12 @@ var PanoView = GraphicView.extend( {
 	 */
 	MAX_FOV: [Math.PI*2, Math.PI],
 
+	$image: null,
+	image: null,
+	$canvas: null,
+	canvas: null,
+	ctx: null,
+
 	zoomGranularity: 50,
 	moveSensitivity: 0.01,
 
