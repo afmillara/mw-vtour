@@ -112,7 +112,8 @@ $wgResourceModules['ext.vtour.links'] = array(
 $wgResourceModules['ext.vtour.lib'] = array(
 	'scripts' => array(
 		'ext.vtour.lib.inheritance.js',
-		'jquery.mousewheel.js'
+		'jquery.mousewheel.js',
+		'jquery.rotate.js'
 	),
 	'localBasePath' => $wgVtourDir . 'modules/lib/',
 	'remoteExtPath' => 'Vtour/modules/lib'

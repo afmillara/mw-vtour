@@ -166,7 +166,8 @@ var PanoView = GraphicView.extend( {
 		this.FOV = [this.MAX_FOV[0], this.MAX_FOV[1]];
 		var ratio = this.image.width / this.image.height / 2;
 		if (ratio > 1){
-			this.FOV[1] /= ratio - 0.1;
+			// FIXME: Was /= ratio - 0.1. Why?
+			this.FOV[1] /= ratio;
 		} else if ( ratio < 1 ) {
 			this.FOV[0] *= ratio;
 		}

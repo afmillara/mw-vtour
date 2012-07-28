@@ -33,7 +33,9 @@ var GoogleExternalMap = ExternalMap.extend( {
 	maxZoomHere: 22,
 
 	init: function( callback ) {
+		var that = this;
 		GoogleExternalMap.loadGoogleMaps( function() {
+			that.prepareContainer();
 			callback();
 		} );
 	},
@@ -53,6 +55,9 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 	geoToPixel: function( geo, insideMap ) {
 		var gmaps = GoogleExternalMap.gmaps;
+		if ( !gmaps ) {
+			return null;
+		}
 		var latLng = new gmaps.LatLng( geo[0], geo[1] );
 		var projection = this.dummyOverlay.getProjection();
 		var point;
@@ -66,6 +71,9 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 	pixelToGeo: function( pixel ) {
 		var gmaps = GoogleExternalMap.gmaps;
+		if ( !gmaps ) {
+			return null;
+		}
 		var point = new gmaps.Point( pixel[0], pixel[1] );
 		var latLng = this.dummyOverlay.getProjection()
 			.fromContainerPixelToLatLng( point );
@@ -73,11 +81,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 	},
 
 	getHTML: function() {
-		this.$mapContainer = $( '<div></div' ).css( {
-			'width': '100%',
-			'height': '100%'
-		} );
-		this.prepareContainer();
 		return this.$mapContainer;
 	},
 
@@ -134,12 +137,16 @@ var GoogleExternalMap = ExternalMap.extend( {
 		var options = {
 			center: new gmaps.LatLng( 0, 0 ),
 			zoom: 0,
-			mapTypeId: gmaps.MapTypeId.HYBRID,
+			mapTypeId: gmaps.MapTypeId.SATELLITE,
 			//disableDefaultUI: true,
 			draggable: false,
 			scrollwheel: false,
 			disableDoubleClickZoom: true
 		};
+		this.$mapContainer = $( '<div></div' ).css( {
+			'width': '100%',
+			'height': '100%'
+		} );
 		this.map = new gmaps.Map( this.$mapContainer[0], options );
 		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
 		this.dummyOverlay.setMap( this.map );
@@ -219,18 +226,6 @@ GoogleExternalMap.initMapOverlay = function() {
 		this.$mapContainer = null;
 	};
 	MapOverlay.prototype.draw = function(){
-		/*var gmaps = GoogleExternalMap.gmaps;
-
-		var projection = this.getProjection();
-		var swBounds = new gmaps.LatLng(this.bounds[0][0],this.bounds[0][1]);
-		var neBounds = new gmaps.LatLng(this.bounds[1][0],this.bounds[1][1]);
-		var sw = projection.fromLatLngToDivPixel(swBounds);
-		var ne = projection.fromLatLngToDivPixel(neBounds);
-
-		this.$mapContainer.width(ne.x - sw.x);
-		this.$mapContainer.height(ne.y - sw.y);
-
-		setPosition(this.$mapContainer, [sw.x, sw.y]);*/
 	};
 	return MapOverlay;
 };

@@ -5,9 +5,13 @@
  */
 var MapImageView = ImageView.extend( {
 
-	rotationAngle: null,
+	rotationAngle: 0,
 	bounds: null,
 	topLeft: null,
+	center: null,
+
+	mapX: null,
+	mapY: null,
 
 	externalMap: null,
 	$imageBackground: null,
@@ -40,18 +44,16 @@ var MapImageView = ImageView.extend( {
 		} );
 		var $imageBackground = this.$imageBackground = this._super();
 
-		this.prepareImage();
-
 		this.externalMap = new GoogleExternalMap( function() {
 			var externalMapHTML = that.externalMap.getHTML();
+			if ( that.externalMap.canAddHTML ) {
+				that.externalMap.addElement( $imageBackground );
+			}
+			that.prepareImage();
 			that.externalMap.setBounds( that.bounds, function( zoom ) {
 				that.zoom = zoom;
 				that.updateZoom();
 			} );
-
-			if ( that.externalMap.canAddHTML ) {
-				that.externalMap.addElement( $imageBackground );
-			}
 
 			externalMapWrapper.append( externalMapHTML );
 		} );
@@ -64,7 +66,8 @@ var MapImageView = ImageView.extend( {
 	},
 
 	prepareImage: function() {
-		/*var dlat = this.location[0][0] - this.location[1][0];
+		// FIXME: Shouldn't work with geographic coordinates like this.
+		var dlat = this.location[1][0] - this.location[0][0];
 		var dlon = this.location[1][1] - this.location[0][1];
 
 		var diagonal = hypotenuse( dlon, dlat );
@@ -72,41 +75,65 @@ var MapImageView = ImageView.extend( {
 		var diagAngle = Math.atan2( this.$image.height(), this.$image.width() );
 		var totalAngle = Math.atan2( dlat, dlon );
 
+		this.$image.rotate( {angle: this.rotationAngle / DEG2RAD} );
 		this.rotationAngle = totalAngle - diagAngle;
+		this.$image.rotate( {angle: -this.rotationAngle / DEG2RAD} );
 
 		var currentHeight = Math.sin( diagAngle ) * diagonal;
 		var currentWidth = Math.cos( diagAngle ) * diagonal;
 
-		var heightUnderMapWidth = Math.sin( this.rotationAngle ) * currentWidth;
-		var widthUnderMapWidth = Math.cos( this.rotationAngle ) * currentWidth;
+		var widthY = Math.sin( this.rotationAngle ) * currentWidth;
+		var widthX = Math.cos( this.rotationAngle ) * currentWidth;
 
 		var complementary = Math.PI/2 - this.rotationAngle;
-		var heightUnderMapHeight = Math.sin( complementary ) * currentHeight;
-		var widthUnderMapWidth = Math.cos( complementary ) * currentHeight;
+		var heightY = Math.sin( complementary ) * currentHeight;
+		var heightX = Math.cos( complementary ) * currentHeight;
 
-		if ( dlon*/
+		this.topLeft = [
+			this.location[0][0] + heightY,
+			this.location[0][1] - heightX
+		];
+		this.center = [
+			this.location[0][0] + heightY / 2 + widthY / 2,
+			this.location[0][1] - heightX / 2 + widthX / 2
+		];
+		var bottomRight = [
+			this.location[0][0] + widthY,
+			this.location[0][1] + widthX
+		];
+		var boundingBox = calculateBoundingBox( [
+			this.location[0],
+			this.location[1],
+			this.topLeft,
+			bottomRight
+		] );
 
-		this.bounds = this.location;
-		this.topLeft = [this.location[1][0], this.location[0][1]];
+		this.bounds = [
+			[boundingBox.x + boundingBox.width, boundingBox.y],
+			[boundingBox.x, boundingBox.y + boundingBox.height]
+		];
+
+		this.mapX = [widthY, widthX];
+		this.mapY = [heightY, -heightX];
 	},
 
 	move: function( delta ) {
-		this.externalMap.move( [-delta[0], -delta[1]] );
 		this.updateImageBackground();
+		this.externalMap.move( [-delta[0], -delta[1]] );
 	},
 
 	updateZoom: function() {
 		var canAddHTML = this.externalMap.canAddHTML;
-		var sw, ne;
+		var sw, nw;
 		var height, width;
 		if ( this.externalMap.isReady() ) {
 			this.externalMap.zoom( this.zoom );
 			this.updateZoomInterval();
 
 			sw = this.externalMap.geoToPixel( this.location[0], canAddHTML );
-			ne = this.externalMap.geoToPixel( this.location[1], canAddHTML );
+			nw = this.externalMap.geoToPixel( this.topLeft, canAddHTML );
 
-			height = sw[1] - ne[1];
+			height = hypotenuse( sw[0] - nw[0], sw[1] - nw[1] );
 			width = height / this.$image.data( 'nativeHeight' )
 				* this.$image.data( 'nativeWidth' );
 
@@ -124,14 +151,27 @@ var MapImageView = ImageView.extend( {
 	 */
 	updateImageBackground: function() {
 		var canAddHTML = this.externalMap.canAddHTML;
-		var nw = this.externalMap.geoToPixel( this.topLeft, canAddHTML );
-		setPosition( this.$imageBackground, nw, false );
+		var centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
+		setPosition( this.$imageBackground, centerPoint, true );
+		this.updateLinks();
 	},
 
 	updateZoomInterval: function() {
 		var interval = this.externalMap.getZoomInterval();
 		this.minZoom = interval[0];
 		this.maxZoom = interval[1];
+	},
+
+	updateSinglePoint: function( delta ) {
+		var $image = this.$image;
+		var nativeWidth = $image.data( 'nativeWidth' );
+		var nativeHeight = $image.data( 'nativeHeight' );
+		var vector = sum(
+			mult( this.mapX, delta[0] / nativeWidth ),
+			mult( this.mapY, delta[1] / nativeHeight )
+		);
+		var mapPoint = sum( this.location[0], vector );
+		return this.externalMap.geoToPixel( mapPoint, false );
 	}
 } );
 
