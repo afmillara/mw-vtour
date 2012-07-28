@@ -22,7 +22,7 @@ var ExternalMap = Class.extend( {
 
 	/**
 	 * Set the bounds for this ExternalMap.
-	 * @param {Array} bounds Array of coordinates: [[swLat, swLon], [neLat, neLon]]
+	 * @param {Array} bounds Array of coordinates: [[swLon, swLat], [neLon, neLat]]
 	 */
 	setBounds: function( bounds ) {
 		this.bounds = bounds;
@@ -30,7 +30,7 @@ var ExternalMap = Class.extend( {
 
 	/**
 	 * Convert geographical coordinates to coordinates in the page.
-	 * @param {Array} geoCoords Array of coordinates: [[swLat, swLon], [neLat, neLon]]
+	 * @param {Array} geoCoords Array of coordinates: [[swLon, swLat], [neLon, neLat]]
 	 * @param {Boolean} insideMap Whether the returned coordinates are relative to the
 	 * map (for elements that have been inserted in it) or to its container
 	 * @return Array Array of coordinates: [x, y]
@@ -42,7 +42,7 @@ var ExternalMap = Class.extend( {
 	/**
 	 * Convert coordinates ([x, y]) relative to the container to geographical coordinates.
 	 * @param {Array} pixel Coordinates
-	 * @return Array Array of coordinates: [lat, lon]
+	 * @return Array Array of coordinates: [lon, lat]
 	 */
 	pixelToGeo: function( pixel ) {
 		throw new Error( 'Not implemented: pixelToGeo' );

@@ -67,8 +67,8 @@ var MapImageView = ImageView.extend( {
 
 	prepareImage: function() {
 		// FIXME: Shouldn't work with geographic coordinates like this.
-		var dlat = this.location[1][0] - this.location[0][0];
-		var dlon = this.location[1][1] - this.location[0][1];
+		var dlat = this.location[1][1] - this.location[0][1];
+		var dlon = this.location[1][0] - this.location[0][0];
 
 		var diagonal = hypotenuse( dlon, dlat );
 
@@ -90,16 +90,16 @@ var MapImageView = ImageView.extend( {
 		var heightX = Math.cos( complementary ) * currentHeight;
 
 		this.topLeft = [
-			this.location[0][0] + heightY,
-			this.location[0][1] - heightX
+			this.location[0][0] - heightX,
+			this.location[0][1] + heightY
 		];
 		this.center = [
-			this.location[0][0] + heightY / 2 + widthY / 2,
-			this.location[0][1] - heightX / 2 + widthX / 2
+			this.location[0][0] - heightX / 2 + widthX / 2,
+			this.location[0][1] + heightY / 2 + widthY / 2
 		];
 		var bottomRight = [
-			this.location[0][0] + widthY,
-			this.location[0][1] + widthX
+			this.location[0][0] + widthX,
+			this.location[0][1] + widthY
 		];
 		var boundingBox = calculateBoundingBox( [
 			this.location[0],
@@ -109,12 +109,12 @@ var MapImageView = ImageView.extend( {
 		] );
 
 		this.bounds = [
-			[boundingBox.x + boundingBox.width, boundingBox.y],
-			[boundingBox.x, boundingBox.y + boundingBox.height]
+			[boundingBox.x, boundingBox.y + boundingBox.height],
+			[boundingBox.x + boundingBox.width, boundingBox.y]
 		];
 
-		this.mapX = [widthY, widthX];
-		this.mapY = [heightY, -heightX];
+		this.mapX = [widthX, widthY];
+		this.mapY = [-heightX, heightY];
 	},
 
 	move: function( delta ) {

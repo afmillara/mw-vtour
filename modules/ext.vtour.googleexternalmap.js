@@ -58,7 +58,7 @@ var GoogleExternalMap = ExternalMap.extend( {
 		if ( !gmaps ) {
 			return null;
 		}
-		var latLng = new gmaps.LatLng( geo[0], geo[1] );
+		var latLng = new gmaps.LatLng( geo[1], geo[0] );
 		var projection = this.dummyOverlay.getProjection();
 		var point;
 		if ( insideMap ) {
@@ -77,7 +77,7 @@ var GoogleExternalMap = ExternalMap.extend( {
 		var point = new gmaps.Point( pixel[0], pixel[1] );
 		var latLng = this.dummyOverlay.getProjection()
 			.fromContainerPixelToLatLng( point );
-		return [latLng.lat(), latLng.lng()];
+		return [latLng.lng(), latLng.lat()];
 	},
 
 	getHTML: function() {
@@ -103,8 +103,8 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 	updateBounds: function() {
 		var gmaps = GoogleExternalMap.gmaps;
-		var swBounds = new gmaps.LatLng( this.bounds[0][0], this.bounds[0][1] );
-		var neBounds = new gmaps.LatLng( this.bounds[1][0], this.bounds[1][1] );
+		var swBounds = new gmaps.LatLng( this.bounds[0][1], this.bounds[0][0] );
+		var neBounds = new gmaps.LatLng( this.bounds[1][1], this.bounds[1][0] );
 		var bounds = new gmaps.LatLngBounds( swBounds, neBounds );
 		this.map.fitBounds( bounds );
 	},
