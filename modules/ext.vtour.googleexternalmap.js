@@ -54,10 +54,10 @@ var GoogleExternalMap = ExternalMap.extend( {
 	},
 
 	geoToPixel: function( geo, insideMap ) {
-		var gmaps = GoogleExternalMap.gmaps;
-		if ( !gmaps ) {
+		if ( !this.isReady() ) {
 			return null;
 		}
+		var gmaps = GoogleExternalMap.gmaps;
 		var latLng = new gmaps.LatLng( geo[1], geo[0] );
 		var projection = this.dummyOverlay.getProjection();
 		var point;
@@ -70,10 +70,10 @@ var GoogleExternalMap = ExternalMap.extend( {
 	},
 
 	pixelToGeo: function( pixel ) {
-		var gmaps = GoogleExternalMap.gmaps;
-		if ( !gmaps ) {
+		if ( !this.isReady() ) {
 			return null;
 		}
+		var gmaps = GoogleExternalMap.gmaps;
 		var point = new gmaps.Point( pixel[0], pixel[1] );
 		var latLng = this.dummyOverlay.getProjection()
 			.fromContainerPixelToLatLng( point );
@@ -147,18 +147,18 @@ var GoogleExternalMap = ExternalMap.extend( {
 			'width': '100%',
 			'height': '100%'
 		} );
-		this.map = new gmaps.Map( this.$mapContainer[0], options );
 		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
+		this.map = new gmaps.Map( this.$mapContainer[0], options );
 		this.dummyOverlay.setMap( this.map );
 	},
 
 	/**
-	 * Return whether the Maps API has been loaded.
-	 * @return Boolean true if the API has been loaded,
-	 * false otherwise
+	 * Return whether the map is ready.
+	 * @return Boolean true if the API has been loaded and the map can be
+	 * used, false otherwise
 	 */
 	isReady: function() {
-		return !!GoogleExternalMap.gmaps;
+		return !!GoogleExternalMap.gmaps && !!this.dummyOverlay.getProjection();
 	}
 } );
 

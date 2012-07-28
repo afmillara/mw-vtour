@@ -17,6 +17,9 @@ var MapImageView = ImageView.extend( {
 	$imageBackground: null,
 
 	zoomGranularity: 1,
+	pointDisplayThreshold: 3,
+
+	initialZoom: null,
 
 	/**
 	 * Create a new MapImageView.
@@ -51,6 +54,7 @@ var MapImageView = ImageView.extend( {
 			}
 			that.prepareImage();
 			that.externalMap.setBounds( that.bounds, function( zoom ) {
+				that.initialZoom = zoom;
 				that.zoom = zoom;
 				that.updateZoom();
 			} );
@@ -66,7 +70,8 @@ var MapImageView = ImageView.extend( {
 	},
 
 	prepareImage: function() {
-		// FIXME: Shouldn't work with geographic coordinates like this.
+		// FIXME: We are working with geographic coordinates here. This
+		// is probably inaccurate for long distances.
 		var dlat = this.location[1][1] - this.location[0][1];
 		var dlon = this.location[1][0] - this.location[0][0];
 
@@ -150,9 +155,14 @@ var MapImageView = ImageView.extend( {
 	 * Update the location of the image that has been overimposed on the map.
 	 */
 	updateImageBackground: function() {
-		var canAddHTML = this.externalMap.canAddHTML;
-		var centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
-		setPosition( this.$imageBackground, centerPoint, true );
+		if ( this.zoom > this.initialZoom - this.pointDisplayThreshold ) {
+			var canAddHTML = this.externalMap.canAddHTML;
+			var centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
+			this.$imageBackground.show();
+			setPosition( this.$imageBackground, centerPoint, true );
+		} else {
+			this.$imageBackground.hide();
+		}
 		this.updateLinks();
 	},
 
@@ -163,6 +173,9 @@ var MapImageView = ImageView.extend( {
 	},
 
 	updateSinglePoint: function( delta ) {
+		if ( this.zoom < this.initialZoom - this.pointDisplayThreshold ) {
+			return null;
+		}
 		var $image = this.$image;
 		var nativeWidth = $image.data( 'nativeWidth' );
 		var nativeHeight = $image.data( 'nativeHeight' );

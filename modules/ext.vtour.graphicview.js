@@ -191,7 +191,7 @@ var GraphicView = Class.extend( {
 	 * @param {$Node} HTML node
 	 */
 	addOver: function( htmlNode ) {
-		this.html[0].children( ':nth-child(2)' ).append( htmlNode );
+		this.html[0].children( '.vtour-nodelayer' ).append( htmlNode );
 	},
 
 	/**
