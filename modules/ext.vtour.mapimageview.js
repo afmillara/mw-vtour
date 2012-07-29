@@ -21,6 +21,12 @@ var MapImageView = GraphicView.extend( {
 	 */
 	bounds: null,
 
+	/**
+	 * Whether the bounds have changed since the last time they were set.
+	 * @var {Boolean} boundsChanged
+	 */
+	boundsChanged: false,
+
 	topLeft: null,
 	center: null,
 

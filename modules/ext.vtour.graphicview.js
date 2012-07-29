@@ -10,6 +10,9 @@
  */
 var GraphicView = Class.extend( {
 
+	enabledButtonOpacity: 1,
+	disabledButtonOpacity: 0.3,
+
 	/**
 	 * Sensitivity of the mouse movement (the higher the more sensitive).
 	 * @var {Number} moveSensitivity
@@ -58,14 +61,22 @@ var GraphicView = Class.extend( {
 	 * @param {imageClass} Class that will be added to the button
 	 * @param {function} callback Function that will be called when the
 	 * button is clicked
+	 * @param {Boolean} enabled Whether the element should be enabled.
+	 * Default is true.
 	 * @return $HTML A jQuery object which contains a button element
 	 */
-	addButton: function( imageClass, callback ) {
-		var button = $( '<div></div>' ).addClass( 'vtour-button' )
+	addButton: function( imageClass, callback, enabled ) {
+		var button = $( '<div></div>' )
 			.addClass( imageClass ).click( callback );
-
+		this.toggleButton( button, enabled || enabled === undefined );
 		this.buttons.push( button );
 		return button;
+	},
+
+	toggleButton: function( button, show ) {
+		var opacity = show ? this.enabledButtonOpacity : this.disabledButtonOpacity;
+		button.fadeTo( 0, opacity );
+		button.toggleClass( 'vtour-button', show );
 	},
 
 	/**
@@ -141,8 +152,8 @@ var GraphicView = Class.extend( {
  	 * Update the zoom level in the view.
  	 */
 	updateZoom: function() {
-		this.incButton.prop( 'disabled', !this.canZoomIn() );
-		this.decButton.prop( 'disabled', !this.canZoomOut() );
+		this.toggleButton( this.incButton, this.canZoomIn() );
+		this.toggleButton( this.decButton, this.canZoomOut() );
 	},
 
 	onMouseUp: function() {
@@ -164,10 +175,10 @@ var GraphicView = Class.extend( {
 		var that = this;
 		this.incButton = this.addButton( 'vtour-buttonplus', function() {
 			that.changeZoom( that.zoomGranularity );
-		} );
+		}, this.canZoomIn() );
 		this.decButton = this.addButton( 'vtour-buttonminus', function() {
 			that.changeZoom( -that.zoomGranularity );
-		} );
+		}, this.canZoomOut() );
 	},
 
 	/**

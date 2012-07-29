@@ -43,13 +43,18 @@ var GoogleExternalMap = ExternalMap.extend( {
 	setBounds: function( bounds, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var map = this.map;
+		var boundsUpdated;
 		this._super( bounds );
-		this.updateBounds();
+		boundsUpdated = this.updateBounds();
 		if ( callback ) {
-			gmaps.event.addListenerOnce( map, 'bounds_changed',
-				function() {
-					callback( map.getZoom() );
-				} );
+			if ( boundsUpdated ) {
+				gmaps.event.addListenerOnce( map, 'bounds_changed',
+					function() {
+						callback( map.getZoom() );
+					} );
+			} else {
+				callback( map.getZoom() );
+			}
 		}
 	},
 
@@ -121,7 +126,13 @@ var GoogleExternalMap = ExternalMap.extend( {
 		var swBounds = new gmaps.LatLng( this.bounds[0][1], this.bounds[0][0] );
 		var neBounds = new gmaps.LatLng( this.bounds[1][1], this.bounds[1][0] );
 		var bounds = new gmaps.LatLngBounds( swBounds, neBounds );
-		this.map.fitBounds( bounds );
+		var currentBounds = this.map.getBounds();
+		if ( bounds.equals( currentBounds ) ) {
+			return false;
+		} else {
+			this.map.fitBounds( bounds );
+			return true;
+		}
 	},
 
 	addElement: function( element ) {

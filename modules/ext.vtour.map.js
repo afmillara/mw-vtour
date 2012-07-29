@@ -139,8 +139,8 @@ var Map = Element.extend( {
 		var ways = [ 'up', 'down' ];
 		var index;
 		for ( index = 0; index < ways.length; index++ ) {
-			this.extraButtons[index].prop( 'disabled',
-				this.getNeighbour( ways[index] ) === null );
+			this.view.toggleButton( this.extraButtons[index],
+				this.getNeighbour( ways[index] ) !== null );
 		}
 	},
 
