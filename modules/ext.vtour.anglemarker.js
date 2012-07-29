@@ -150,7 +150,6 @@ var BaseAngleMarker = Class.extend( {
 			mouseAngle = calculateAngle( this.getAbsoluteLocation(), [x, y] );
 			if ( mouseAngle !== null ){
 				newAngle = mouseAngle - this.initialAngleDiff;
-				console.log(newAngle/DEG2RAD);
 				$( this ).trigger( 'angleChanged.vtour', newAngle );
 			}
 		}

@@ -217,14 +217,16 @@ var PanoView = GraphicView.extend( {
 	 */
 	move: function( movement, isAbsolute ) {
 		var orientation = this.orientation;
+		var relativeMovement, absoluteMovement;
 		var MAX_FOV = this.MAX_FOV;
 		for (var i = 0; i < 2; i++ ) {
 			if ( isAbsolute ) {
-				orientation[i] = movement[i];
+				absoluteMovement = movement[i];
 			} else {
-				movement[i] *= this.baseZoom / this.zoom;
-				orientation[i] -= movement[i];
+				relativeMovement = movement[i] * this.baseZoom / this.zoom;
+				absoluteMovement = orientation[i] - relativeMovement;
 			}
+			orientation[i] = absoluteMovement;
 			/*if (FOV[i] < MAX_FOV[i]){
 				var maxAngle = Math.atan2([canvas.height, canvas.width][i]/2,f);
 				if (aPos[i] + maxAngle > FOV[i]/2){
@@ -245,7 +247,8 @@ var PanoView = GraphicView.extend( {
 	},
 
 	changeAngle: function( angle ) {
-		this.move( [-angle, 0] );	
+		console.log(angle/DEG2RAD);
+		this.move( [angle, 0], true );	
 	},
 
 	/**
