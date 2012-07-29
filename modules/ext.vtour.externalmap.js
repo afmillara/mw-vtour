@@ -60,9 +60,11 @@ var ExternalMap = Class.extend( {
 	 * Adds a marker to a given location on the map.
 	 * @param {String} text Title of the marker
 	 * @param {Array} location Pair of geographic coordinates (lon, lat)
+	 * @param {function} callback Function that will be called when the
+	 * marker icon is clicked
 	 * @return Object Marker object
 	 */
-	addMarker: function( text, location ) {
+	addMarker: function( text, location, callback ) {
 		throw new Error( 'Not implemented: addMarker' );
 	},
 

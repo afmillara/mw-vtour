@@ -150,16 +150,21 @@ var MapImageView = GraphicView.extend( {
 		var that = this;
 		this._super();
 		this.addButton( 'vtour-buttonreset', function() {
-			if ( that.mapMoved || that.zoom !== that.initialZoom ) {
-				that.mapMoved = false;
-				that.zoom = that.externalMap.setBounds( that.bounds,
-					function( zoom ) {
-						that.zoom = zoom;
-						that.updateZoom();
-					} );
-			}
+			that.resetMap();	
 		} );
 	},
+
+	resetMap: function() {
+		var that = this;
+		if ( this.mapMoved || this.zoom !== this.initialZoom ) {
+			this.mapMoved = false;
+			this.zoom = this.externalMap.setBounds( this.bounds,
+				function( zoom ) {
+					that.zoom = zoom;
+					that.updateZoom();
+				} );
+		}
+	},	
 
 	/**
 	 * Calculate the rotation angle and position of the image.
@@ -250,10 +255,14 @@ var MapImageView = GraphicView.extend( {
 	 * Add a marker to the map.
 	 */
 	addTourMarker: function() {
-		var markerTitle;
+		var that = this;
+		var title;
+		var externalMap = this.externalMap;
 		if ( this.marker === null ) {
-			markerTitle = mw.message( 'vtour-thismap' ).toString();
-			this.marker = this.externalMap.addMarker( markerTitle, this.center );
+			title = mw.message( 'vtour-thismap' ).toString();
+			this.marker = externalMap.addMarker( title, this.center, function() {
+				that.resetMap();
+			} );
 		}
 	},
 

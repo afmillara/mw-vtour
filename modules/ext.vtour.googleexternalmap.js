@@ -94,12 +94,15 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return [0, this.maxZoomHere];
 	},
 
-	addMarker: function( title, location ) {
+	addMarker: function( title, location, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var marker = new gmaps.Marker( {
 			position: new gmaps.LatLng( location[1], location[0] ),
 			title: title
 		} );
+		if ( callback ) {
+			gmaps.event.addListener( marker, 'click', callback );
+		}
 		marker.setMap( this.map );
 		return marker;
 	},
