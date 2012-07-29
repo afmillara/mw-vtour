@@ -219,10 +219,10 @@ var PanoView = GraphicView.extend( {
 		var orientation = this.orientation;
 		var MAX_FOV = this.MAX_FOV;
 		for (var i = 0; i < 2; i++ ) {
-			movement[i] *= this.baseZoom / this.zoom;
 			if ( isAbsolute ) {
 				orientation[i] = movement[i];
 			} else {
+				movement[i] *= this.baseZoom / this.zoom;
 				orientation[i] -= movement[i];
 			}
 			/*if (FOV[i] < MAX_FOV[i]){
