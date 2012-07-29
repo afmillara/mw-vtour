@@ -139,6 +139,19 @@ var MapImageView = GraphicView.extend( {
 		this._super();
 	},
 
+	createDefaultButtons: function() {
+		var that = this;
+		return this._super().concat( [
+			createButton( 'I', true, function() {
+				that.zoom = that.externalMap.setBounds( that.bounds,
+					function( zoom ) {
+						that.zoom = zoom;
+						that.updateZoom();
+					} );
+			} )
+		] );
+	},
+
 	/**
 	 * Calculate the rotation angle and position of the image.
 	 */

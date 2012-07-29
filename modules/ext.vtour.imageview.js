@@ -41,8 +41,11 @@ var ImageView = GraphicView.extend( {
 	createDefaultButtons: function() {
 		var that = this;
 		return this._super().concat( [
+			createButton( '[', true, function() {
+				that.changeZoom( 1, true );
+			} ),
 			createButton( '1', true, function() {
-				that.changeZoom( that.getRealSizeZoom() );
+				that.changeExternalZoom( 1 );
 			} )
 		] );
 	},
