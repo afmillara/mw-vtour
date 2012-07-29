@@ -50,7 +50,7 @@ var GraphicView = Class.extend( {
 	 * @param {$Input} extraButtons Buttons to add to the interface along the default ones
 	 */
 	init: function( extraButtons ) {
-		this.buttons = ( extraButtons || [] ).concat( this.createDefaultButtons() );
+		this.buttons = this.createDefaultButtons().concat( extraButtons || [] );
 		this.links = [];
 	},
 
@@ -90,7 +90,7 @@ var GraphicView = Class.extend( {
 			return false;
 		} );
 
-		$repMovable.bind( 'selectstart dragstart', function( e ) {
+		$repMovable.on( 'selectstart dragstart', function( e ) {
 			e.preventDefault();
 		} );
 		

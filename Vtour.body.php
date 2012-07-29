@@ -122,7 +122,7 @@ class VtourHooks {
 
 		return "<div id='vtour-tour-$tourId'>
 		<div class='vtour-frame' style='width: 800px; height: 500px;'>
-			<div style='display: inline-block; float: left; width: 30%; height: 100%;'>
+			<div style='display: block; float: left; width: 30%; height: 100%;'>
 				<div id='vtour-secondary-$tourId' style='height: 40%;'>
 				</div>
 				<div id='vtour-map-$tourId' style='overflow: hidden; height: 60%;'>

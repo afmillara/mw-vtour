@@ -33,7 +33,7 @@ var VirtualTour = Class.extend( {
 		var that = this;
 		this.htmlElements = htmlElements;
 		this.preloader = new Preloader();
-		$( document ).bind( 'mouseup', function() {
+		$( document ).on( 'mouseup', function() {
 			var current = that.currentPlace;
 			if ( current !== null ){
 				current.onMouseUp();
@@ -44,7 +44,7 @@ var VirtualTour = Class.extend( {
 				} );
 			}
 		} );
-		$( document ).bind( 'mousemove', function( event ) {
+		$( document ).on( 'mousemove', function( event ) {
 			var current = that.currentPlace;
 			if ( that.currentPlace !== null ){
 				that.currentPlace.onMouseMove( event.pageX, event.pageY );
@@ -95,7 +95,7 @@ var VirtualTour = Class.extend( {
 		this.preloader.start(
 			function() {
     				that.move( that.initialNode );
-				$( that ).trigger( 'load' );
+				$( that ).trigger( 'load.vtour' );
 			},
 			function( $file ){
 				var description = mw.message( 'vtour-errordesc-filenotfound',

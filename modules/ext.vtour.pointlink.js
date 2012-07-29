@@ -36,9 +36,9 @@ var PointLink = Link.extend( {
 		$nodeIcon.click( function() {
 			that.follow();
 		} );
-		$nodeIcon.bind( 'mouseenter mousemove', function( event ) {
+		$nodeIcon.on( 'mouseenter mousemove', function( event ) {
 			that.hover( [event.pageX, event.pageY] );
-		} ).bind( 'mouseleave', function() {
+		} ).on( 'mouseleave', function() {
 			that.noHover();
 		} );
 		return $nodeIcon;

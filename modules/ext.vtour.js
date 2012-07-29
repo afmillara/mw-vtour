@@ -33,7 +33,7 @@
 			vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
 			
 			if ( mw.util.getParamValue( 'vtourId' ) === tourId ) {
-				$(vtour).bind( 'load', function() {
+				$( vtour ).on( 'load.vtour', function() {
 					vtour.move( mw.util.getParamValue( 'vtourPlace' ) || '' );
 					vtour.setPositionFromStrings( {
 						'center': mw.util.getParamValue( 'vtourCenter' ),

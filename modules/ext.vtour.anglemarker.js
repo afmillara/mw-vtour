@@ -227,7 +227,7 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 		var polygon = this.polygon = new Polygon();
 		var $polygonCanvas = polygon.getHTML();
 
-		$( polygon ).bind( 'polygonMouseDown', function( e, x, y ) {
+		$( polygon ).on( 'polygonMouseDown.vtour', function( e, x, y ) {
 			that.mouseDown( x, y );
 		} );
 
@@ -239,7 +239,7 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 			$( document ).mousemove( function( event ) {
 				that.mouseMove( event.pageX, event.pageY );
 			} );
-			$( polygon ).bind( 'polygonHoverChanged', function( event, hover ) {
+			$( polygon ).on( 'polygonHoverChanged.vtour', function( event, hover ) {
 				$polygonCanvas.css( 'cursor', hover ? 'move' : '' );
 			} );
 		}

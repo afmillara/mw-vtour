@@ -203,7 +203,7 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad ){
 		onLoad();
 	};
 	if ( GoogleExternalMap.gmaps === null ) {
-		$( GoogleExternalMap ).bind( 'gmapsApiLoaded', callback );
+		$( GoogleExternalMap ).on( 'gmapsApiLoaded.vtour', callback );
 
 		if ( !GoogleExternalMap.loadStarted ) {
 			GoogleExternalMap.loadStarted = true;
@@ -219,7 +219,7 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad ){
  */
 GoogleExternalMap.apiLoaded = function() {
 	GoogleExternalMap.gmaps = window.google.maps;
-	$(GoogleExternalMap).trigger( 'gmapsApiLoaded' );
+	$(GoogleExternalMap).trigger( 'gmapsApiLoaded.vtour' );
 };
 window.wfVtourGMapsApiLoaded = GoogleExternalMap.apiLoaded;
 

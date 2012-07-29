@@ -67,8 +67,10 @@ var center = function( $node, $parent ) {
  * @return $HTML A jQuery object which contains a button element
  */
 var createButton = function( text, enabled, callback ) {
-	return $( '<input></input>', {'type': 'button', 'value': text} )
-			.prop( 'disabled', !enabled ).click( callback );
+	return $( '<input></input>', {
+		'type': 'button',
+		'value': text,
+	} ).prop( 'disabled', !enabled ).click( callback );
 };
 
 /**

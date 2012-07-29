@@ -38,6 +38,15 @@ var ImageView = GraphicView.extend( {
 		this._super();
 	},
 
+	createDefaultButtons: function() {
+		var that = this;
+		return this._super().concat( [
+			createButton( '1', true, function() {
+				that.changeZoom( that.getRealSizeZoom() );
+			} )
+		] );
+	},
+
 	updateZoom: function() {
 		var $repMovable = this.html[0];
 		var width, height;
