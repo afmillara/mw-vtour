@@ -22,10 +22,10 @@ var MapImageView = GraphicView.extend( {
 	bounds: null,
 
 	/**
-	 * Whether the bounds have changed since the last time they were set.
-	 * @var {Boolean} boundsChanged
+	 * Whether the view has been moved since the last time the bounds were set.
+	 * @var {Boolean} mapMoved
 	 */
-	boundsChanged: false,
+	mapMoved: false,
 
 	topLeft: null,
 	center: null,
@@ -99,6 +99,7 @@ var MapImageView = GraphicView.extend( {
 			}
 			that.prepareImage();
 			that.externalMap.setBounds( that.bounds, function( zoom ) {
+				that.mapMoved = false;
 				that.initialZoom = zoom;
 				that.zoom = zoom;
 				that.updateZoom();
@@ -118,6 +119,7 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	move: function( delta ) {
+		this.mapMoved = true;
 		this.externalMap.move( [-delta[0], -delta[1]] );
 		this.updateImageBackground();
 	},
@@ -148,11 +150,14 @@ var MapImageView = GraphicView.extend( {
 		var that = this;
 		this._super();
 		this.addButton( 'vtour-buttonreset', function() {
-			that.zoom = that.externalMap.setBounds( that.bounds,
-				function( zoom ) {
-					that.zoom = zoom;
-					that.updateZoom();
-				} );
+			if ( that.mapMoved || that.zoom !== that.initialZoom ) {
+				that.mapMoved = false;
+				that.zoom = that.externalMap.setBounds( that.bounds,
+					function( zoom ) {
+						that.zoom = zoom;
+						that.updateZoom();
+					} );
+			}
 		} );
 	},
 
