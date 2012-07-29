@@ -80,11 +80,10 @@ var PanoView = GraphicView.extend( {
 	/**
 	 * Create a new PanoView.
 	 * @constructor
-	 * @param {Array} extraButtons Extra buttons for the view
 	 * @param {$Image} Equirectangular panoramic image
 	 */
-	init: function( $image, extraButtons ){
-		this._super( extraButtons );
+	init: function( $image ){
+		this._super();
 		this.$image = $image;
 		this.image = $image[0];
 		this.$canvas = $( '<canvas></canvas>' ).css( {

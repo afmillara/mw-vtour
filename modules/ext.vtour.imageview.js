@@ -14,11 +14,9 @@ var ImageView = GraphicView.extend( {
 	 * Create a new ImageView.
 	 * @constructor
 	 * @param {$Image} $image Image that will be shown in this view
-	 * @param {Array} extraButtons Buttons to add to the interface along
-	 * the default ones (optional)
 	 */
-	init: function( $image, extraButtons ) {
-		this._super( extraButtons );
+	init: function( $image ) {
+		this._super();
 		this.$image = $image;
 	},
 
@@ -40,14 +38,13 @@ var ImageView = GraphicView.extend( {
 
 	createDefaultButtons: function() {
 		var that = this;
-		return this._super().concat( [
-			createButton( '[', true, function() {
-				that.changeZoom( 1, true );
-			} ),
-			createButton( '1', true, function() {
-				that.changeExternalZoom( 1 );
-			} )
-		] );
+		this._super();
+		this.addButton( 'vtour-buttonfit', function() {
+			that.changeZoom( 1, true );
+		} );
+		this.addButton( 'vtour-buttonrealsize', function() {
+			that.changeExternalZoom( 1 );
+		} );
 	},
 
 	updateZoom: function() {

@@ -83,7 +83,7 @@
 }
 
 .vtour-placeicon {
-	display: inline-block;
+	display: block;
 	height: 25px;
 	width: 25px;
 	/* @embed */
@@ -91,7 +91,7 @@
 }
 
 .vtour-currentplacemarker {
-	display: inline-block;
+	display: block;
 	height: 25px;
 	width: 25px;
 	/* @embed */
@@ -99,11 +99,78 @@
 }
 
 .vtour-angleicon {
-	display: inline-block;
+	display: block;
 	height: 25px;
 	width: 25px;
 	/* @embed */
 	background: url(img/ojo.gif) 0 0 no-repeat;
+}
+
+.vtour-button {
+	cursor: pointer;
+}
+
+.vtour-buttonminus {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/minus.png) 0 0 no-repeat;
+}
+
+.vtour-buttonplus {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/plus.png) 0 0 no-repeat;
+}
+
+.vtour-buttonup {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/up.png) 0 0 no-repeat;
+}
+
+.vtour-buttondown {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/down.png) 0 0 no-repeat;
+}
+
+.vtour-buttonfit {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/fit.png) 0 0 no-repeat;
+}
+
+.vtour-buttonrealsize {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/realsize.png) 0 0 no-repeat;
+}
+
+.vtour-buttonreset {
+	display: inline-block;
+	margin: 2px;
+	height: 20px;
+	width: 20px;
+	/* @embed */
+	background: url(img/reset.png) 0 0 no-repeat;
 }
 
 .vtour-popup {

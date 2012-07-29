@@ -63,14 +63,13 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Create a new MapImageView.
 	 * @constructor
-	 * @param {$Input[]} extraButtons buttons to add to the interface along the default ones
-	 * @param {Array} location	geographical coordinates ([[lat, lon]
+	 * @param {$Image} $image image that will be shown in this view
+	 * @param {Array} location Geographical coordinates ([[lat, lon]
 	 * lower left corner of the image, [lat, lon] upper right corner]) of the
 	 * map (optional)
-	 * @param {$Image} $image image that will be shown in this view
 	 */
-	init: function( $image, location, extraButtons ) {
-		this._super( extraButtons );
+	init: function( $image, location ) {
+		this._super();
 		this.$image = $image;
 		this.location = location;
 	},
@@ -141,15 +140,14 @@ var MapImageView = GraphicView.extend( {
 
 	createDefaultButtons: function() {
 		var that = this;
-		return this._super().concat( [
-			createButton( 'I', true, function() {
-				that.zoom = that.externalMap.setBounds( that.bounds,
-					function( zoom ) {
-						that.zoom = zoom;
-						that.updateZoom();
-					} );
-			} )
-		] );
+		this._super();
+		this.addButton( 'vtour-buttonreset', function() {
+			that.zoom = that.externalMap.setBounds( that.bounds,
+				function( zoom ) {
+					that.zoom = zoom;
+					that.updateZoom();
+				} );
+		} );
 	},
 
 	/**

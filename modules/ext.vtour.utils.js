@@ -60,20 +60,6 @@ var center = function( $node, $parent ) {
 };
 
 /**
- * Create a button.
- * @param {String} text Desired text content of the button
- * @param {Boolean} enabled Whether the created button must be enabled
- * @param {function} callback Function that will be called when the button is clicked
- * @return $HTML A jQuery object which contains a button element
- */
-var createButton = function( text, enabled, callback ) {
-	return $( '<input></input>', {
-		'type': 'button',
-		'value': text,
-	} ).prop( 'disabled', !enabled ).click( callback );
-};
-
-/**
  * Calculate a minimum bounding rectangle for a given set
  * of points: the rectangle with the smallest area which contains
  * all the points.

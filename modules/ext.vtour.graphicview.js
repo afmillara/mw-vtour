@@ -47,11 +47,25 @@ var GraphicView = Class.extend( {
 	/**
 	 * Create a new GraphicView.
 	 * @constructor
-	 * @param {$Input} extraButtons Buttons to add to the interface along the default ones
 	 */
 	init: function( extraButtons ) {
-		this.buttons = this.createDefaultButtons().concat( extraButtons || [] );
+		this.buttons = [];
 		this.links = [];
+	},
+
+	/**
+	 * Add a button to the view (before the HTML code is generated).
+	 * @param {imageClass} Class that will be added to the button
+	 * @param {function} callback Function that will be called when the
+	 * button is clicked
+	 * @return $HTML A jQuery object which contains a button element
+	 */
+	addButton: function( imageClass, callback ) {
+		var button = $( '<div></div>' ).addClass( 'vtour-button' )
+			.addClass( imageClass ).click( callback );
+
+		this.buttons.push( button );
+		return button;
 	},
 
 	/**
@@ -76,6 +90,7 @@ var GraphicView = Class.extend( {
 
 		this.html = [$repMovable, $buttonLayer];
 
+		this.createDefaultButtons();
 		for ( var i = 0; i < this.buttons.length; i++ ) {
 			$buttonLayer.append( this.buttons[i] );
 		}
@@ -144,17 +159,15 @@ var GraphicView = Class.extend( {
 
 	/**
 	 * Create the default buttons for this view.
-	 * @return {Array} Default button array
 	 */
 	createDefaultButtons: function() {
 		var that = this;
-		this.incButton = createButton( '+', this.canZoomIn(), function() {
+		this.incButton = this.addButton( 'vtour-buttonplus', function() {
 			that.changeZoom( that.zoomGranularity );
 		} );
-		this.decButton = createButton( '-', this.canZoomOut(), function() {
+		this.decButton = this.addButton( 'vtour-buttonminus', function() {
 			that.changeZoom( -that.zoomGranularity );
 		} );
-		return [this.incButton, this.decButton];
 	},
 
 	/**

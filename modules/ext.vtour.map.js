@@ -68,21 +68,26 @@ var Map = Element.extend( {
 			if ( !this.checkImage( this.$image, parent ) ) {
 				return;
 			}
-			this.extraButtons = [
-				createButton( '^', true, function() {
-					that.tour.move( that.getNeighbour( 'up' ) );
-				} ),
-				createButton( 'v', true, function() {
-					that.tour.move( that.getNeighbour( 'down' ) );
-				} )
-			];
+
 			if ( this.location ) {
 				this.view = new MapImageView( this.$image,
-					this.location, this.extraButtons );
+					this.location );
 			} else {
-				this.view = new ImageView( this.$image,
-					this.extraButtons );
+				this.view = new ImageView( this.$image );
 			}
+
+			this.extraButtons = [];
+			this.extraButtons.push(
+				this.view.addButton( 'vtour-buttonup', function() {
+					that.tour.move( that.getNeighbour( 'up' ) );
+				} )
+			);
+			this.extraButtons.push(
+				this.view.addButton( 'vtour-buttondown', function() {
+					that.tour.move( that.getNeighbour( 'down' ) );
+				} )
+			);
+
 			this.html = this.view.generate();
 			this.onMouseUp = function(){
 				this.view.onMouseUp.call( this.view );

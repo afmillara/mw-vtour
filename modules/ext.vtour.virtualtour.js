@@ -116,6 +116,9 @@ var VirtualTour = Class.extend( {
 	 * @param {Place|String} place New current place (Place object or id/name)
 	 */
 	move: function( place ) {
+		if ( place === null ) {
+			return;
+		}
 		if ( typeof place === 'string' ) {
 			place = this.findPlace( place );
 			if ( place ) {
