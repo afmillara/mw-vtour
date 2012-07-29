@@ -78,11 +78,18 @@ var ExternalMap = Class.extend( {
 
 	/**
 	 * Change the position in the map by the given values.
-	 * @param {Number} dx X increment (in pixels)
-	 * @param {Number} dy Y increment (in pixels)
+	 * @param {Array} Increment (in pixels: [dx, dy])
 	 */
-	move: function( dx, dy ) {
-		throw new Error( 'Not implemented: move' );
+	moveBy: function( delta ) {
+		throw new Error( 'Not implemented: moveBy' );
+	},
+
+	/**
+	 * Change the position in the map to the given value.
+	 * @param {Array} location New location ([lon, lat])
+	 */
+	moveTo: function( location ) {
+		throw new Error( 'Not implemented: moveTo' );
 	},
 
 	/**

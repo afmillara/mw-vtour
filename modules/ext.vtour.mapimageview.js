@@ -118,9 +118,13 @@ var MapImageView = GraphicView.extend( {
 		}
 	},
 
-	move: function( delta ) {
+	move: function( delta, isAbsolute ) {
 		this.mapMoved = true;
-		this.externalMap.move( [-delta[0], -delta[1]] );
+		if ( isAbsolute ) {
+			this.externalMap.moveTo( delta );
+		}  else {
+			this.externalMap.moveBy( [-delta[0], -delta[1]] );
+		}
 		this.updateImageBackground();
 	},
 
@@ -150,12 +154,15 @@ var MapImageView = GraphicView.extend( {
 		var that = this;
 		this._super();
 		this.addButton( 'vtour-buttonreset', function() {
-			that.resetMap();	
+			that.reset();	
 		} );
 	},
 
-	resetMap: function() {
+	reset: function() {
 		var that = this;
+		if ( !this.externalMap.isReady() ) {
+			return;
+		}
 		if ( this.mapMoved || this.zoom !== this.initialZoom ) {
 			this.mapMoved = false;
 			this.zoom = this.externalMap.setBounds( this.bounds,
@@ -261,7 +268,7 @@ var MapImageView = GraphicView.extend( {
 		if ( this.marker === null ) {
 			title = mw.message( 'vtour-thismap' ).toString();
 			this.marker = externalMap.addMarker( title, this.center, function() {
-				that.resetMap();
+				that.reset();
 			} );
 		}
 	},

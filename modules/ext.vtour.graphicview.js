@@ -168,6 +168,9 @@ var GraphicView = Class.extend( {
 		}
 	},
 
+	reset: function() {
+	},
+
 	/**
 	 * Create the default buttons for this view.
 	 */

@@ -159,6 +159,7 @@ var Place = Element.extend( {
 	},
 
 	applyPosition: function( position ) {
+		console.log("applyPosition: "+position.center+" "+position.zoom);
 		if ( position.zoom !== null ) {
 			this.changeZoom( position.zoom );
 		}

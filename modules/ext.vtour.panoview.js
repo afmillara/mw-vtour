@@ -40,7 +40,7 @@ var PanoView = GraphicView.extend( {
  	 * @var {Array} orientation
  	 */
 	orientation: [0, 0],
-	zoom: 0,
+	zoom: 200,
 
 	/**
 	 * Canvas that contains the panoramic image.
@@ -105,6 +105,11 @@ var PanoView = GraphicView.extend( {
 	 */
 	changeExternalZoom: function( zoom ) {
 		this.changeZoom( zoom * this.baseZoom, true );
+	},
+
+	reset: function() {
+		this.changeZoom( this.baseZoom );
+		this.move( [0, 0], true );
 	},
 
 	update: function() {

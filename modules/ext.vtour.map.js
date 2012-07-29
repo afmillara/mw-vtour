@@ -100,6 +100,7 @@ var Map = Element.extend( {
 			} );
 		}
 		parent.css( 'position', 'relative' ).append( this.html[0], this.html[1] );
+		this.view.reset();
 	},
 
 	/**

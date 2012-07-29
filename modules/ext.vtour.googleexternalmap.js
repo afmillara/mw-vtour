@@ -111,8 +111,14 @@ var GoogleExternalMap = ExternalMap.extend( {
 		marker.setMap( null );
 	},
 
-	move: function( delta ) {
+	moveBy: function( delta ) {
 		this.map.panBy( delta[0], delta[1] );
+	},
+
+	moveTo: function( location ) {
+		var gmaps = GoogleExternalMap.gmaps;
+		var latLng = new gmaps.LatLng( location[1], location[0] );
+		this.map.panTo( latLng );
 	},
 
 	zoom: function( newZoom ) {
@@ -120,8 +126,8 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 		// Zooming behaves weirdly in some browsers when no move is made
 		// immediately afterwards. Is it our fault somehow?
-		this.move( [0.01, 0] );
-		this.move( [-0.01, 0] );
+		this.moveBy( [0.01, 0] );
+		this.moveBy( [-0.01, 0] );
 	},
 
 	updateBounds: function() {
