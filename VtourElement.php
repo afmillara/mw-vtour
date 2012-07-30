@@ -225,7 +225,7 @@ abstract class VtourElement {
 			} else {
 				$attrValue = VtourUtils::$parseFunction( $strValue );
 			}
-			if ( $attrValue === null ) {
+			if ( $attrValue === null && $this->getParseStrict() ) {
 				$errorDescription = self::$parseFunctionDescriptions[$parseFunction];
 				$typeMessage = wfMessage( $errorDescription );
 				$this->throwBadFormat( 'vtour-errordesc-invalid', $attrName,
