@@ -77,7 +77,10 @@ var MapImageView = GraphicView.extend( {
 	init: function( $image, location ) {
 		this._super();
 		this.$image = $image;
-		this.location = location;
+		this.location = [
+			translateGeographicCoordinates( location[0] ),
+			translateGeographicCoordinates( location[1] )
+		];
 	},
 
 	/**
@@ -115,7 +118,7 @@ var MapImageView = GraphicView.extend( {
 	move: function( delta, isAbsolute ) {
 		this.mapMoved = true;
 		if ( isAbsolute ) {
-			this.externalMap.moveTo( delta );
+			this.externalMap.moveTo( translateGeographicCoordinates( delta ) );
 		}  else {
 			this.externalMap.moveBy( [-delta[0], -delta[1]] );
 		}

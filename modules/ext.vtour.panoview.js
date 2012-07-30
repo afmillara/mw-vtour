@@ -223,6 +223,9 @@ var PanoView = GraphicView.extend( {
 		var orientation = this.orientation;
 		var relativeMovement, absoluteMovement;
 		var MAX_FOV = this.MAX_FOV;
+		if ( isAbsolute ) {
+			movement = translateGeographicCoordinates( movement );
+		}
 		for (var i = 0; i < 2; i++ ) {
 			if ( isAbsolute ) {
 				absoluteMovement = movement[i];
@@ -340,42 +343,55 @@ var PanoView = GraphicView.extend( {
 		var sin = Math.sin;
 		var cos = Math.cos;
 
-		var baseLon = this.orientation[0];
-		var baseLat = this.orientation[1];
+		var baseLon, baseLat;
+		var lon, lat;
+		var xPx, xPy, yPy, zPx, zPy;
+		var dX, dY;
 
-		var lon = delta[0]*DEG2RAD;
-		var lat = delta[1]*DEG2RAD;
+		var basePos, linkPos;
+		var slProp, lProp;
+		var linkPoint;
+		var diff;
+		var index;
+	
+		delta = translateGeographicCoordinates( delta );
+	
+		baseLon = this.orientation[0];
+		baseLat = this.orientation[1];
 
-		var xPx = sin( baseLon );
-		var xPy = sin( baseLat ) * cos( baseLon );
-		var yPy = cos( baseLat );
-		var zPx = cos( baseLon );
-		var zPy = -sin( baseLat ) * sin( baseLon );
+		lon = delta[0]*DEG2RAD;
+		lat = delta[1]*DEG2RAD;
 
-		var dX = this.canvas.width / 2;
-		var dY = this.canvas.height / 2;
+		xPx = sin( baseLon );
+		xPy = sin( baseLat ) * cos( baseLon );
+		yPy = cos( baseLat );
+		zPx = cos( baseLon );
+		zPy = -sin( baseLat ) * sin( baseLon );
 
-		var basePos = [
+		dX = this.canvas.width / 2;
+		dY = this.canvas.height / 2;
+
+		basePos = [
 			-this.zoom * cos( baseLat ) * cos( baseLon ),
 			this.zoom * sin( baseLat ),
 			this.zoom * cos( baseLat ) * sin( baseLon )
 		];
 
-		var linkPos = [
+		linkPos = [
 			-cos( lat ) * cos( lon ),
 			sin( lat ),
 			cos( lat ) * sin( lon )
 		];
 
 		//Intersection
-		var slProp = dotProduct( basePos, basePos ) / dotProduct( basePos, linkPos );
-		var lProp = Math.abs( slProp );
+		slProp = dotProduct( basePos, basePos ) / dotProduct( basePos, linkPos );
+		lProp = Math.abs( slProp );
 
-		var linkPoint = [linkPos[0] * lProp, linkPos[1] * lProp, linkPos[2] * lProp];
+		linkPoint = [linkPos[0] * lProp, linkPos[1] * lProp, linkPos[2] * lProp];
 
-		var diff = [];
-		for ( var i = 0; i < basePos.length; i++ ) {
-			diff.push( linkPoint[i] - basePos[i] );
+		diff = [];
+		for ( index = 0; index < basePos.length; index++ ) {
+			diff.push( linkPoint[index] - basePos[index] );
 		}
 
 		if ( baseLat === PI/2 ){ // yPy ~= 0
@@ -421,7 +437,7 @@ var FallbackPanoView = ImageView.extend( {
 		var height = this.$image.height();
 		var ratio = width / height / 2;
 		if (ratio > 1){
-			FOV[1] /= ratio - 0.1;
+			FOV[1] /= ratio;
 		} else if ( ratio < 1 ) {
 			FOV[0] *= ratio;
 		}
@@ -433,18 +449,19 @@ var FallbackPanoView = ImageView.extend( {
 		var width = this.$image.width();
 		var height = this.$image.height();
 		contentPoint = sum( contentPoint, [-width / 2, -height / 2] );
-		return [
+		return translateGeographicCoordinates( [
 			contentPoint[0] / width * FOV[0] / DEG2RAD,
 			contentPoint[1] / height * FOV[1] / DEG2RAD
-		];
-		
+		] );
 	},
 
 	updateSinglePoint: function( delta ) {
 		var width = this.$image.width();
 		var height = this.$image.height();
 		var FOV = this.getFOV();
-		var distanceToCenter = [
+		var distanceToCenter;
+		delta = translateGeographicCoordinates( delta );
+		distanceToCenter = [
 			normalizeAngle( delta[0] * DEG2RAD + FOV[0] / 2 ),
 			normalizeAngle( delta[1] * DEG2RAD + FOV[1] / 2 )
 		];

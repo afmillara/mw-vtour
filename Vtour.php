@@ -46,6 +46,8 @@ $wgVtourParseStrict = true;
  */
 $wgVtourAllowLinkAlias = true;
 
+$wgVtourStandardLatLngOrder = true;
+
 /**
  * Default dimensions of the tour div: first width, then height. The expected
  * format is that of the HTML length datatype (N, Npx or N%). These global
@@ -134,6 +136,7 @@ $wgHooks['ParserClearState'][] = 'VtourHooks::addLinkStyle';
 $wgHooks['LinkBegin'][] = 'VtourHooks::handleLink';
 $wgHooks['getUserPermissionsErrors'][] = 'VtourHooks::disableLinkAliasPages';
 $wgHooks['InitializeArticleMaybeRedirect'][] = 'VtourHooks::redirectAliasToSpecial';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourHooks::exportConfigVars';
 
 $wgHooks['UnitTestsList'][] = 'VtourHooks::registerPHPTests';
 $wgHooks['ResourceLoaderTestModules'][] = 'VtourHooks::registerJSTests';

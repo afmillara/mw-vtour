@@ -290,6 +290,21 @@ var calculateMeanPoint = function( points ) {
 }
 
 /**
+ * Translate a pair of geographical coordinates to the [lon, lat] format used
+ * internally, reversing the order if needed.
+ * @param {Array} coordinates Pair of coordinates in the order used externally,
+ * [lat, lon] by default
+ * @return Array Array of coordinates in the internal format
+ */
+var translateGeographicCoordinates = function( coordinates ) {
+	coordinates = [coordinates[0], coordinates[1]];
+	if ( mw.config.get( 'wgVtourStandardLatLngOrder' ) ) {
+		coordinates.reverse();
+	}
+	return coordinates;
+}
+
+/**
  * Find whether the browser supports the HTML5 Canvas element.
  * @return Boolean true if the browser supports the Canvas element,
  * false otherwise

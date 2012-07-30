@@ -41,6 +41,17 @@ class VtourHooks {
 	}
 
 	/**
+	 * Make certain configuration variables visible from the client side.
+	 * @param array &$vars Associative array: variable name => value
+	 * @return bool Return true in order to continue hook processing
+	 */
+	public static function exportConfigVars( &$vars ) {
+		global $wgVtourStandardLatLngOrder;
+		$vars['wgVtourStandardLatLngOrder'] = $wgVtourStandardLatLngOrder;
+		return true;
+	}
+
+	/**
 	 * If the page name starts with the prefix for Vtour links, redirect
 	 * to the special page that deals with them (InitializeArticlesMaybeRedirect hook).
 	 * @param Title $title Title object for the page
