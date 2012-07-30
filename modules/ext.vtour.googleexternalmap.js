@@ -91,7 +91,7 @@ var GoogleExternalMap = ExternalMap.extend( {
 
 	getZoomInterval: function() {
 		this.updateMaxZoom();
-		return [0, this.maxZoomHere];
+		return [1, this.maxZoomHere];
 	},
 
 	addMarker: function( title, location, callback ) {

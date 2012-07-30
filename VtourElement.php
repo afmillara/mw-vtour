@@ -61,6 +61,7 @@ abstract class VtourElement {
 		'parseBool' => 'vtour-attributetype-bool',
 		'parseNumber' => 'vtour-attributetype-integer',
 		'parseNatural' => 'vtour-attributetype-natural',
+		'parseHTMLLength' => 'vtour-attributetype-length',
 		'parseCoordinatePair' => 'vtour-attributetype-coordinatepair',
 		'parseTwoCoordinatePairs' => 'vtour-attributetype-twocoordinatepairs',
 		'parsePolygonCoordinates' => 'vtour-attributetype-polygoncoordinates'

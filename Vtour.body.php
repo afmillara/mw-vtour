@@ -233,6 +233,7 @@ class VtourPage {
 	 * @return string HTML output
 	 */
 	public function transformTag( $input, array $args, Parser $parser, PPFrame $frame ) {
+		global $wgVtourDefaultTourDimensions;
 		// if (!$frame->getTitle()->equals($parser->getTitle())){
 
 		$tour = new VtourParser( $input, $args, $parser, $frame );
@@ -260,6 +261,8 @@ class VtourPage {
 		}
 		$this->tours[$tourId] = $tourData;
 
+		list( $width, $height ) = $this->calculateDimensions( $tourData );
+
 		// As the output is going to be partially parsed, the JSON tour data must
 		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
 		// tags everywhere with hilarious results.
@@ -270,11 +273,13 @@ class VtourPage {
 			$tourElementString .=
 				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
 		}
+
+
 		return "<div id='vtour-tour-$tourId'>
 		<div id='vtour-error-$tourId'>
 			$warningHTML
 		</div>
-		<div class='vtour-frame' style='width: 800px; height: 500px;'>
+		<div class='vtour-frame' style='width: $width; height: $height;'>
 			<div style='display: block; float: left; width: 30%; height: 100%;'>
 				<div id='vtour-secondary-$tourId' style='height: 40%;'>
 				</div>
@@ -291,7 +296,23 @@ class VtourPage {
 					$tourJSON
 				</script>
 			</div>
-		</div></div>";
+		</div>
+		</div>";
+	}
+
+	protected function calculateDimensions( $tourData ) {
+		global $wgVtourDefaultTourDimensions;
+		if ( $tourData['width'] !== null ) {
+			$width = $tourData['width'];
+		} else {
+			$width = $wgVtourDefaultTourDimensions[0];
+		}
+		if ( $tourData['height'] !== null ) {
+			$height = $tourData['height'];
+		} else {
+			$height = $wgVtourDefaultTourDimensions[1];
+		}
+		return array( $width, $height );
 	}
 
 	/**

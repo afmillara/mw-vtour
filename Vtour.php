@@ -46,6 +46,8 @@ $wgVtourParseStrict = true;
  */
 $wgVtourAllowLinkAlias = true;
 
+$wgVtourDefaultTourDimensions = array( '800px', '500px' );
+
 // Setup.
 
 $wgVtourDir = dirname( __FILE__ ) . '/';

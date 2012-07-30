@@ -15,30 +15,29 @@ class VtourUtilsTest extends MediaWikiTestCase {
 	 * Parsing tags.
 	 */
 	public function testGetAllTags() {
-		$this->assertEquals( VtourUtils::getAllTags( '' ), array(),
+		$this->assertEquals( array(), VtourUtils::getAllTags( '' ),
 			'Empty string => empty tag array' );
-		$this->assertEquals( VtourUtils::getAllTags( '<!-- Comment -->' ), array(),
+		$this->assertEquals( array(), VtourUtils::getAllTags( '<!-- Comment -->' ),
 			'Comments are ignored' );
 		$this->assertEquals(
-			VtourUtils::getAllTags( '<aaa a="1&amp;" b=2 c=\' 3 \'> &amp;Content</aaa>' ),
 			array( array(
 				'name' => 'aaa',
 				'attributes' => array( 'a' => '1&', 'b' => '2', 'c' => '3' ),
 				'content' => '&Content'
 			) ),
+			VtourUtils::getAllTags( '<aaa a="1&amp;" b=2 c=\' 3 \'> &amp;Content</aaa>' ),
 			'Complete elements are parsed correctly'
 		);
 		$this->assertEquals(
-			VtourUtils::getAllTags( '<aaa e="&gt;"/>' ),
 			array( array(
 				'name' => 'aaa',
 				'attributes' => array( 'e' => '>' ),
 				'content' => ''
 			) ),
+			VtourUtils::getAllTags( '<aaa e="&gt;"/>' ),
 			'Combined open and close tags count as elements'
 		);
 		$this->assertEquals(
-			VtourUtils::getAllTags( '<a/><!-- Comment <faketag/> --><b/>' ),
 			array(
 				array(
 					'name' => 'a',
@@ -51,16 +50,18 @@ class VtourUtilsTest extends MediaWikiTestCase {
 					'content' => ''
 				)
 			),
+			VtourUtils::getAllTags( '<a/><!-- Comment <faketag/> --><b/>' ),
 			'Comments between elements are ignored, and so are elements inside comments'
 		);
-		$this->assertEquals( VtourUtils::getAllTags( 'b<a/>', true ), null,
+		$this->assertEquals( null, VtourUtils::getAllTags( 'b<a/>', true ),
 			'With parseStrict enabled, garbage is not allowed in the input text' );
-		$this->assertEquals( VtourUtils::getAllTags( 'b<a/>', false ),
+		$this->assertEquals(
 			array( array(
 				'name' => 'a',
 				'attributes' => array(),
 				'content' => ''
 			) ),
+			VtourUtils::getAllTags( 'b<a/>', false ),
 			'With parseStrict disabled, garbage in the input text is ignored'
 		);
 	}
@@ -78,55 +79,80 @@ class VtourUtilsTest extends MediaWikiTestCase {
 			'ambiguous' => null
 		);
 
-		$this->assertEquals( VtourUtils::parseTextLinkParams( '' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( '' ),
 			'All link parts are null for empty links' );
-		$this->assertEquals( VtourUtils::parseTextLinkParams( '/:' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( '/:' ),
 			'All link parts are null if they were left empty' );
 		
 		$params['article'] = 'Article';
-		$this->assertEquals( VtourUtils::parseTextLinkParams( 'Article/' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( 'Article/' ),
 			'The article name is extracted when the tour and place identifiers are left empty' );
 
 		$params['article'] = null;
 		$params['tour'] = 'Tour';
-		$this->assertEquals( VtourUtils::parseTextLinkParams( 'Tour:' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( 'Tour:' ),
 			'The tour name is extracted when the article and place identifiers are left empty' );
 	
 			
 		$params['ambiguous'] = true;
-		$this->assertEquals( VtourUtils::parseTextLinkParams( 'Tour' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( 'Tour' ),
 			'The link is "ambiguous" if the place was is not set at all' );
 	
 		$params['article'] = null;
 		$params['tour'] = null;
 		$params['place'] = 'Place';
 		$params['ambiguous'] = null;
-		$this->assertEquals( VtourUtils::parseTextLinkParams( ':Place' ), $params,
+		$this->assertEquals( $params, VtourUtils::parseTextLinkParams( ':Place' ),
 			'The place id is extracted when the article and tour identifiers are left empty' );
 		
 		$params['tour'] = 'Tour';
 		$this->assertEquals(
-			VtourUtils::parseTextLinkParams( 'Tour:Place' ), $params,
+			$params, VtourUtils::parseTextLinkParams( 'Tour:Place' ),
 			'The tour and place identifiers are extracted when the article name is left empty'
 		);
 
 		$params['article'] = 'A:B/C';
 		$params['place'] = 'Pla::ce';
 		$this->assertEquals(
-			VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce' ), $params,
+			$params, VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce' ),
 			'Only the last "/" and the first ":" are separators'
 		);
 
 		$this->assertEquals(
-			VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce?aaa:314!' ), $params,
+			$params, VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce?aaa:314!' ),
 			'Garbage values for zoom and center are ignored'
 		);
 
 		$params['zoom'] = 314;
 		$params['center'] = array( 1337, 616 );
 		$this->assertEquals(
-			VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce?1337 616:314' ), $params,
+			$params, VtourUtils::parseTextLinkParams( 'A:B/C/Tour:Pla::ce?1337 616:314' ),
 			'Center and zoom are parsed correctly' );
+	}
+
+	/**
+	 * Parsing values of several types.
+	 */
+	public function testParseFunctions() {
+		$this->assertEquals(
+			'1px', VtourUtils::parseHTMLLength( '1.0' ),
+			'Numbers are considered lengths in pixels' );
+		$this->assertEquals(
+			'1px', VtourUtils::parseHTMLLength( '1.0px' ),
+			'The px syntax is supported' );
+		$this->assertEquals(
+			'1%', VtourUtils::parseHTMLLength( '1.0%' ),
+			'Percentages are supported' );
+		$this->assertEquals(
+			null, VtourUtils::parseHTMLLength( '1a0px' ),
+			'Garbage values are invalid' );
+		$this->assertEquals(
+			null, VtourUtils::parseHTMLLength( '10aaa' ),
+			'Other suffixes are invalid' );
+		$this->assertEquals(
+			'10px', VtourUtils::parseHTMLLength( ' 10  px  ' ),
+			'Spaces are ignored' );
+		// TODO: Continue.
 	}
 }
 

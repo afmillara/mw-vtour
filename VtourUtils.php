@@ -338,6 +338,47 @@ class VtourUtils {
 	}
 
 	/**
+	 * Validate and parse a nonnegative number.
+	 * @param string $strNumber String to validate
+	 * @return float|null The parsed number, if valid; null otherwise
+	 */
+	public static function parseNonNegative( $strNumber ) {
+		$number = self::parseNumber( $strNumber );
+		if ( $number !== null && $number >= 0 ) {
+			return $number;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Validate and sanitize a length string (nn|nnpx|nn%, where nn is a
+	 * positive number or 0).
+	 * @param string $strLength String to validate
+	 * @return string|null The sanitized string, if valid; null otherwise
+	 */
+	public static function parseHTMLLength( $strLength ) {
+		$strLength = trim( $strLength );
+		$pxPrefix = self::getPrefix( $strLength, 'px' );
+		if ( $pxPrefix === null ) {
+			$pxPrefix = $strLength;
+		}
+		$number = self::parseNonNegative( trim( $pxPrefix ) );
+		if ( $number !== null ) {
+			return $number . 'px';
+		} else {
+			$perPrefix = self::getPrefix( $strLength, '%' );
+			if ( $perPrefix !== null ) {
+				$number = self::parseNonNegative( trim( $perPrefix ) );
+				if ( $number !== null ) {
+					return $number . '%';
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * @return string|null $decimalSeparator String that will be used to separate
 	 * the whole part from the fractional part in numbers. Regardless of this value,
 	 * '.' is always considered a valid decimal separator
@@ -345,6 +386,25 @@ class VtourUtils {
 	public static function getDecimalSeparator() {
 		$decimalSeparatorMessage = wfMessage( 'vtour-decimalseparator' );
 		return $decimalSeparatorMessage->inContentLanguage()->text();
+	}
+	
+	/**
+	 * If a string ends with a given suffix, return the rest of string.
+	 * @param string $word String from which the prefix will be extracted
+	 * @param string $suffix Suffix to search for
+	 * @return string|null Prefix, if the string ends with the suffix;
+	 * otherwise, null
+	 */
+	public static function getPrefix( $word, $suffix ) {
+		$limit = -strlen( $suffix );
+		if ( $limit === 0 ) {
+			return $word;
+		}
+		if ( substr( $word, -strlen( $suffix ) ) === $suffix ) {
+			return substr( $word, 0, $limit );
+		} else {
+			return null;
+		}
 	}
 }
 
