@@ -46,6 +46,12 @@ $wgVtourParseStrict = true;
  */
 $wgVtourAllowLinkAlias = true;
 
+/**
+ * true if the order of geographic coordinates, in both Vtour elements and links,
+ * is latitude followed by longitude (the International Maritime Organization
+ * standard); false if the order is longitude followed by latitude.
+ * @var bool $wgVtourStandardLatLngOrder
+ */
 $wgVtourStandardLatLngOrder = true;
 
 /**
