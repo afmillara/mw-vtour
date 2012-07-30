@@ -47,6 +47,13 @@ $wgVtourParseStrict = true;
 $wgVtourAllowLinkAlias = true;
 
 /**
+ * true if the content of the message 'vtour-decimalseparator' should be considered
+ * an alternative decimal separator; false if only dots may be used as separators. 
+ * @var bool $wgVtourAllowNonStandardDecimalSeparator
+ */
+$wgVtourAllowNonStandardDecimalSeparator = true;
+
+/**
  * true if the order of geographic coordinates, in both Vtour elements and links,
  * is latitude followed by longitude (the International Maritime Organization
  * standard); false if the order is longitude followed by latitude.

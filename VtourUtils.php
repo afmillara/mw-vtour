@@ -384,8 +384,13 @@ class VtourUtils {
 	 * '.' is always considered a valid decimal separator
 	 */	
 	public static function getDecimalSeparator() {
-		$decimalSeparatorMessage = wfMessage( 'vtour-decimalseparator' );
-		return $decimalSeparatorMessage->inContentLanguage()->text();
+		global $wgVtourAllowNonStandardDecimalSeparator;
+		if ( $wgVtourAllowNonStandardDecimalSeparator ) {
+			$decimalSeparatorMessage = wfMessage( 'vtour-decimalseparator' );
+			return $decimalSeparatorMessage->inContentLanguage()->text();
+		} else {
+			return '.';
+		}
 	}
 	
 	/**
