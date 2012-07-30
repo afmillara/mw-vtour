@@ -99,7 +99,7 @@ var Map = Element.extend( {
 				that.view.addLink( place.getMapLink() );
 			} );
 		}
-		parent.css( 'position', 'relative' ).append( this.html[0], this.html[1] );
+		parent.append( this.html[0], this.html[1] );
 		this.view.reset();
 	},
 

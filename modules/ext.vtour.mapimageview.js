@@ -86,14 +86,10 @@ var MapImageView = GraphicView.extend( {
 	 */
 	generateBackground: function() {
 		var that = this;
-		var externalMapWrapper = $('<div></div>').css( {
-			'width': '100%',
-			'height': '100%'
-		} );
+		var externalMapWrapper = $('<div></div>').addClass( 'vtour-externalmap' );
 		var $imageBackground = this.$imageBackground =
 			this.$image.addClass( 'vtour-background' );
-		this.externalMap = new GoogleExternalMap( function() {
-			var externalMapHTML = that.externalMap.getHTML();
+		this.externalMap = new GoogleExternalMap( externalMapWrapper, function() {
 			if ( that.externalMap.canAddHTML ) {
 				that.externalMap.addElement( $imageBackground );
 			}
@@ -104,8 +100,6 @@ var MapImageView = GraphicView.extend( {
 				that.zoom = zoom;
 				that.updateZoom();
 			} );
-
-			externalMapWrapper.append( externalMapHTML );
 		} );
 
 		externalMapWrapper.addClass( 'vtour-movable' );

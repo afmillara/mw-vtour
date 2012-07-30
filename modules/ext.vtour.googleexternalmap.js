@@ -32,8 +32,9 @@ var GoogleExternalMap = ExternalMap.extend( {
 	 */
 	maxZoomHere: 22,
 
-	init: function( callback ) {
+	init: function( $mapContainer, callback ) {
 		var that = this;
+		this.$mapContainer = $mapContainer;
 		GoogleExternalMap.loadGoogleMaps( function() {
 			that.prepareContainer();
 			callback();
@@ -83,10 +84,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		var latLng = this.dummyOverlay.getProjection()
 			.fromContainerPixelToLatLng( point );
 		return [latLng.lng(), latLng.lat()];
-	},
-
-	getHTML: function() {
-		return this.$mapContainer;
 	},
 
 	getZoomInterval: function() {
@@ -178,10 +175,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 			scrollwheel: false,
 			disableDoubleClickZoom: true
 		};
-		this.$mapContainer = $( '<div></div' ).css( {
-			'width': '100%',
-			'height': '100%'
-		} );
 		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
 		this.map = new gmaps.Map( this.$mapContainer[0], options );
 		this.dummyOverlay.setMap( this.map );

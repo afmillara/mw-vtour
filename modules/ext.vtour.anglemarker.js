@@ -239,10 +239,13 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 			$( document ).mousemove( function( event ) {
 				that.mouseMove( event.pageX, event.pageY );
 			} );
-			$( polygon ).on( 'polygonHoverChanged.vtour', function( event, hover ) {
-				$polygonCanvas.css( 'cursor', hover ? 'move' : '' );
-			} );
 		}
+
+		$( polygon ).on( 'polygonHoverChanged.vtour', function( event, hover ) {
+			var className = that.variableAngle ?
+				'vtour-anglemarker-movable' : 'vtour-anglemarker-fixed';
+			$polygonCanvas.toggleClass( className, hover );
+		} );
 		
 		$polygonCanvas.addClass( 'vtour-canvasanglemarker' );
 		return $polygonCanvas;
@@ -293,8 +296,12 @@ var ImageAngleMarker = BaseAngleMarker.extend( {
 
 	generate: function() {
 		var that = this;
-		var $angleIcon = $( '<div></div>' ).addClass( 'vtour-angleicon' )
-			.css( 'cursor', this.variableAngle ? 'move' : 'default' );
+		var $angleIcon = $( '<div></div>' ).addClass( 'vtour-angleicon' );
+		if ( this.variableAngle ) {
+			$angleIcon.addClass( 'vtour-anglemarker-movable' );
+		} else {
+			$angleIcon.addClass( 'vtour-anglemarker-fixed' );
+		}
 		$angleIcon.mousedown( function( e ) {
 			that.mouseDown( e.pageX, e.pageY );
 			e.stopPropagation();

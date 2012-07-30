@@ -60,7 +60,7 @@ var ImagePlace = Place.extend( {
 				view.addLink( link );
 			} );
 		}
-		parent.css( 'position', 'relative' ).append( this.$html[0], this.$html[1] );
+		parent.append( this.$html[0], this.$html[1] );
 		this.view.reset();
 		this.view.update();
 		this._super( parent );

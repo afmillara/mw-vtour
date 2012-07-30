@@ -119,7 +119,7 @@ var Place = Element.extend( {
 	getInfo: function() {
 		var $descriptionNode;
 		if ( this.$infoNode === null ) {
-			this.$infoNode = $( '<div></div>' ).append(
+			this.$infoNode = $( '<div></div>' ).addClass( 'vtour-infonode' ).append(
 				$( '<strong></strong>' ).text( this.elementName
 					+ ( ( this.map !== null ) ?
 						' (' + this.map.elementName + ')' : '' ) ) );
@@ -127,10 +127,7 @@ var Place = Element.extend( {
 				this.description.addTo( this.$infoNode );
 			}
 		}
-		return this.$infoNode.css( {
-			'width': '100%',
-			'height': '100%'
-		} );
+		return this.$infoNode;
 	},
 
 	setInitialPosition: function( position ) {
@@ -159,7 +156,6 @@ var Place = Element.extend( {
 	},
 
 	applyPosition: function( position ) {
-		console.log("applyPosition: "+position.center+" "+position.zoom);
 		if ( position.zoom !== null ) {
 			this.changeZoom( position.zoom );
 		}

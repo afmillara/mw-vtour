@@ -13,10 +13,12 @@ var ExternalMap = Class.extend( {
 
 	/**
 	 * Create a new ExternalMap.
+	 * @param {$HTML} $mapContainer jQuery element wrapping a DOM node that will
+	 * contain the map
 	 * @param {function()} callback Function to call when the ExternalMap can be used.
 	 * Asynchronous loading might be needed
 	 */
-	init: function( callback ) {
+	init: function( $mapContainer, callback ) {
 		throw new Error( 'Not implemented: init' );
 	},
 
@@ -46,14 +48,6 @@ var ExternalMap = Class.extend( {
 	 */
 	pixelToGeo: function( pixel ) {
 		throw new Error( 'Not implemented: pixelToGeo' );
-	},
-
-	/**
-	 * Return the map HTML element.
-	 * @return $HTML jQuery element wrapping the HTML nodes that form the map
-	 */
-	getHTML: function() {
-		throw new Error( 'Not implemented: getHTML' );
 	},
 
 	/**

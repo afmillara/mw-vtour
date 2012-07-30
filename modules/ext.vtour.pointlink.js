@@ -22,7 +22,7 @@ var PointLink = Link.extend( {
 	 * @return $HTML icon HTML node for the icon
 	 */
 	getIconNode: function() {
-		return $('<div></div>').addClass(this.destination.getIconClass());
+		return $( '<div></div>' ).addClass( this.destination.getIconClass() );
 	},
 
 	/**
@@ -32,7 +32,7 @@ var PointLink = Link.extend( {
 	generate: function() {
 		var that = this;
 		var $nodeIcon = this.getIconNode();
-		$nodeIcon.css('cursor', 'pointer');
+		$nodeIcon.addClass( 'vtour-pointlink' );
 		$nodeIcon.click( function() {
 			that.follow();
 		} );

@@ -280,15 +280,15 @@ class VtourPage {
 			$warningHTML
 		</div>
 		<div class='vtour-frame' style='width: $width; height: $height;'>
-			<div style='display: block; float: left; width: 30%; height: 100%;'>
-				<div id='vtour-secondary-$tourId' style='height: 40%;'>
+			<div class='vtour-descriptionmapcolumn'>
+				<div id='vtour-secondary-$tourId' class='vtour-description'>
 				</div>
-				<div id='vtour-map-$tourId' style='overflow: hidden; height: 60%;'>
+				<div id='vtour-map-$tourId' class='vtour-map'>
 				</div>
 			</div>
-			<div id='vtour-main-$tourId' style='height: 100%; width: 70%; float: right;'>
+			<div id='vtour-main-$tourId' class='vtour-main'>
 			</div>
-			<div id='vtour-html-$tourId' style='display:none;'>
+			<div id='vtour-html-$tourId' style='display: none;'>
 				$tourElementString
 			</div>
 			<div>
