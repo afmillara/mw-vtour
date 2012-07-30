@@ -53,6 +53,9 @@ $messages['en'] = array(
 	'vtour-parseerror-idandelement' => '"$1" ($2)',
 	'vtour-parseerror-idnoelement' => '"$1"',
 	'vtour-parseerror-noid' => 'an unnamed tour',
+
+	'vtour-warning' => 'Vtour warning: $1',
+
 	'vtour-errordesc-badcontent' => 'The text "$1" was not expected in the content of the element.',
 	'vtour-errordesc-badstart' => 'The starting place for the map, "$1", is not contained in it.',
 	'vtour-errordesc-notset' => 'Mandatory attribute "$1" was not defined.',
@@ -64,8 +67,6 @@ $messages['en'] = array(
 	'vtour-errordesc-unneededid' => 'A map is referenced explicitly despite the place being implicitly contained in "$1".',
 	'vtour-errordesc-duplicate' => '{{ucfirst:$1}} identifier "$2" is used more than once.',
 	'vtour-errordesc-refnotfound' => 'Referenced $1 "$2" was not found.',
-
-	'vtour-runtimeerror' => 'Vtour runtime error: $1',
 	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.'
 );
 

@@ -23,8 +23,7 @@
 			
 			$htmlElements = $vtourNode.find( '#vtour-html-' + tourId ).children();
 			
-			$error = $( '<div id=eeee></div>' ); // TODO: Remove id.
-			$vtourNode.before( $error );
+			$error = $vtourNode.find( '#vtour-error-' + tourId );
 
 			$vtourLinks = $content.find( 'a.vtour-textlink-local' );
 			$vtourLinks.filter( function() {

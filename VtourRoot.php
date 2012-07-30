@@ -24,7 +24,7 @@ class VtourRoot extends VtourElement {
 	protected $maps = array();
 
 	protected $attributesTemplate = array(
-		'id' => array( 'parseId', true ),
+		'id' => 'parseId',
 		'start' => array( null, true )
 	);
 

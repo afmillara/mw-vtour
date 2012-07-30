@@ -95,7 +95,7 @@ $wgResourceModules['ext.vtour'] = array(
 	'messages' => array(
 		'vtour-erroroutside',
 		'vtour-errorinside',
-		'vtour-runtimeerror',
+		'vtour-warning',
 		'vtour-errordesc-filenotfound',
 		'vtour-thismap'
 	),

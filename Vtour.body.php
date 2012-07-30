@@ -12,6 +12,12 @@
 class VtourHooks {
 
 	/**
+	 * Vtour page instance for the page that is currently being parsed.
+	 * @var VtourPage $vtourPage
+	 */
+	protected static $vtourPage;
+
+	/**
 	 * Add the tag extension when the parser is initialized
 	 * (ParserFirstCallInit hook).
 	 * @param Parser $parser Parser object
@@ -19,6 +25,7 @@ class VtourHooks {
 	 */
 	public static function setupParserHook( Parser $parser ) {
 		$parser->setHook( 'vtour', 'VtourHooks::handleTag' );
+		self::$vtourPage = new VtourPage();
 		return true;
 	}
 
@@ -83,7 +90,8 @@ class VtourHooks {
 	}
 
 	/**
-	 * Transform Vtour tags to JSON data and inject it in the page (tag extension).
+	 * Transform Vtour tags to HTML and inject the output in the page
+	 * (tag extension).
 	 * @param string $input Content of the vtour tag
 	 * @param array $args Arguments for Vtour
 	 * @param Parser $parser Parser object
@@ -91,54 +99,7 @@ class VtourHooks {
 	 * @return string Output of the tag extension
 	 */
 	public static function handleTag( $input, array $args, Parser $parser, PPFrame $frame ) {
-		// if (!$frame->getTitle()->equals($parser->getTitle())){
-
-		$tour = new VtourParser( $input, $args, $parser, $frame );
-		try {
-			$tour->parse();
-		} catch ( VtourParseException $e ) {
-			$error = htmlspecialchars( $e->getMessage() );
-			return wfMessage( 'vtour-erroroutside', $error )->inContentLanguage()->text();
-		}
-
-		// Changing the parser output like this might not be a good idea.
-		// Is there a better way?
-		$parser->getOutput()->addModules( 'ext.vtour' );
-
-		$tourData = $tour->getTourData();
-		$tourHTMLElements = $tour->getTourHTMLElements();
-		$tourId = $tourData['id'];
-
-		// As the output is going to be partially parsed, the JSON tour data must
-		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
-		// tags everywhere with hilarious results.
-		$tourJSON = FormatJson::encode( $tourData );
-
-		$tourElementString = '';
-		foreach ( $tourHTMLElements as $index => $element ) {
-			$tourElementString .=
-				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
-		}
-
-		return "<div id='vtour-tour-$tourId'>
-		<div class='vtour-frame' style='width: 800px; height: 500px;'>
-			<div style='display: block; float: left; width: 30%; height: 100%;'>
-				<div id='vtour-secondary-$tourId' style='height: 40%;'>
-				</div>
-				<div id='vtour-map-$tourId' style='overflow: hidden; height: 60%;'>
-				</div>
-			</div>
-			<div id='vtour-main-$tourId' style='height: 100%; width: 70%; float: right;'>
-			</div>
-			<div id='vtour-html-$tourId' style='display:none;'>
-				$tourElementString
-			</div>
-			<div>
-				<script id='vtour-json-$tourId' type='application/json'>
-					$tourJSON
-				</script>
-			</div>
-		</div></div>";
+		return self::$vtourPage->transformTag( $input, $args, $parser, $frame );
 	}
 
 	/**
@@ -249,3 +210,121 @@ class VtourHooks {
 		return true;
 	}
 }
+
+/**
+ * Vtour "page" for the page that is currently being parsed.
+ * Tours must have unique ids in an article, so ids are stored
+ * here.
+ */
+class VtourPage {
+
+	/**
+	 * Associative array of tours (id -> tour).
+	 * @var array ids
+	 */
+	protected $tours = array();
+
+	/**
+	 * Transform a Vtour tag to HTML and JSON data.
+	 * @param string $input Content of the Vtour tag
+	 * @param array $args Arguments for Vtour
+	 * @param Parser $parser Parser object
+	 * @param PPFrame $frame Frame
+	 * @return string HTML output
+	 */
+	public function transformTag( $input, array $args, Parser $parser, PPFrame $frame ) {
+		// if (!$frame->getTitle()->equals($parser->getTitle())){
+
+		$tour = new VtourParser( $input, $args, $parser, $frame );
+		try {
+			$tour->parse();
+		} catch ( VtourParseException $e ) {
+			$error = htmlspecialchars( $e->getMessage() );
+			return $this->generateErrorString( $error );
+		}
+
+		// Changing the parser output like this might not be a good idea.
+		// Is there a better way?
+		$parser->getOutput()->addModules( 'ext.vtour' );
+
+		$tourData = $tour->getTourData();
+		$tourHTMLElements = $tour->getTourHTMLElements();
+		$tourId =& $tourData['id'];
+
+		$warningHTML = '';
+		if ( $tourId === null ) {
+			$tourId = $this->generateUniqueId();
+		} elseif ( isset( $this->tours[$tourId] ) ) {
+			$warningHTML .= $this->warnDuplicateTourId( $tourId );
+			$tourId = $this->generateUniqueId();
+		}
+		$this->tours[$tourId] = $tourData;
+
+		// As the output is going to be partially parsed, the JSON tour data must
+		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
+		// tags everywhere with hilarious results.
+		$tourJSON = FormatJson::encode( $tourData );
+	
+		$tourElementString = '';
+		foreach ( $tourHTMLElements as $index => $element ) {
+			$tourElementString .=
+				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
+		}
+		return "<div id='vtour-tour-$tourId'>
+		<div id='vtour-error-$tourId'>
+			$warningHTML
+		</div>
+		<div class='vtour-frame' style='width: 800px; height: 500px;'>
+			<div style='display: block; float: left; width: 30%; height: 100%;'>
+				<div id='vtour-secondary-$tourId' style='height: 40%;'>
+				</div>
+				<div id='vtour-map-$tourId' style='overflow: hidden; height: 60%;'>
+				</div>
+			</div>
+			<div id='vtour-main-$tourId' style='height: 100%; width: 70%; float: right;'>
+			</div>
+			<div id='vtour-html-$tourId' style='display:none;'>
+				$tourElementString
+			</div>
+			<div>
+				<script id='vtour-json-$tourId' type='application/json'>
+					$tourJSON
+				</script>
+			</div>
+		</div></div>";
+	}
+
+	/**
+	 * Generate an id for a tour that doesn't have one.
+	 * @return string Unique tour id outside the set of valid user-specified
+	 * tour ids
+	 */ 
+	protected function generateUniqueId() {
+		$nTours = count( $this->tours );
+		return "_$nTours";
+	}
+
+	/**
+	 * Warn about a duplicate tour id.
+	 * @param string $tourId Duplicate tour id
+	 * @return string Warning HTML
+	 */
+	protected function warnDuplicateTourId( $tourId ) {
+		$type = wfMessage( 'vtour' )->inContentLanguage()->text();
+		$contentMessage = wfMessage( 'vtour-errordesc-duplicate', $type, $tourId );
+		$content = $contentMessage->inContentLanguage()->text();
+		$warningMessage = wfMessage( 'vtour-warning', $content );
+		$warning = $warningMessage->inContentLanguage()->text();
+		return $this->generateErrorString( $warning );
+	}
+
+	/**
+	 * Generate the error HTML.
+	 * @param string $error Error string
+	 * @return string Error HTML
+	 */
+	protected function generateErrorString( $error ) {
+		return wfMessage( 'vtour-erroroutside', $error )->inContentLanguage()->text();
+	}
+}
+
