@@ -36,16 +36,23 @@ $wgExtensionCredits['parserhook'][] = array(
 $wgVtourParseStrict = true;
 
 /**
- * true if the content of the message 'vtour-linkalias' should be used as an alias
- * for Special:Vtour/, so [[(content of vtour-linkalias)whatever]] redirects to
- * [[Special:Vtour/whatever]]; false to disable this feature.
- * If enabled, all actions other than 'read' (which will redirect to the special page)
- * on articles whose name starts with the content of 'vtour-linkalias' will be prevented
- * by this extension.
+ * true if the content of the message 'vtour-linkalias' should be used as an
+ * alias for Special:Vtour/, so [[(content of vtour-linkalias)whatever]]
+ * redirects to [[Special:Vtour/whatever]]; false to disable this feature.
+ * If enabled, all actions other than 'read' (which will redirect to the
+ * special page) on articles whose name starts with the content of
+ * 'vtour-linkalias' will be prevented by this extension.
  * @var bool $wgVtourAllowLinkAlias
  */
 $wgVtourAllowLinkAlias = true;
 
+/**
+ * Default dimensions of the tour div: first width, then height. The expected
+ * format is that of the HTML length datatype (N, Npx or N%). These global
+ * dimensions may be overriden by the "width" and "height" attributes in individual
+ * tours.
+ * @var array $wgVtourDefaultTourDimensions
+ */
 $wgVtourDefaultTourDimensions = array( '800px', '500px' );
 
 // Setup.
