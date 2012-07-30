@@ -254,8 +254,8 @@ var PanoView = GraphicView.extend( {
 	},
 
 	changeAngle: function( angle ) {
-		console.log(angle/DEG2RAD);
-		this.move( [angle, 0], true );	
+		var center = translateGeographicCoordinates( [angle, 0] );
+		this.move( center, true );	
 	},
 
 	/**

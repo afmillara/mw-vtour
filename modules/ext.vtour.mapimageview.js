@@ -70,9 +70,8 @@ var MapImageView = GraphicView.extend( {
 	 * Create a new MapImageView.
 	 * @constructor
 	 * @param {$Image} $image image that will be shown in this view
-	 * @param {Array} location Geographical coordinates ([[lat, lon]
-	 * lower left corner of the image, [lat, lon] upper right corner]) of the
-	 * map (optional)
+	 * @param {Array} location Geographical coordinates ([lower left corner
+	 * of the image, upper right corner]) of the map (optional)
 	 */
 	init: function( $image, location ) {
 		this._super();
