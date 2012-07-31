@@ -39,8 +39,9 @@ var Element = Class.extend( {
 	 * @return Boolean true if the image has been loaded, false otherwise
 	 */
 	checkImage: function( $image, $parent ) {
+		var message;
 		if ( $image.data( 'error' ) ) {
-			var message = mw.message( 'vtour-errordesc-filenotfound',
+			message = mw.message( 'vtour-errordesc-filenotfound',
 				imageNameFromPath( $image.attr( 'src' ) ) );
 			this.showError( message, $parent );
 			return false;
@@ -58,6 +59,7 @@ var Element = Class.extend( {
 	showError: function( message, $parent ) {
 		var $description = mw.message( 'vtour-errorinside', message.toString() ).toString(); 
 		var $errorHTML = $( $description );
+		$parent.children().detach();
 		$parent.append( $errorHTML );
 		center( $errorHTML, $parent );	
 		this.error = true;

@@ -138,15 +138,6 @@ abstract class VtourElement {
 	}
 
 	/**
-	 * Return whether to throw an exception if unexpected or invalid tags
-	 * or attributes are found; false if they are to be ignored.
-	 * @return bool true if in strict mode, false otherwise
-	 */
-	protected function getParseStrict() {
-		return $this->vtourParser->getParseStrict();
-	}
-
-	/**
 	 * Extract the tags from a given string (using VtourUtils::getAllTags),
 	 * and throw an appropriate exception if an error occurs.
 	 * @param string $text Raw text
@@ -154,7 +145,8 @@ abstract class VtourElement {
 	 */
 	protected function getAllTags( $text ) {
 		$badContent = null;
-		$result = VtourUtils::getAllTags( $text, $this->getParseStrict(), $badContent );
+		$parseStrict = $this->vtourParser->getParseStrict();
+		$result = VtourUtils::getAllTags( $text, $parseStrict, $badContent );
 		if ( $result === null ) {
 			$this->throwBadFormat( 'vtour-errordesc-badcontent', $badContent );
 		} else {
@@ -225,7 +217,7 @@ abstract class VtourElement {
 			} else {
 				$attrValue = VtourUtils::$parseFunction( $strValue );
 			}
-			if ( $attrValue === null && $this->getParseStrict() ) {
+			if ( $attrValue === null && $this->vtourParser->getParseStrict() ) {
 				$errorDescription = self::$parseFunctionDescriptions[$parseFunction];
 				$typeMessage = wfMessage( $errorDescription );
 				$this->throwBadFormat( 'vtour-errordesc-invalid', $attrName,
@@ -245,6 +237,11 @@ abstract class VtourElement {
 	 * or not), or null if the title is not valid
 	 */
 	protected function parseImageTitle( $title ) {
+		if ( $this->vtourParser->getAllowExternalLinks()
+				&& strpos( $title, '//' ) ){
+			// Link to an external image
+			return Sanitizer::cleanURL( $title );
+		}
 		$title = Title::newFromText( $title, NS_FILE );
 		$repoGroup = RepoGroup::singleton();
 
@@ -323,7 +320,7 @@ abstract class VtourElement {
 	 * @param string $tag Name of the tag
 	 */
 	protected function throwBadTagIfStrict( $tag ) {
-		if ( $this->getParseStrict() ) {
+		if ( $this->vtourParser->getParseStrict() ) {
 			$this->throwBadFormat( 'vtour-errordesc-badtag', $tag['name'] );
 		}
 	}
@@ -335,7 +332,7 @@ abstract class VtourElement {
 	 * @param array $validAttrs Associative array whose keys are expected attribute names
 	 */
 	protected function checkValidAttributes( $tagAttrs, $validAttrs ) {
-		if ( $this->getParseStrict() ) {
+		if ( $this->vtourParser->getParseStrict() ) {
 			foreach ( $tagAttrs as $key => $value ) {
 				if ( !array_key_exists( $key, $validAttrs ) ) {
 					$this->throwBadFormat( 'vtour-errordesc-badattrs',

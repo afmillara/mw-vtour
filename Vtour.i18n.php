@@ -68,6 +68,7 @@ $messages['en'] = array(
 	'vtour-errordesc-unneededid' => 'A map is referenced explicitly despite the place being implicitly contained in "$1".',
 	'vtour-errordesc-duplicate' => '{{ucfirst:$1}} identifier "$2" is used more than once.',
 	'vtour-errordesc-refnotfound' => 'Referenced $1 "$2" was not found.',
-	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.'
+	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.',
+	'vtour-errordesc-canvaserror' => 'An error occurred when trying to read data from the image $1. A likely reason for this is that the image belongs to a different domain, which causes security errors in most browsers. Using a local image might solve the issue.',
 );
 

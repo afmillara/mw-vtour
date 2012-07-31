@@ -254,8 +254,24 @@ var clone = function( object ) {
  * @return String Name of the image
  */
 var imageNameFromPath = function( path ) {
-	var lastSlash = path.lastIndexOf( '/' );
-	return decodeURIComponent( path.substr( lastSlash + 1 ) );
+	var lastSlash;
+	if ( isLocal( path ) ) {
+		lastSlash = path.lastIndexOf( '/' );
+		return decodeURIComponent( path.substr( lastSlash + 1 ) );
+	} else {
+		return path;
+	}
+}
+
+/**
+ * Check whether a url is local.
+ * @param {String} path Path to check
+ * @return Boolean Whether the url is local
+ */
+var isLocal = function( path ) {
+	var server = mw.config.get( 'wgServer' );
+	return path.indexOf( server ) === 0
+		|| path.indexOf( '//' ) === -1;
 }
 
 /**

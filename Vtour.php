@@ -54,6 +54,12 @@ $wgVtourAllowLinkAlias = true;
 $wgVtourAllowNonStandardDecimalSeparator = true;
 
 /**
+ * Whether links to external images are allowed in ImagePlaces and PanoPlaces.
+ * @var bool $wgVtourAllowExternalLinks
+ */
+$wgVtourAllowExternalLinks = false;
+
+/**
  * true if the order of geographic coordinates, in both Vtour elements and links,
  * is latitude followed by longitude (the International Maritime Organization
  * standard); false if the order is longitude followed by latitude.
@@ -121,6 +127,7 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-errorinside',
 		'vtour-warning',
 		'vtour-errordesc-filenotfound',
+		'vtour-errordesc-canvaserror',
 		'vtour-thismap'
 	),
 	'dependencies' => array( 'ext.vtour.lib' ),

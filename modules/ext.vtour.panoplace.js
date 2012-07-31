@@ -61,6 +61,7 @@ var CanvasPanoPlace = Place.extend( {
 
 	addTo: function( parent ) {
 		var that = this;
+		var message;
 		if ( this.view === null ) {
 			if ( !this.checkImage( this.$image, parent ) ) {
 				return;
@@ -84,7 +85,16 @@ var CanvasPanoPlace = Place.extend( {
 			} );
 		}
 		parent.append( this.$html[0], this.$html[1] );
-		this.view.update();
+
+		try {
+			this.view.update();
+		} catch ( error ) {
+			message = mw.message( 'vtour-errordesc-canvaserror',
+				that.$image.attr( 'src' ) );
+			this.showError( message, parent );
+			return;
+		}
+
 		this._super( parent );
 	}
 } );

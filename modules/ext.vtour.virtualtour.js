@@ -105,7 +105,7 @@ var VirtualTour = Class.extend( {
 	},
 
 	showError: function( message ) {
-		var errorContent = mw.message( 'vtour-runtimeerror', message.toString() ).toString();
+		var errorContent = mw.message( 'vtour-warning', message.toString() ).toString();
 		var errorHTML = mw.message( 'vtour-erroroutside', errorContent.toString() ).toString();
 		this.error.append( errorHTML );
 	},

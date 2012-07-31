@@ -62,18 +62,29 @@ class VtourParser {
 	 * @param array $args Associative array of attributes of the Vtour element
 	 * @param Parser $parser MediaWiki parser
 	 * @param PPFrame $frame Frame for template substitutions
+	 * @param bool $parseStrict Whether the Vtour markup parser should throw
+	 * an exception if unexpected or invalid tags or attributes are found;
+	 * false if they are to be ignored. The default value is $wgVtourParseStrict
+	 * @param bool $allowExternalLinks Whether links to external images are
+	 * allowed. The default value is $wgVtourAllowExternalLinks
 	 */
 	public function __construct( $content, array $args, Parser $parser, PPFrame $frame,
-			$parseStrict = null ) {
-		global $wgVtourParseStrict;
+			$parseStrict = null, $allowExternalLinks = null ) {
+		global $wgVtourParseStrict, $wgVtourAllowExternalLinks;
 		$this->parser = $parser;
 		$this->frame = $frame;
 		$this->content = $content;
 		$this->args = $args;
+
 		if ( $parseStrict === null ) {
 			$parseStrict = $wgVtourParseStrict;
 		}
 		$this->parseStrict = $parseStrict;
+
+		if ( $allowExternalLinks === null ) {
+			$allowExternalLinks = $wgVtourAllowExternalLinks;
+		}
+		$this->allowExternalLinks = $allowExternalLinks;
 	}
 
 	/**
@@ -84,6 +95,15 @@ class VtourParser {
 	 */
 	public function getParseStrict() {
 		return $this->parseStrict;
+	}
+
+	/**
+	 * Return whether links to external images are allowed in ImagePlaces
+	 * and PanoPlaces.
+	 * @return bool Whether external links are allowed
+	 */
+	public function getAllowExternalLinks() {
+		return $this->allowExternalLinks;
 	}
 
 	/**
