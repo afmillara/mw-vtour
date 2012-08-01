@@ -237,7 +237,7 @@ abstract class VtourElement {
 	 * or not), or null if the title is not valid
 	 */
 	protected function parseImageTitle( $title ) {
-		if ( $this->vtourParser->getAllowExternalLinks()
+		if ( $this->vtourParser->getAllowExternalImages()
 				&& strpos( $title, '//' ) ) {
 			// Link to an external image (external image names are
 			// URLs, so they have to contain the substring '//', and

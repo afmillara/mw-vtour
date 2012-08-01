@@ -65,12 +65,12 @@ class VtourParser {
 	 * @param bool $parseStrict Whether the Vtour markup parser should throw
 	 * an exception if unexpected or invalid tags or attributes are found;
 	 * false if they are to be ignored. The default value is $wgVtourParseStrict
-	 * @param bool $allowExternalLinks Whether links to external images are
-	 * allowed. The default value is $wgVtourAllowExternalLinks
+	 * @param bool $allowExternalImages Whether links to external images are
+	 * allowed. The default value is $wgVtourAllowExternalImages
 	 */
 	public function __construct( $content, array $args, Parser $parser, PPFrame $frame,
-			$parseStrict = null, $allowExternalLinks = null ) {
-		global $wgVtourParseStrict, $wgVtourAllowExternalLinks;
+			$parseStrict = null, $allowExternalImages = null ) {
+		global $wgVtourParseStrict, $wgVtourAllowExternalImages;
 		$this->parser = $parser;
 		$this->frame = $frame;
 		$this->content = $content;
@@ -81,10 +81,10 @@ class VtourParser {
 		}
 		$this->parseStrict = $parseStrict;
 
-		if ( $allowExternalLinks === null ) {
-			$allowExternalLinks = $wgVtourAllowExternalLinks;
+		if ( $allowExternalImages === null ) {
+			$allowExternalImages = $wgVtourAllowExternalImages;
 		}
-		$this->allowExternalLinks = $allowExternalLinks;
+		$this->allowExternalImages = $allowExternalImages;
 	}
 
 	/**
@@ -100,10 +100,10 @@ class VtourParser {
 	/**
 	 * Return whether links to external images are allowed in ImagePlaces
 	 * and PanoPlaces.
-	 * @return bool Whether external links are allowed
+	 * @return bool Whether external images are allowed
 	 */
-	public function getAllowExternalLinks() {
-		return $this->allowExternalLinks;
+	public function getAllowExternalImages() {
+		return $this->allowExternalImages;
 	}
 
 	/**
