@@ -33,7 +33,7 @@ var Polygon = Class.extend( {
 		var $canvas = this.$canvas = $( '<canvas></canvas>' ).addClass( 'vtour-polygon' );
 		this.context = $canvas[0].getContext( '2d' );
 		// FIXME: Doesn't fire when it should.
-		$canvas.on( 'mousemove mouseenter mouseleave', function( e ) {
+		$canvas.bind( 'mousemove mouseenter mouseleave', function( e ) {
 			$( that ).trigger( 'polygonHoverChanged.vtour',
 				[that.inCanvas( e.pageX, e.pageY ), [e.pageX, e.pageY]] );
 		} );
@@ -49,7 +49,7 @@ var Polygon = Class.extend( {
 	 */
 	createEventForEventInCanvas: function(eventInCanvas, newEvent ) {
 		var that = this;
-		this.$canvas.on( eventInCanvas, function( e ) {
+		this.$canvas.bind( eventInCanvas, function( e ) {
 			if ( that.inCanvas( e.pageX, e.pageY ) ) {
 				$( that ).trigger( newEvent, [e.pageX, e.pageY] );
 				e.stopPropagation();

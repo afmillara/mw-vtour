@@ -36,7 +36,17 @@ class VtourHooks {
 	 * @return bool Return true in order to continue hook processing
 	 */
 	public static function addLinkStyle( Parser $parser ) {
-		$parser->getOutput()->addModuleStyles( 'ext.vtour.links' );
+		$parserOutput = $parser->getOutput();
+		// Compatibility with 1.17
+		if ( method_exists( $parserOutput, 'addModuleStyles' ) ) {
+			// addModuleStyles is preferred because (at the moment,
+			// 1.19) it loads the CSS from HTML, which is faster than
+			// using JS. Otherwise, the user might see the HTML before
+			// the styles are applied.
+			$parserOutput->addModuleStyles( 'ext.vtour.links' );
+		} else {
+			$parserOutput->addModules( 'ext.vtour.links' );
+		}
 		return true;
 	}
 

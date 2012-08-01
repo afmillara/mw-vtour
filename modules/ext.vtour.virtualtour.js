@@ -33,7 +33,7 @@ var VirtualTour = Class.extend( {
 		var that = this;
 		this.htmlElements = htmlElements;
 		this.preloader = new Preloader();
-		$( document ).on( 'mouseup', function() {
+		$( document ).mouseup( function() {
 			var current = that.currentPlace;
 			if ( current !== null ){
 				current.onMouseUp();
@@ -44,7 +44,7 @@ var VirtualTour = Class.extend( {
 				} );
 			}
 		} );
-		$( document ).on( 'mousemove', function( event ) {
+		$( document ).mousemove( function( event ) {
 			var current = that.currentPlace;
 			if ( that.currentPlace !== null ){
 				that.currentPlace.onMouseMove( event.pageX, event.pageY );

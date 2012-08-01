@@ -110,13 +110,13 @@ var MapLink = PointLink.extend( {
 		if ( this.destination.angle !== null ) {
 			this.angleMarker = new AngleMarker( this.destination.variableAngle );
 			this.updateAngleMarker();
-			$( this.angleMarker ).on( 'press.vtour', function() {
+			$( this.angleMarker ).bind( 'press.vtour', function() {
 				that.follow();
 			} );
-			$( this.angleMarker ).on( 'angleChanged.vtour', function( e, angle ) {
+			$( this.angleMarker ).bind( 'angleChanged.vtour', function( e, angle ) {
 				that.destination.changeAngle( angle + that.rotationAngle );
 			} );
-			$( this.destination ).on( 'angleChanged.vtour', function() {
+			$( this.destination ).bind( 'angleChanged.vtour', function() {
 				that.updateAngleMarker();
 			} );
 			ret.push( this.angleMarker.getHTML() );

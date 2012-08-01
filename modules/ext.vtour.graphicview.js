@@ -116,7 +116,7 @@ var GraphicView = Class.extend( {
 			return false;
 		} );
 
-		$repMovable.on( 'selectstart dragstart', function( e ) {
+		$repMovable.bind( 'selectstart dragstart', function( e ) {
 			e.preventDefault();
 		} );
 		

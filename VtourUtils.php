@@ -164,20 +164,34 @@ class VtourUtils {
 	}
 
 	/**
+	 * Create a copy of an array with all null values removed.
+	 * @param array Array with possible null values
+	 * @return array Array with all null values removed
+	 */
+	public static function removeNullValues( $arr ) {
+		foreach( $arr as $key => $value ) {
+			if ( $value === null ) {
+				unset( $arr[$key] );
+			}
+		}
+		return $arr;
+	}
+
+	/**
 	 * Create an associative array of URL parameters from link parts as
 	 * returned from VtourUtils::parseTextLinkParams.
 	 * @param array $linkParts Link parts
 	 * @return array Associative array of parameters 
 	 */ 
 	public static function linkPartsToParams( $linkParts ) {
-		return array(
+		return self::removeNullValues( array(
 			'vtourId' => $linkParts['tour'],
 			'vtourPlace' => $linkParts['place'],
 			'vtourCenter' => $linkParts['center'] ?
 				implode( ',', $linkParts['center'] ) : null,
 			'vtourZoom' => $linkParts['zoom'],
 			'vtourAmbiguous' => $linkParts['ambiguous']
-		);
+		) );
 	}
 
 	/**

@@ -227,7 +227,7 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 		var polygon = this.polygon = new Polygon();
 		var $polygonCanvas = polygon.getHTML();
 
-		$( polygon ).on( 'polygonMouseDown.vtour', function( e, x, y ) {
+		$( polygon ).bind( 'polygonMouseDown.vtour', function( e, x, y ) {
 			that.mouseDown( x, y );
 		} );
 
@@ -241,7 +241,7 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 			} );
 		}
 
-		$( polygon ).on( 'polygonHoverChanged.vtour', function( event, hover ) {
+		$( polygon ).bind( 'polygonHoverChanged.vtour', function( event, hover ) {
 			var className = that.variableAngle ?
 				'vtour-anglemarker-movable' : 'vtour-anglemarker-fixed';
 			$polygonCanvas.toggleClass( className, hover );

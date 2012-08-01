@@ -54,7 +54,7 @@ var CanvasAreaLink = Link.extend( {
 		var $polygon = $( this.polygon );
 		var $canvas = this.polygon.getHTML().addClass( 'vtour-arealink' );
 
-		$polygon.on( 'polygonHoverChanged.vtour', function( e, inCanvas, location ) {
+		$polygon.bind( 'polygonHoverChanged.vtour', function( e, inCanvas, location ) {
 			$canvas.toggleClass( 'vtour-arealink-hover', inCanvas );
 			that.drawCanvas();
 			if ( inCanvas ) {
@@ -63,7 +63,7 @@ var CanvasAreaLink = Link.extend( {
 				that.noHover();
 			}
 		} );
-		$polygon.on( 'polygonClick.vtour', function( e ) {
+		$polygon.bind( 'polygonClick.vtour', function( e ) {
 			that.$canvas.removeClass( 'vtour-arealink-hover' );
 			that.follow();
 		} );

@@ -216,7 +216,7 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad ){
 		onLoad();
 	};
 	if ( GoogleExternalMap.gmaps === null ) {
-		$( GoogleExternalMap ).on( 'gmapsApiLoaded.vtour', callback );
+		$( GoogleExternalMap ).bind( 'gmapsApiLoaded.vtour', callback );
 
 		if ( !GoogleExternalMap.loadStarted ) {
 			GoogleExternalMap.loadStarted = true;

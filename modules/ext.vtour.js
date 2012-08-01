@@ -8,7 +8,8 @@
 		var $main, $secondary, $map;
 		var $json, jsonData, $htmlElements;
 		var $error, $vtourLinks;
-		var $content = mw.util.$content;
+		// mw.util.$content can be null somehow in 1.17.0
+		var $content = mw.util.$content || $( document );
 		var $vtourNodes = $content.find( 'div[id^="vtour-tour-"]' );
 		$vtourNodes.each( function() {
 			$vtourNode = $( this );
@@ -27,12 +28,16 @@
 
 			$vtourLinks = $content.find( 'a.vtour-textlink-local' );
 			$vtourLinks.filter( function() {
-				return $vtourNode.is( $( this ).closest( 'div[id^="vtour-tour-"]' ) );
+				var closest = $( this ).closest( 'div[id^="vtour-tour-"]' ); 
+				var thisTourId = $vtourNode.attr( 'id' );
+				var closestId = closest.attr( 'id' ); 
+				return thisTourId === closestId;
 			} ).data( 'vtour-textlink-in', tourId ).length;
+
 			vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
 			
 			if ( mw.util.getParamValue( 'vtourId' ) === tourId ) {
-				$( vtour ).on( 'load.vtour', function() {
+				$( vtour ).bind( 'load.vtour', function() {
 					vtour.move( mw.util.getParamValue( 'vtourPlace' ) || '' );
 					vtour.setPositionFromStrings( {
 						'center': mw.util.getParamValue( 'vtourCenter' ),
