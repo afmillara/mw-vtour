@@ -134,12 +134,9 @@ var ImageView = GraphicView.extend( {
 			delta[0] * $image.width() / $image.data( 'nativeWidth' ),
 			delta[1] * $image.height() / $image.data( 'nativeHeight' )
 		];
-		if ( result[0] < 0 || result[0] >= $image.width()
-				|| result[1] < 0 || result[1] >= $image.height() ) {
-			return null;
-		} else {
-			return result;
-		}
+		result[0] = limitToRange( result[0], 0, $image.width() - 1 );
+		result[1] = limitToRange( result[1], 0, $image.height() - 1 );
+		return result;
 	}
 } );
 

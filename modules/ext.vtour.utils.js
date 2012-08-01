@@ -306,8 +306,8 @@ var calculateMeanPoint = function( points ) {
 }
 
 /**
- * Translate a pair of geographical coordinates to the [lon, lat] format used
- * internally, reversing the order if needed.
+ * Translate a pair of geographical coordinates to (or from) the [lon, lat] format
+ * used internally, reversing the order if needed.
  * @param {Array} coordinates Pair of coordinates in the order used externally,
  * [lat, lon] by default
  * @return Array Array of coordinates in the internal format
@@ -318,6 +318,22 @@ var translateGeographicCoordinates = function( coordinates ) {
 		coordinates.reverse();
 	}
 	return coordinates;
+}
+
+/**
+ * Given a numerical value, return the nearest number in the range [min, max].
+ * @param {Number} value Value given
+ * @param {Number} min Lower limit of the range
+ * @param {Number} max Upper limit of the range
+ * @return Number Value contained in the range
+ */
+var limitToRange = function( value, min, max ) {
+	if ( value < min ) {
+		value = min;
+	} else if ( value > max ) {
+		value = max;
+	}
+	return value;
 }
 
 /**
