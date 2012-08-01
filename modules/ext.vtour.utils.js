@@ -248,29 +248,16 @@ var clone = function( object ) {
 	return new Clone();
 }
 
+// FIXME: It would be better to send the image name and just recover it here.
 /**
  * Extract an image name from a path to a file in MediaWiki.
  * @param {String} path URL
  * @return String Name of the image
  */
 var imageNameFromPath = function( path ) {
-	var lastSlash;
-	if ( isRelative( path ) ) {
-		// MediaWiki image names can't contain slashes, so this should work
-		lastSlash = path.lastIndexOf( '/' );
-		return decodeURIComponent( path.substr( lastSlash + 1 ) );
-	} else {
-		return path;
-	}
-}
-
-/**
- * Check whether a url is relative.
- * @param {String} path Path to check
- * @return Boolean Whether the url is relative
- */
-var isRelative = function( path ) {
-	return path.match( /^\w+:.*/ ) === null;
+	// MediaWiki image names can't contain slashes, so this should work
+	var lastSlash = path.lastIndexOf( '/' );
+	return decodeURIComponent( path.substr( lastSlash + 1 ) );
 }
 
 /**
