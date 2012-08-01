@@ -90,7 +90,7 @@ var CanvasPanoPlace = Place.extend( {
 			this.view.update();
 		} catch ( error ) {
 			message = mw.message( 'vtour-errordesc-canvaserror',
-				that.$image.attr( 'src' ) );
+				imageNameFromPath( that.$image.attr( 'src' ) ) );
 			this.showError( message, parent );
 			return;
 		}

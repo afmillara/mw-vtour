@@ -255,7 +255,8 @@ var clone = function( object ) {
  */
 var imageNameFromPath = function( path ) {
 	var lastSlash;
-	if ( isLocal( path ) ) {
+	if ( isRelative( path ) ) {
+		// MediaWiki image names can't contain slashes, so this should work
 		lastSlash = path.lastIndexOf( '/' );
 		return decodeURIComponent( path.substr( lastSlash + 1 ) );
 	} else {
@@ -264,14 +265,12 @@ var imageNameFromPath = function( path ) {
 }
 
 /**
- * Check whether a url is local.
+ * Check whether a url is relative.
  * @param {String} path Path to check
- * @return Boolean Whether the url is local
+ * @return Boolean Whether the url is relative
  */
-var isLocal = function( path ) {
-	var server = mw.config.get( 'wgServer' );
-	return path.indexOf( server ) === 0
-		|| path.indexOf( '//' ) === -1;
+var isRelative = function( path ) {
+	return path.match( /^\w+:.*/ ) === null;
 }
 
 /**

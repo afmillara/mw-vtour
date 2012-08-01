@@ -238,8 +238,11 @@ abstract class VtourElement {
 	 */
 	protected function parseImageTitle( $title ) {
 		if ( $this->vtourParser->getAllowExternalLinks()
-				&& strpos( $title, '//' ) ){
-			// Link to an external image
+				&& strpos( $title, '//' ) ) {
+			// Link to an external image (external image names are
+			// URLs, so they have to contain the substring '//', and
+			// MediaWiki image names can't contain that substring, so
+			// this should be enough
 			return Sanitizer::cleanURL( $title );
 		}
 		$title = Title::newFromText( $title, NS_FILE );
