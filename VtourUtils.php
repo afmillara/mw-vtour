@@ -65,7 +65,7 @@ class VtourUtils {
 			$tag['name'] = strtolower( $matches[1][0] );
 			$tag['attributes'] = Sanitizer::decodeTagAttributes( $matches[2][0] );
 			$tag['content'] = count( $matches ) > 3 ?
-				html_entity_decode( trim( $matches[3][0] ) ) : '';
+				trim( $matches[3][0] ) : '';
 			$tags[] = $tag;
 			$pos += strlen( $matches[0][0] );
 		}

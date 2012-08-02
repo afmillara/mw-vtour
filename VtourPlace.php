@@ -101,8 +101,9 @@ abstract class VtourPlace extends VtourElement {
 	 * @param array $placeSubtag Element data, as returned by VtourUtils::getAllTags.
 	 */
 	protected function parseSinglePlaceSubtag( $placeSubtag ) {
+		$content = html_entity_decode( $placeSubtag['content'] );
 		if ( $placeSubtag['name'] === 'description' ) {
-			$this->result['description'] = $placeSubtag['content'];
+			$this->result['description'] = $content;
 		} else if ( !$this->tryAddLink( $placeSubtag ) ) {
 			$this->throwBadTagIfStrict( $placeSubtag );
 		}
@@ -214,10 +215,11 @@ class VtourTextPlace extends VtourPlace {
 	}
 
 	protected function parseSinglePlaceSubtag( $placeSubtag ) {
+		$content = html_entity_decode( $placeSubtag['content']);
 		if ( $placeSubtag['name'] === 'description' ) {
-			$this->result['description'] = $placeSubtag['content'];
+			$this->result['description'] = $content;
 		} else if ( $placeSubtag['name'] === 'text' ) {
-			$this->result['text'] = $placeSubtag['content'];
+			$this->result['text'] = $content;
 		} else {
 			$this->throwBadTagIfStrict( $placeSubtag );
 		}
