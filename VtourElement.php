@@ -59,7 +59,7 @@ abstract class VtourElement {
 		'parseName' => 'vtour-attributetype-name',
 		'parseImageTitle' => 'vtour-attributetype-imagetitle',
 		'parseBool' => 'vtour-attributetype-bool',
-		'parseNumber' => 'vtour-attributetype-integer',
+		'parseNumber' => 'vtour-attributetype-number',
 		'parseNatural' => 'vtour-attributetype-natural',
 		'parseHTMLLength' => 'vtour-attributetype-length',
 		'parseCoordinatePair' => 'vtour-attributetype-coordinatepair',
