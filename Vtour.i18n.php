@@ -68,6 +68,7 @@ $messages['en'] = array(
 	'vtour-errordesc-unneededid' => 'A map is referenced explicitly despite the place being implicitly contained in "$1".',
 	'vtour-errordesc-duplicate' => '{{ucfirst:$1}} identifier "$2" is used more than once.',
 	'vtour-errordesc-refnotfound' => 'Referenced $1 "$2" was not found.',
+	'vtour-errordesc-noplaces' => 'The virtual tour doesn\'t contain any places.',
 	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.',
 	'vtour-errordesc-canvaserror' => 'An error occurred when trying to read data from the image $1. A likely reason for this is that the image belongs to a different domain, which causes security errors in most browsers. Using a local image might solve the issue.',
 );
@@ -132,6 +133,7 @@ $messages['es'] = array(
 	'vtour-errordesc-unneededid' => 'Se ha definido un mapa explícitamente a pesar de que el lugar estaba contenido implícitamente en "$1".',
 	'vtour-errordesc-duplicate' => 'El identificador de {{ucfirst:$1}} "$2" se usa más de una vez.',
 	'vtour-errordesc-refnotfound' => 'El $1 "$2", al que se hace referencia, no se ha encontrado.',
+	'vtour-errordesc-noplaces' => 'La visita virtual no contiene ningún lugar.',
 	'vtour-errordesc-filenotfound' => 'El fichero $1 no pudo cargarse.',
 	'vtour-errordesc-canvaserror' => 'Ocurrió un error al intentar leer datos de la imagen $1. Una posible razón es que la imagen pertenece a un dominio distinto, lo cual causa errores de seguridad en la mayoría de los navegadores. Utilizar una imagen local podría resolver este problema.',
 );

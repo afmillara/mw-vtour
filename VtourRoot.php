@@ -25,7 +25,7 @@ class VtourRoot extends VtourElement {
 
 	protected $attributesTemplate = array(
 		'id' => 'parseId',
-		'start' => array( null, true ),
+		'start' => null,
 		'width' => 'parseHTMLLength',
 		'height' => 'parseHTMLLength'
 	);
@@ -66,7 +66,15 @@ class VtourRoot extends VtourElement {
 			}
 		}
 
-		$this->result['start'] = $this->getPlaceIndex( $this->result['start'] );
+		if ( $this->result['start'] === null ) {
+			if ( $this->getNumberOfPlaces() > 0 ) {
+				$this->result['start'] = 0;
+			} else {
+				$this->throwBadFormat( 'vtour-errordesc-noplaces' );
+			}
+		} else {
+			$this->result['start'] = $this->getPlaceIndex( $this->result['start'] );
+		}
 
 		$this->finishPlaces();
 		$this->finishMaps();
