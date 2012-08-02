@@ -155,6 +155,7 @@ abstract class VtourPlace extends VtourElement {
 			$this->vtourParser->getMap( $this->result['map'] )->setStartIfNeeded( $index );
 		}
 		$this->checkDependency( 'location', 'map' );
+		$this->checkDependency( 'angle', 'location' );
 
 		foreach ( array( 'up', 'down' ) as $placeReference ) {
 			$neighbour = $this->result[$placeReference];
@@ -185,7 +186,8 @@ abstract class VtourPlace extends VtourElement {
 	 * @param string $dependency Attribute that must be present if the first one is
 	 */
 	protected function checkDependency( $possibleAttribute, $dependency ) {
-		if ( $this->result[$possibleAttribute] !== null
+		if ( $this->vtourParser->getParseStrict()
+				&& $this->result[$possibleAttribute] !== null
 				&& $this->result[$dependency] === null ) {
 			$this->throwBadFormat( 'vtour-errordesc-attrdepends',
 				$possibleAttribute, $dependency );
