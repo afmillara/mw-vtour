@@ -243,7 +243,7 @@ abstract class VtourElement {
 			// URLs, so they have to contain the substring '//', and
 			// MediaWiki image names can't contain that substring, so
 			// this should be enough
-			return Sanitizer::cleanURL( $title );
+			return htmlspecialchars( $title );
 		}
 		$title = Title::newFromText( $title, NS_FILE );
 		$repoGroup = RepoGroup::singleton();
