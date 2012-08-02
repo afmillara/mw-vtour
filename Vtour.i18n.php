@@ -71,6 +71,7 @@ $messages['en'] = array(
 	'vtour-errordesc-noplaces' => 'The virtual tour doesn\'t contain any places.',
 	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.',
 	'vtour-errordesc-canvaserror' => 'An error occurred when trying to read data from the image $1. A likely reason for this is that the image belongs to a different domain, which causes security errors in most browsers. Using a local image might solve the issue.',
+	'vtour-errordesc-noexternalmap' => 'There are no external map systems available.'
 );
 
 /**
@@ -136,5 +137,6 @@ $messages['es'] = array(
 	'vtour-errordesc-noplaces' => 'La visita virtual no contiene ningún lugar.',
 	'vtour-errordesc-filenotfound' => 'El fichero $1 no pudo cargarse.',
 	'vtour-errordesc-canvaserror' => 'Ocurrió un error al intentar leer datos de la imagen $1. Una posible razón es que la imagen pertenece a un dominio distinto, lo cual causa errores de seguridad en la mayoría de los navegadores. Utilizar una imagen local podría resolver este problema.',
+	'vtour-errordesc-noexternalmap' => 'No hay ningún sistema de mapas externos disponible.'
 );
 

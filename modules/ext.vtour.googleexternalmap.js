@@ -197,6 +197,13 @@ var GoogleExternalMap = ExternalMap.extend( {
 GoogleExternalMap.gmaps = null;
 
 /**
+ * Path to the GoogleMaps API (including a callback).
+ * @var {string} APIUrl
+ */
+GoogleExternalMap.APIUrl =
+	'http://maps.google.com/maps/api/js?sensor=false&callback=wfVtourGMapsApiLoaded';
+
+/**
  * Whether GoogleExternalMap is currently loading.
  * @var {Boolean} loadStarted
  */
@@ -220,7 +227,7 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad ){
 
 		if ( !GoogleExternalMap.loadStarted ) {
 			GoogleExternalMap.loadStarted = true;
-			$.getScript( 'http://maps.google.com/maps/api/js?sensor=false&callback=wfVtourGMapsApiLoaded' );
+			$.getScript( GoogleExternalMap.APIUrl );
 		}
 	} else {
 		callback();
@@ -257,4 +264,6 @@ GoogleExternalMap.initMapOverlay = function() {
 	};
 	return MapOverlay;
 };
+
+ExternalMap.classes['Google'] = GoogleExternalMap;
 

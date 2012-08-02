@@ -8,6 +8,12 @@ var MapImageView = GraphicView.extend( {
 	$image: null,
 
 	/**
+	 * ExternalMap implementation that will be used.
+	 * @var {class} ExternalMapImplementation
+	 */
+	ExternalMapImplementation: null,
+
+	/**
 	 * Angle between the line from the lower left corner of the image
 	 * to the lower right corner of the image and the line from the
 	 * lower left corner of the image and 3 o'clock.
@@ -73,13 +79,14 @@ var MapImageView = GraphicView.extend( {
 	 * @param {Array} location Geographical coordinates ([lower left corner
 	 * of the image, upper right corner]) of the map (optional)
 	 */
-	init: function( $image, location ) {
+	init: function( $image, location, ExternalMapImplementation ) {
 		this._super();
 		this.$image = $image;
 		this.location = [
 			translateGeographicCoordinates( location[0] ),
 			translateGeographicCoordinates( location[1] )
 		];
+		this.ExternalMapImplementation = ExternalMapImplementation;
 	},
 
 	/**
@@ -91,19 +98,19 @@ var MapImageView = GraphicView.extend( {
 		var externalMapWrapper = $('<div></div>').addClass( 'vtour-externalmap' );
 		var $imageBackground = this.$imageBackground =
 			this.$image.addClass( 'vtour-background' );
-		this.externalMap = new GoogleExternalMap( externalMapWrapper, function() {
-			if ( that.externalMap.canAddHTML ) {
-				that.externalMap.addElement( $imageBackground );
-			}
-			that.prepareImage();
-			that.externalMap.setBounds( that.bounds, function( zoom ) {
-				that.mapMoved = false;
-				that.initialZoom = zoom;
-				that.zoom = zoom;
-				that.updateZoom();
+		this.externalMap = new this.ExternalMapImplementation
+			( externalMapWrapper, function() {
+				if ( that.externalMap.canAddHTML ) {
+					that.externalMap.addElement( $imageBackground );
+				}
+				that.prepareImage();
+				that.externalMap.setBounds( that.bounds, function( zoom ) {
+					that.mapMoved = false;
+					that.initialZoom = zoom;
+					that.zoom = zoom;
+					that.updateZoom();
+				} );
 			} );
-		} );
-
 		externalMapWrapper.addClass( 'vtour-movable' );
 		$imageBackground.addClass( 'vtour-movable' );
 
@@ -115,6 +122,9 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	move: function( delta, isAbsolute ) {
+		if ( !this.externalMap.isReady() ) {
+			return;
+		}
 		this.mapMoved = true;
 		if ( isAbsolute ) {
 			this.externalMap.moveTo( translateGeographicCoordinates( delta ) );

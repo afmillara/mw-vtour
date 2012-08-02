@@ -57,7 +57,7 @@ $wgVtourAllowNonStandardDecimalSeparator = true;
  * Whether links to external images are allowed in ImagePlaces and PanoPlaces.
  * @var bool $wgVtourAllowExternalImages
  */
-$wgVtourAllowExternalImages = false;
+$wgVtourAllowExternalImages = true;
 
 /**
  * true if the order of geographic coordinates, in both Vtour elements and links,
@@ -75,6 +75,12 @@ $wgVtourStandardLatLngOrder = true;
  * @var array $wgVtourDefaultTourDimensions
  */
 $wgVtourDefaultTourDimensions = array( '800px', '500px' );
+
+/**
+ * Name of the ExternalMap class that will be used, or null to disable external maps.
+ * @var string $wgVtourExternalMap
+ */
+$wgVtourExternalMap = 'Google';
 
 // Setup.
 
@@ -128,6 +134,7 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-warning',
 		'vtour-errordesc-filenotfound',
 		'vtour-errordesc-canvaserror',
+		'vtour-errordesc-noexternalmap',
 		'vtour-thismap'
 	),
 	'dependencies' => array( 'ext.vtour.lib' ),

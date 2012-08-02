@@ -64,14 +64,22 @@ var Map = Element.extend( {
 	 */
 	addTo: function( parent ) {
 		var that = this;
+		var noExternalMapMessage;
+		var ExternalMapImplementation;
 		if ( this.view === null ) {
 			if ( !this.checkImage( this.$image, parent ) ) {
 				return;
 			}
 
 			if ( this.location ) {
+				ExternalMapImplementation = this.getExternalMapClass();
+				if ( ExternalMapImplementation === null ) {
+					noExternalMapMessage = mw.message( 'vtour-errordesc-noexternalmap' );
+					this.showError( noExternalMapMessage, parent );
+					return;
+				}
 				this.view = new MapImageView( this.$image,
-					this.location );
+					this.location, ExternalMapImplementation );
 			} else {
 				this.view = new ImageView( this.$image );
 			}
@@ -151,5 +159,14 @@ var Map = Element.extend( {
 	 */
 	addPlace: function( place ) {
 		this.places.push( place );
+	},
+
+	/**
+	 * Get the ExternalMap implementation that will be used.
+	 * @return class External map implementation
+	 */
+	getExternalMapClass: function() {
+		var externalMapClassName = mw.config.get( 'wgVtourExternalMap' );
+		return ExternalMap.classes[externalMapClassName] || null;
 	}
 } );

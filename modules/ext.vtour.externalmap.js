@@ -114,3 +114,9 @@ var ExternalMap = Class.extend( {
 	}
 } );
 
+/**
+ * List of available ExternalMap classes.
+ * @var {array} classes
+ */
+ExternalMap.classes = [];
+

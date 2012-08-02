@@ -56,8 +56,9 @@ class VtourHooks {
 	 * @return bool Return true in order to continue hook processing
 	 */
 	public static function exportConfigVars( &$vars ) {
-		global $wgVtourStandardLatLngOrder;
+		global $wgVtourStandardLatLngOrder, $wgVtourExternalMap;
 		$vars['wgVtourStandardLatLngOrder'] = $wgVtourStandardLatLngOrder;
+		$vars['wgVtourExternalMap'] = $wgVtourExternalMap;
 		return true;
 	}
 
