@@ -54,8 +54,8 @@ class VtourMap extends VtourElement {
 	 */
 	public function resolveStart( $mapIndex ) {
 		$start =& $this->result['start'];
+		$start = $this->getPlaceIndex( $start );
 		if ( $start !== null ) {
-			$start = $this->getPlaceIndex( $start );
 			$startPlace = $this->vtourParser->getPlace( $start );
 			if ( $startPlace->result['map'] !== $mapIndex ) {
 				$this->throwBadFormat( 'vtour-errordesc-badstart',
@@ -99,7 +99,10 @@ class VtourMap extends VtourElement {
 	 * @return bool Whether the place has been set as the start
 	 */
 	public function setStartIfNeeded( $start ) {
-		if ( $this->result['start'] === null ) {
+		// An empty 'start' attribute makes no sense,
+		// so it is treated as if it were null.
+		if ( $this->result['start'] === null
+				|| $this->result['start'] === '' ) {
 			$this->result['start'] = $start;
 			return true;
 		} else {
