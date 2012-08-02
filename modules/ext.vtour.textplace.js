@@ -42,13 +42,24 @@ var TextPlace = Place.extend( {
 		if ( this.$html === null ) {
 			this.$html = $( '<div></div>' );
 			var element = this;
-			$.each( this.links, function( i, link ) {
-				link.addToElement( element );
-			} );
 		}
 		this.$html.append(this.content.children());
 		parent.append( this.$html );
 		this._super( parent, !this.useFx );
+	},
+
+	/**
+	 * Register a TextLink if it is contained in this place.
+	 * @param {TextLink} link Link to register
+	 * @return Boolean Whether the link was registered
+	 */
+	registerLinkIfInside: function( link ) {
+		if ( $.contains( this.content[0], link.getHTML()[0] ) ) {
+			this.links.push( link );
+			return true;
+		} else {
+			return false;
+		}
 	},
 
 	cleanup: function( $parent ) {

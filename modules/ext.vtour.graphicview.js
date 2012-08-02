@@ -30,13 +30,13 @@ var GraphicView = Class.extend( {
 	 * Maximum possible zoom for the graphic view.
 	 * @var {Number} maxZoom
 	 */
-	maxZoom: 5, //TODO: Ajustar en función del tamaño de la imagen.
+	maxZoom: 1,
 
 	/**
 	 * Minimum possible zoom for the graphic view.
 	 * @var {Number} minZoom
 	 */
-	minZoom: 0.1,
+	minZoom: 1,
 
 	/**
 	 * Current zoom (the higher the bigger the contents are).

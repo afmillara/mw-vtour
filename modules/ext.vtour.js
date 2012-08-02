@@ -32,7 +32,7 @@
 				var thisTourId = $vtourNode.attr( 'id' );
 				var closestId = closest.attr( 'id' ); 
 				return thisTourId === closestId;
-			} ).data( 'vtour-textlink-in', tourId ).length;
+			} ).data( 'vtour-textlink-in', tourId );
 
 			vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
 			

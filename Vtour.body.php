@@ -296,7 +296,6 @@ class VtourPage {
 				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
 		}
 
-
 		return "<div id='vtour-tour-$tourId'>
 		<div id='vtour-error-$tourId'>
 			$warningHTML

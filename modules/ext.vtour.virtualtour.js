@@ -19,8 +19,10 @@ var VirtualTour = Class.extend( {
 
 	preloader: null,
 
-	placesById: {},
-	placesByName: {},
+	placesById: null,
+	placesByName: null,
+
+	textPlaces: null,
 
 	/**
 	 * Create a new VirtualTour.
@@ -33,6 +35,9 @@ var VirtualTour = Class.extend( {
 		var that = this;
 		this.htmlElements = htmlElements;
 		this.preloader = new Preloader();
+		this.placesById = {};
+		this.placesByName = {};
+		this.textPlaces = [];
 		$( document ).mouseup( function() {
 			var current = that.currentPlace;
 			if ( current !== null ){
@@ -57,19 +62,27 @@ var VirtualTour = Class.extend( {
 		} );
 		this.createNodesFromJSON( tourData );
 		$localLinks.each( function() {
+			var ii, current;
 			var place, textlink;
 			var $link = $( this );
 			var internal = $link.data( 'vtour-textlink-in' ) == that.id;
 			var position;
 			var linkParts = that.extractTextLinkParams( $link.attr( 'href' ), internal );
-			if ( internal || linkParts.tour === that.id ) {
+			if ( internal || linkParts.tour === that.id ) { // FIXME: All internal links?
 				place = that.findPlace( linkParts.place );
 				if ( place ) {
 					position = that.createPositionFromStrings( linkParts );		
 					textlink = new TextLink( that, place, $link );
 					textlink.setDestinationPosition( position );
 					textlink.getHTML();
-					// TODO: Attach textlink to origin element, if it exists.
+					if ( internal ) {
+						for ( ii = 0; ii < that.textPlaces.length; ii++ ) {
+							var current = that.textPlaces[ii];
+							if ( current.registerLinkIfInside( textlink ) ) {
+								break;
+							}
+						}
+					}
 				}
 			}
 		} );
@@ -180,6 +193,7 @@ var VirtualTour = Class.extend( {
 				description = 
 					new DescriptionTextPlace( that,
 						that.getHTMLElement( jsonPlace.description ) );
+				that.textPlaces.push( description );
 			}
 
 			if ( jsonPlace.map !== null ) {
@@ -200,6 +214,7 @@ var VirtualTour = Class.extend( {
 				case 'text':
 					place = new TextPlace( that, name, description, visible,
 						location, map, that.getHTMLElement( jsonPlace.text ) );
+					that.textPlaces.push( place );
 					break;
 				default:
 					throw new Error( 'Invalid place type: ' + jsonPlace.type );
@@ -390,7 +405,7 @@ var VirtualTour = Class.extend( {
 	 * @param {Number} index Index of the element
 	 */
 	getHTMLElement: function( index ) {
-		return $(this.htmlElements[index]);
+		return $( this.htmlElements[index] );
 	}
 } );
 
