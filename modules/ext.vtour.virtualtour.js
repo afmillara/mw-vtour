@@ -62,23 +62,25 @@ var VirtualTour = Class.extend( {
 		} );
 		this.createNodesFromJSON( tourData );
 		$localLinks.each( function() {
-			var ii, current;
 			var place, textlink;
 			var $link = $( this );
-			var internal = $link.data( 'vtour-textlink-in' ) == that.id;
+			var inside = $link.data( 'vtour-textlink-in' ) == that.id;
 			var position;
-			var linkParts = that.extractTextLinkParams( $link.attr( 'href' ), internal );
-			if ( internal || linkParts.tour === that.id ) { // FIXME: All internal links?
+			var ii, currPlace;
+			var linkParts = that.extractTextLinkParams( $link.attr( 'href' ), inside );
+			
+			if ( ( inside && linkParts.tour === null )
+					 || linkParts.tour === that.id ) {
 				place = that.findPlace( linkParts.place );
 				if ( place ) {
 					position = that.createPositionFromStrings( linkParts );		
 					textlink = new TextLink( that, place, $link );
 					textlink.setDestinationPosition( position );
 					textlink.getHTML();
-					if ( internal ) {
+					if ( inside ) {
 						for ( ii = 0; ii < that.textPlaces.length; ii++ ) {
-							var current = that.textPlaces[ii];
-							if ( current.registerLinkIfInside( textlink ) ) {
+							var currPlace = that.textPlaces[ii];
+							if ( currPlace.registerLinkIfInside( textlink ) ) {
 								break;
 							}
 						}
