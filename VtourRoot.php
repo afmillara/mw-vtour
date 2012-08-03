@@ -97,6 +97,15 @@ class VtourRoot extends VtourElement {
 	}
 
 	/**
+	 * Find the index of a map.
+	 * @param VtourMap $map Map object
+	 * @return int Index of the map
+	 */
+	public function findMap( $map ) {
+		return array_search( $map, $this->maps );
+	}
+
+	/**
 	 * Return the current number of maps.
 	 * @return int Number of maps
 	 */
@@ -127,24 +136,15 @@ class VtourRoot extends VtourElement {
 	 * @param VtourMap $implicitMap VtourMap where this place belongs
 	 */
 	public function tryAddPlace( $tagText, $implicitMap ) {
-		$possiblePlace = VtourPlace::tryCreatePlace( $tagText, $this->vtourParser );
-
+		$possiblePlace = VtourPlace::tryCreatePlace( $tagText,
+			$this->vtourParser, $implicitMap );
 		if ( $possiblePlace !== null ) {
-			$referencedMap = $possiblePlace->getPartialResult()['map'];
-			if ( $referencedMap === null ) {
-				$mapName = $implicitMap->getPartialResult()['name'];
-				$mapIndex = $this->getMapIndex( $mapName ); 
-				$possiblePlace->setMap( $mapIndex );
-			} else {
-				// the place references a map despite being in this one implicitly
-				$this->throwBadFormat( 'vtour-errordesc-unneededid',
-						$implicitMap->getPartialResult()['name'] );
-			}
-
 			$this->places[] = $possiblePlace;
 			return true;
+		} else {
+			return false;
 		}
-		return false;
+
 	}
 
 	/**

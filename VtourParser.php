@@ -55,7 +55,9 @@ class VtourParser {
 	 * @var bool $parseStrict
 	 */
 	protected $parseStrict;
-	
+
+	protected $identifiers;
+
 	/**
 	 * Create a new VtourParser.
 	 * @param string $content Raw content of the Vtour element
@@ -75,6 +77,17 @@ class VtourParser {
 		$this->frame = $frame;
 		$this->content = $content;
 		$this->args = $args;
+
+		$this->identifiers = array(
+			'map' => array(
+				'id' => array(),
+				'name' => array()
+			),
+			'place' => array(
+				'id' => array(),
+				'name' => array()
+			)
+		);
 
 		if ( $parseStrict === null ) {
 			$parseStrict = $wgVtourParseStrict;
@@ -223,6 +236,15 @@ class VtourParser {
 	 */
 	public function getMap( $index ) {
 		return $this->root->getMap( $index );
+	}
+
+	/**
+	 * Find the index of a map.
+	 * @param VtourMap $map Map object
+	 * @return int Index of the map
+	 */
+	public function findMap( $map ) {
+		return $this->root->findMap( $map );
 	}
 
 	/**

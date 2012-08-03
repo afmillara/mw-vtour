@@ -12,6 +12,12 @@
 abstract class VtourPlace extends VtourElement {
 
 	/**
+	 * Map where this place belongs implicitly.
+	 * @var VtourMap $implicitMap
+	 */
+	protected $implicitMap = null;
+
+	/**
 	 * List of links from this place.
 	 * @var array $links
 	 */
@@ -66,30 +72,28 @@ abstract class VtourPlace extends VtourElement {
 	 * Try to parse an element as a place.
 	 * @param array $tag Element data, as returned by VtourUtils::getAllTags
 	 * @param VtourParser $vtourParser VtourParser that is directing the parsing operation
+	 * @param int $implicitMapIndex Index of the map where this place belongs implicitly
 	 * @return VtourPlace|null Created place, or null if no place was created
 	 */
-	public static function tryCreatePlace( $tag, $vtourParser ) {
+	public static function tryCreatePlace( $tag, $vtourParser, $implicitMap = null ) {
 		switch ( $tag['name'] ) {
 			case 'imageplace':
-				return new VtourImagePlace( $tag['content'], $tag['attributes'],
+				$place = new VtourImagePlace( $tag['content'], $tag['attributes'],
 					$vtourParser );
+				break;
 			case 'panoplace':
-				return new VtourPanoPlace( $tag['content'], $tag['attributes'],
+				$place = new VtourPanoPlace( $tag['content'], $tag['attributes'],
 					$vtourParser );
+				break;
 			case 'textplace':
-				return new VtourTextPlace( $tag['content'], $tag['attributes'],
+				$place = new VtourTextPlace( $tag['content'], $tag['attributes'],
 					$vtourParser );
+				break;
 			default:
 				return null;
 		}
-	}
-
-	/**
-	 * Set the map where this place belongs.
-	 * @param int $mapIndex Map index
-	 */
-	public function setMap( $mapIndex ) {
-		$this->result['map'] = $mapIndex;
+		$place->implicitMap = $implicitMap;
+		return $place;
 	}
 
 	protected function getGenericTypeMessage() {
@@ -149,11 +153,28 @@ abstract class VtourPlace extends VtourElement {
 	 * @param int $index Index of this place
 	 */
 	public function resolveReferences( $index ) {
+		$original = $this->result['map'];
 		$this->result['map'] = $this->getMapIndex( $this->result['map'] );
+
+		if ( $this->implicitMap ) {
+			// The place is in a map implicitly
+			$implicitMapIndex = $this->vtourParser->findMap( $this->implicitMap );
+			if ( $this->result['map'] === null && $original !== '' ) {
+				// The place doesn't reference any maps explicitly
+				$this->result['map'] = $implicitMapIndex;
+			} elseif ( $this->result['map'] !== $implicitMapIndex ) {
+				// The place references a different map
+				$implicitMapName = $this->implicitMap->getPartialResult()['name'];
+				$this->throwBadFormat( 'vtour-errordesc-idmismatch',
+					$implicitMapName, $original );
+			}
+		}
+
 		// if the map has no 'start' place, use this one.
 		if ( $this->result['map'] !== null ) {
 			$this->vtourParser->getMap( $this->result['map'] )->setStartIfNeeded( $index );
 		}
+
 		$this->checkDependency( 'location', 'map' );
 		$this->checkDependency( 'angle', 'location' );
 
@@ -161,6 +182,7 @@ abstract class VtourPlace extends VtourElement {
 			$neighbour = $this->result[$placeReference];
 			$this->result[$placeReference] = $this->getPlaceIndex( $neighbour );
 		}
+
 		foreach ( $this->links as $index => $link ) {
 			try {
 				$link->resolveReferences();
