@@ -118,17 +118,11 @@ Popup.currentPopup = null;
  * @param {Array} location Lower left corner of the popup ([x, y])
  */
 Popup.show = function( place, location ) {
-	if ( Popup.currentPopup !== null
-			&& Popup.currentPopup.visible ) {
-		if ( Popup.currentPopup.place === place ) {
-			return Popup.currentPopup;
-		} else {
-			Popup.currentPopup.destroy();
-		}
+	if ( Popup.currentPopup !== null ) {
+		Popup.currentPopup.destroy();
 	}
 	Popup.currentPopup = new Popup( place );
 	Popup.currentPopup.show( location );
-
 	return Popup.currentPopup;
 };
 
