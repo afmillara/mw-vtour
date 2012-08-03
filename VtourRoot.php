@@ -66,14 +66,13 @@ class VtourRoot extends VtourElement {
 			}
 		}
 
+		$this->result['start'] = $this->getPlaceIndex( $this->result['start'] );
 		if ( $this->result['start'] === null ) {
 			if ( $this->getNumberOfPlaces() > 0 ) {
 				$this->result['start'] = 0;
 			} else {
 				$this->throwBadFormat( 'vtour-errordesc-noplaces' );
 			}
-		} else {
-			$this->result['start'] = $this->getPlaceIndex( $this->result['start'] );
 		}
 
 		$this->finishPlaces();

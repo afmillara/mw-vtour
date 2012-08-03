@@ -62,8 +62,14 @@ abstract class VtourLink extends VtourElement {
 	 * Resolve the reference contained in this link.
 	 */
 	public function resolveReferences() {
-		$destination = $this->result['destination'];
-		$this->result['destination'] = $this->getPlaceIndex( $destination );
+		$destination =& $this->result['destination'];
+		$destination = $this->getPlaceIndex( $destination );
+		if ( $destination === null ) {
+			// Empty reference
+			$placeType = wfMessage( 'vtour-elementtype-place' )
+				->inContentLanguage()->text();
+			$this->throwRefNotFound( $placeType, $destination );
+		}
 	}
 }
 

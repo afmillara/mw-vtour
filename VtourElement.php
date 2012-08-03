@@ -352,8 +352,7 @@ abstract class VtourElement {
 	 */
 	protected function registerMap( $map ) {
 		if ( !$this->vtourParser->registerMap( $map ) ) {
-			$this->throwBadFormat( 'vtour-errordesc-duplicate', $this->getGenericType(),
-				$this->result['id'] );
+			$this->throwDuplicateId();	
 		}
 	}
 
@@ -363,8 +362,7 @@ abstract class VtourElement {
 	 */
 	protected function registerPlace( $place ) {
 		if ( !$this->vtourParser->registerPlace( $place ) ) {
-			$this->throwBadFormat( 'vtour-errordesc-duplicate', $this->getGenericType(),
-				$this->result['id'] );
+			$this->throwDuplicateId();	
 		}
 	}
 
@@ -376,8 +374,9 @@ abstract class VtourElement {
 	protected function getMapIndex( $idOrName ) {
 		$ret = $this->vtourParser->getMapIndex( $idOrName );
 		if ( $ret === -1 ) {
-			$this->throwBadFormat( 'vtour-errordesc-refnotfound',
-				$this->getGenericType(), $idOrName );
+			$mapType = wfMessage( 'vtour-elementtype-map' )
+				->inContentLanguage()->text();
+			$this->throwRefNotFound( $mapType, $idOrName );
 		} else {
 			return $ret;
 		}
@@ -391,11 +390,30 @@ abstract class VtourElement {
 	protected function getPlaceIndex( $idOrName ) {
 		$ret = $this->vtourParser->getPlaceIndex( $idOrName );
 		if ( $ret === -1 ) {
-			$this->throwBadFormat( 'vtour-errordesc-refnotfound',
-				$this->getGenericType(), $idOrName );
+			$placeType = wfMessage( 'vtour-elementtype-place' )
+				->inContentLanguage()->text();
+			$this->throwRefNotFound( $placeType, $idOrName );	
 		} else {
 			return $ret;
 		}
+	}
+	
+	/**
+	 * Throw an exception to indicate that the id of this element already exists.
+	 */
+	protected function throwDuplicateId() {
+		$this->throwBadFormat( 'vtour-errordesc-duplicate', $this->getGenericType(),
+			$this->result['id'] );
+	}
+
+	/**
+	 * Throw an exception to indicate that a given reference couldn't be resolved.
+	 * @param string $type Reference type
+	 * @param string $idOrName Reference: id or name
+	 */
+	protected function throwRefNotFound( $type, $idOrName ) {
+		$this->throwBadFormat( 'vtour-errordesc-refnotfound',
+			$type, $idOrName );
 	}
 }
 
