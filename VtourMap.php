@@ -36,7 +36,7 @@ class VtourMap extends VtourElement {
 		foreach ( $mapSubtags as $index => $mapSubtag ) {
 			try {
 				if ( !$this->vtourParser->tryAddPlace( $mapSubtag, $this ) ) {
-					$this->throwBadTagIfStrict( $tag );
+					$this->throwBadTagIfStrict( $mapSubtag );
 				}
 			} catch ( VtourNoIdParseException $e ) {
 				$this->rethrowExceptionFromChild( $e, $index );
