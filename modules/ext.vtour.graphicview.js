@@ -83,10 +83,14 @@ var GraphicView = Class.extend( {
 			( onLoad || $.noop )( $image );
 			$( that ).trigger( 'ready.vtour' );
 		} );
-		$image.error( function() {
+		$image.one( 'error', function() {
+			// one() is used instead of error() because sometimes
+			// the handler receives events for the wrong image in
+			// case of concurrent errors, at least in FF14.
 			var message = mw.message( 'vtour-errordesc-filenotfound',
-				imageNameFromPath( that.$image.attr( 'src' ) ) );
+				imageNameFromPath( imageSrc ) );
 			that.$imageBeingLoaded = null;
+			that.removeBlockingLoading();
 			$( that ).trigger( 'error.vtour', message );
 			that.showError( message );
 		} );

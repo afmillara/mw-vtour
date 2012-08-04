@@ -50,7 +50,7 @@ $messages['en'] = array(
 	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
 	'vtour-loadingtext' => 'Loading...',
 
-	'vtour-erroroutside' => '<strong class="error">$1</strong>',
+	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
 	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-parseerror' => 'Vtour parse error in $1: $2',
@@ -119,7 +119,7 @@ $messages['es'] = array(
 	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
 	'vtour-loadingtext' => 'Cargando...',
 
-	'vtour-erroroutside' => '<strong class="error">$1</strong>',
+	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
 	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-parseerror' => 'Error de Vtour en $1: $2',
