@@ -6,12 +6,6 @@
 var ExternalMap = Class.extend( {
 
 	/**
-	 * Whether HTML elements can be inserted in the map.
-	 * @var {Boolean} canAddHTML
-	 */
-	canAddHTML: false,
-
-	/**
 	 * Create a new ExternalMap.
 	 * @param {$HTML} $mapContainer jQuery element wrapping a DOM node that will
 	 * contain the map
@@ -113,6 +107,12 @@ var ExternalMap = Class.extend( {
 		throw new Error( 'Not implemented: addElement' );
 	}
 } );
+
+/**
+ * Whether HTML elements can be inserted in the map.
+ * @var {Boolean} canAddHTML
+ */
+ExternalMap.canAddHTML = false;
 
 /**
  * List of available ExternalMap classes.

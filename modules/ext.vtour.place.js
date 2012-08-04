@@ -145,9 +145,6 @@ var Place = Element.extend( {
 	 * 'center': position of the center of the view or null
 	 */
 	setPosition: function( position ) {
-		if ( this.error ) {
-			return;
-		}
 		if ( this.installed ) {
 			this.applyPosition( position );	
 		} else {
@@ -162,6 +159,10 @@ var Place = Element.extend( {
 		if ( position.center !== null ) {
 			this.move( position.center );
 		}
+	},
+
+	isReady: function() {
+		return !this.error;
 	},
 
 	/**

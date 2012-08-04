@@ -102,7 +102,6 @@ $wgAutoloadClasses['VtourLink'] = $wgVtourDir . 'VtourLink.php';
 $wgResourceModules['ext.vtour'] = array(
 	'scripts' => array(
 		'ext.vtour.utils.js',
-		'ext.vtour.preloader.js',
 		'ext.vtour.polygon.js',
 		'ext.vtour.anglemarker.js',
 		'ext.vtour.popup.js',
@@ -129,6 +128,8 @@ $wgResourceModules['ext.vtour'] = array(
 	),
 	'styles' => 'ext.vtour.virtualtour.css',
 	'messages' => array(
+		'vtour-loading',
+		'vtour-loadingtext',
 		'vtour-erroroutside',
 		'vtour-errorinside',
 		'vtour-warning',

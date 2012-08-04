@@ -51,9 +51,9 @@ var Map = Element.extend( {
 	 * lower left corner of the image, [lat, lon] upper right corner]) of the
 	 * map (optional)
 	 */
-	init: function( tour, name, $image, location ) {
+	init: function( tour, name, imageSrc, location ) {
 		this._super( tour, name );
-		this.$image = $image;
+		this.imageSrc = imageSrc;
 		this.location = location;
 		this.places = [];
 	},
@@ -67,10 +67,6 @@ var Map = Element.extend( {
 		var noExternalMapMessage;
 		var ExternalMapImplementation;
 		if ( this.view === null ) {
-			if ( !this.checkImage( this.$image, parent ) ) {
-				return;
-			}
-
 			if ( this.location ) {
 				ExternalMapImplementation = this.getExternalMapClass();
 				if ( ExternalMapImplementation === null ) {
@@ -78,10 +74,10 @@ var Map = Element.extend( {
 					this.showError( noExternalMapMessage, parent );
 					return;
 				}
-				this.view = new MapImageView( this.$image,
+				this.view = new MapImageView( this.imageSrc,
 					this.location, ExternalMapImplementation );
 			} else {
-				this.view = new ImageView( this.$image );
+				this.view = new ImageView( this.imageSrc );
 			}
 
 			this.extraButtons = [];
@@ -103,6 +99,9 @@ var Map = Element.extend( {
 			this.onMouseMove = function( x, y ){
 				this.view.onMouseMove.call( this.view, x, y );
 			};
+			$( this.view ).bind( 'error.vtour', function( event, message ) {
+				that.tour.showError( message );
+			} );
 			$.each( this.places, function( i, place ) {
 				that.view.addLink( place.getMapLink() );
 			} );
@@ -170,3 +169,4 @@ var Map = Element.extend( {
 		return ExternalMap.classes[externalMapClassName] || null;
 	}
 } );
+

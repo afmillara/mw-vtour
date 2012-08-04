@@ -47,6 +47,9 @@ $messages['en'] = array(
 	'vtour-attributetype-twocoordinatepairs' => 'two pairs of integers',
 	'vtour-attributetype-polygoncoordinates' => 'a list of pairs of integers',
 
+	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
+	'vtour-loadingtext' => 'Loading...',
+
 	'vtour-erroroutside' => '<strong class="error">$1</strong>',
 	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
@@ -112,6 +115,9 @@ $messages['es'] = array(
 	'vtour-attributetype-coordinatepair' => 'un par de números enteros',
 	'vtour-attributetype-twocoordinatepairs' => 'dos pares de números enteros',
 	'vtour-attributetype-polygoncoordinates' => 'una lista de pares de enteros',
+
+	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
+	'vtour-loadingtext' => 'Cargando...',
 
 	'vtour-erroroutside' => '<strong class="error">$1</strong>',
 	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',

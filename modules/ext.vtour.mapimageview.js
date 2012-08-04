@@ -75,13 +75,13 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Create a new MapImageView.
 	 * @constructor
-	 * @param {$Image} $image image that will be shown in this view
+	 * @param {String} imageSrc URL of the image that will be shown in this view
 	 * @param {Array} location Geographical coordinates ([lower left corner
 	 * of the image, upper right corner]) of the map (optional)
 	 */
-	init: function( $image, location, ExternalMapImplementation ) {
+	init: function( imageSrc, location, ExternalMapImplementation ) {
 		this._super();
-		this.$image = $image;
+		this.imageSrc = imageSrc;
 		this.location = [
 			translateGeographicCoordinates( location[0] ),
 			translateGeographicCoordinates( location[1] )
@@ -96,25 +96,29 @@ var MapImageView = GraphicView.extend( {
 	generateBackground: function() {
 		var that = this;
 		var externalMapWrapper = $('<div></div>').addClass( 'vtour-externalmap' );
+		this.$image = $( '<img></img>' );
+		this.loadImage( this.$image, this.imageSrc, function() {
+			that.externalMap = new that.ExternalMapImplementation
+				( externalMapWrapper, function() {
+					if ( that.ExternalMapImplementation.canAddHTML ) {
+						that.externalMap.addElement( $imageBackground );
+					}
+					that.prepareImage();
+					that.externalMap.setBounds( that.bounds, function( zoom ) {
+						that.mapMoved = false;
+						that.initialZoom = zoom;
+						that.zoom = zoom;
+						that.updateZoom();
+					} );
+				} );
+		} );
 		var $imageBackground = this.$imageBackground =
 			this.$image.addClass( 'vtour-background' );
-		this.externalMap = new this.ExternalMapImplementation
-			( externalMapWrapper, function() {
-				if ( that.externalMap.canAddHTML ) {
-					that.externalMap.addElement( $imageBackground );
-				}
-				that.prepareImage();
-				that.externalMap.setBounds( that.bounds, function( zoom ) {
-					that.mapMoved = false;
-					that.initialZoom = zoom;
-					that.zoom = zoom;
-					that.updateZoom();
-				} );
-			} );
+
 		externalMapWrapper.addClass( 'vtour-movable' );
 		$imageBackground.addClass( 'vtour-movable' );
 
-		if ( this.externalMap.canAddHTML ) {
+		if ( this.ExternalMapImplementation.canAddHTML ) {
 			return externalMapWrapper;
 		} else {
 			return [externalMapWrapper, $imageBackground];
@@ -122,7 +126,7 @@ var MapImageView = GraphicView.extend( {
 	},
 
 	move: function( delta, isAbsolute ) {
-		if ( !this.externalMap.isReady() ) {
+		if ( !this.isReady() ) {
 			return;
 		}
 		this.mapMoved = true;
@@ -134,11 +138,15 @@ var MapImageView = GraphicView.extend( {
 		this.updateImageBackground();
 	},
 
+	isReady: function() {
+		return this._super() && this.externalMap.isReady();
+	},
+
 	updateZoom: function() {
-		var canAddHTML = this.externalMap.canAddHTML;
+		var canAddHTML = this.ExternalMapImplementation.canAddHTML;
 		var sw, nw;
 		var height, width;
-		if ( this.externalMap.isReady() ) {
+		if ( this.isReady() ) {
 			this.externalMap.zoom( this.zoom );
 			this.updateZoomInterval();
 
@@ -166,7 +174,7 @@ var MapImageView = GraphicView.extend( {
 
 	reset: function() {
 		var that = this;
-		if ( !this.externalMap.isReady() ) {
+		if ( !this.isReady() ) {
 			return;
 		}
 		if ( this.mapMoved || this.zoom !== this.initialZoom ) {
@@ -177,6 +185,7 @@ var MapImageView = GraphicView.extend( {
 					that.updateZoom();
 				} );
 		}
+		this._super();
 	},	
 
 	/**
@@ -250,7 +259,7 @@ var MapImageView = GraphicView.extend( {
 	 * Update the location of the image that has been overimposed on the map.
 	 */
 	updateImageBackground: function() {
-		var canAddHTML = this.externalMap.canAddHTML;
+		var canAddHTML = this.ExternalMapImplementation.canAddHTML;
 		var centerPoint;
 		if ( this.zoom >= this.initialZoom - this.imageDisplayThreshold ) {
 			centerPoint = this.externalMap.geoToPixel( this.center, canAddHTML );
@@ -297,6 +306,9 @@ var MapImageView = GraphicView.extend( {
 
 	updateLinks: function() {
 		var that = this;
+		if ( !this.isReady() ) {
+			return;
+		}
 		$.each( this.links, function( i, link ) {
 			link.setRotationAngle( that.rotationAngle );
 		} );
@@ -307,6 +319,9 @@ var MapImageView = GraphicView.extend( {
 		var $image;
 		var nativeWidth, nativeHeight;
 		var vector, mapPoint;
+		if ( !this.isReady() ) {
+			return null;
+		}
 		if ( this.zoom < this.initialZoom - this.pointDisplayThreshold ) {
 			return null;
 		}

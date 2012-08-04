@@ -5,8 +5,6 @@
  */
 var GoogleExternalMap = ExternalMap.extend( {
 
-	canAddHTML: true,
-
 	/**
 	 * Empty overlay used internally to access parts of Google Maps API that
 	 * otherwise unreachable.
@@ -264,6 +262,8 @@ GoogleExternalMap.initMapOverlay = function() {
 	};
 	return MapOverlay;
 };
+
+GoogleExternalMap.canAddHTML = true;
 
 ExternalMap.classes['Google'] = GoogleExternalMap;
 

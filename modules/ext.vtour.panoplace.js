@@ -31,9 +31,9 @@ var CanvasPanoPlace = Place.extend( {
 	 * @param {Map} map Map that contains this place
 	 * @param {$Image} $image Image contained in this PanoPlace
 	 */
-	init: function( tour, name, description, visible, location, map, $image ) {
+	init: function( tour, name, description, visible, location, map, imageSrc ) {
 		this._super( tour, name, description, visible, location, map);
-		this.$image = $image;
+		this.imageSrc = imageSrc;
 	},
 
 	changeZoom: function( zoom ) {
@@ -63,10 +63,7 @@ var CanvasPanoPlace = Place.extend( {
 		var that = this;
 		var message;
 		if ( this.view === null ) {
-			if ( !this.checkImage( this.$image, parent ) ) {
-				return;
-			}	
-			this.view = new PanoView( this.$image );
+			this.view = new PanoView( this.imageSrc );
 			this.$html = this.view.generate();
 			this.onMouseUp = function() {
 				this.view.onMouseUp.call( this.view );
@@ -86,17 +83,37 @@ var CanvasPanoPlace = Place.extend( {
 		}
 		parent.append( this.$html[0], this.$html[1] );
 
-		try {
-			this.view.update();
-		} catch ( error ) {
+		this.view.reset();
+		this._super( parent );
+		//try {
+	/*	} catch ( error ) {
 			message = mw.message( 'vtour-errordesc-canvaserror',
-				imageNameFromPath( that.$image.attr( 'src' ) ) );
+				imageNameFromPath( that.imageSrc ) );
 			this.showError( message, parent );
 			return;
-		}
+		}*/
+	},
 
-		this._super( parent );
-	}
+	applyPosition: function( position ) {
+		var that = this;
+		var _super = that._super;
+		this.whenReadyDo( function() {
+			_super.call( that, position );
+		} );
+	},
+
+	whenReadyDo: function( callback ) {
+		if ( this.isReady() ) {
+			callback();
+		} else {
+			$( this.view ).bind( 'ready.vtour', callback );
+		}
+	},
+
+	isReady: function() {
+		return !!this.view && this.view.isReady() && this._super();
+	},
+
 } );
 
 /**
@@ -107,7 +124,7 @@ var CanvasPanoPlace = Place.extend( {
 var FallbackPanoPlace = ImagePlace.extend( {
 
 	createView: function() {
-		return new FallbackPanoView( this.$image );
+		return new FallbackPanoView( this.imageSrc );
 	}
 } );
 

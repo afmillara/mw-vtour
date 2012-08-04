@@ -18,6 +18,8 @@ var ImagePlace = Place.extend( {
  	 */
 	view: null,
 
+	imageSrc: null,
+
 	/**
 	 * Create a new ImagePlace.
 	 * @param {VirtualTour} tour    VirtualTour to which this Place belongs
@@ -26,11 +28,11 @@ var ImagePlace = Place.extend( {
 	 * @param {Boolean} visible  whether this place can be seen in a map
 	 * @param {Number[]} location location of the place in the map ([x, y])
 	 * @param {Map} map map that contains this place
-	 * @param {$Image} $image    image contained in this ImagePlace
+	 * @param {String} imageSrc URL of the image
 	 */
-	init: function( tour, name, description, visible, location, map, $image ) {
+	init: function( tour, name, description, visible, location, map, imageSrc ) {
 		this._super( tour, name, description, visible, location, map);
-		this.$image = $image;
+		this.imageSrc = imageSrc;
 	},
 
 	changeZoom: function( zoom ) {
@@ -41,12 +43,13 @@ var ImagePlace = Place.extend( {
 		this.view.move( center, true );
 	},
 
+	isReady: function() {
+		return !!this.view && this.view.isReady() && this._super();
+	},
+
 	addTo: function( parent ) {
-		var view;
+		var that = this;
 		if ( this.view === null ) {
-			if ( !this.checkImage( this.$image, parent ) ) {
-				return;
-			}	
 			this.view = this.createView();
 			this.$html = this.view.generate();
 			this.onMouseUp = function(){
@@ -55,15 +58,32 @@ var ImagePlace = Place.extend( {
 			this.onMouseMove = function( x, y ){
 				this.view.onMouseMove.call( this.view, x, y );
 			};
-			view = this.view;
+			$( this.view ).bind( 'error.vtour', function( event, message ) {
+				that.tour.showError( message );
+			} );
 			$.each( this.links, function( i, link ) {
-				view.addLink( link );
+				that.view.addLink( link );
 			} );
 		}
 		parent.append( this.$html[0], this.$html[1] );
 		this.view.reset();
-		this.view.update();
 		this._super( parent );
+	},
+
+	applyPosition: function( position ) {
+		var that = this;
+		var _super = that._super;
+		this.whenReadyDo( function() {
+			_super.call( that, position );
+		} );
+	},
+
+	whenReadyDo: function( callback ) {
+		if ( this.isReady() ) {
+			callback();
+		} else {
+			$( this.view ).bind( 'ready.vtour', callback );
+		}
 	},
 
 	/**
@@ -71,7 +91,7 @@ var ImagePlace = Place.extend( {
 	 * @return GraphicView New view
 	 */
 	createView: function() {
-		return new ImageView( this.$image );
+		return new ImageView( this.imageSrc );
 	}
 } );
 

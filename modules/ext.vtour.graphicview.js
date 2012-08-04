@@ -47,6 +47,11 @@ var GraphicView = Class.extend( {
 	mouseLast: null,
 	html: null,
 
+	$imageBeingLoaded: null,
+	loadingBeingDisplayed: false,
+
+	parent: null,
+
 	/**
 	 * Create a new GraphicView.
 	 * @constructor
@@ -54,6 +59,96 @@ var GraphicView = Class.extend( {
 	init: function( extraButtons ) {
 		this.buttons = [];
 		this.links = [];
+	},
+
+	loadImage: function( $image, imageSrc, onLoad ) {
+		if ( this.$imageBeingLoaded !== null ) {
+			throw new Error( 'Trying to load an image without waiting for the last one.' );
+		}
+		var that = this;
+		this.$imageBeingLoaded = $image;
+		$image.load( function() {
+			// Store the native size of the image
+			$image.data( 'nativeHeight', $image[0].height );
+			$image.data( 'nativeWidth', $image[0].width );
+
+			// jQuery doesn't set the dimensions until the
+			// element is in the DOM, so they are set
+			// here explicitly
+			$image.height( $image[0].height );
+			$image.width( $image[0].width );
+
+			that.$imageBeingLoaded = null;
+			that.removeBlockingLoading();
+			( onLoad || $.noop )( $image );
+			$( that ).trigger( 'ready.vtour' );
+		} );
+		$image.error( function() {
+			var message = mw.message( 'vtour-errordesc-filenotfound',
+				imageNameFromPath( that.$image.attr( 'src' ) ) );
+			that.$imageBeingLoaded = null;
+			$( that ).trigger( 'error.vtour', message );
+			that.showError( message );
+		} );
+		$image.attr( 'src', imageSrc );
+		return $image;
+	},
+
+	/**
+	 * Show an error message.
+	 * @param {Message} message MediaWiki message object
+	 * @param {$HTML} parent Parent element where the error message
+	 * will be shown
+	 */
+	showError: function( message ) {
+		var description = mw.message( 'vtour-errorinside', message.toString() ).toString(); 
+		this.html[0].children().detach();
+		this.html[1].children().detach();
+		this.showMessage( description, this.html[0] );
+		this.error = true;
+	},
+
+	showLoading: function() {
+		var description = mw.message( 'vtour-loadingtext' ).toString();
+		var parent = this.html[0].parent();
+		this.loadingBeingDisplayed = true;
+		this.showMessage( mw.message( 'vtour-loading', description ).toString(), parent );
+	},
+
+	removeLoading: function() {
+		this.loadingBeingDisplayed = false;
+		this.html[0].parent().find( '.vtour-loading' ).detach();
+	},
+
+	showBlockingLoading: function() {
+		var ii;
+		this.showLoading();
+		this.parent = this.html[0].parent();
+		for ( ii = 0; ii < this.html.length; ii++ ) {
+			this.html[ii].detach();
+		}
+	},
+
+	removeBlockingLoading: function() {
+		var ii;
+		for ( ii = 0; ii < this.html.length; ii++ ) {
+			this.parent.append( this.html[ii] );
+		}
+		this.removeLoading();
+	},
+
+	showMessage: function( $html, parent ) {
+		$html = $( $html );
+		parent.append( $html );
+		center( $html, parent );
+	},
+
+	isLoading: function() {
+		return this.$imageBeingLoaded !== null;
+	},	
+
+	isReady: function() {
+		return !this.isLoading() && !this.error;
 	},
 
 	/**
@@ -85,21 +180,21 @@ var GraphicView = Class.extend( {
 	 */
 	generate: function() {
 		var that = this;
-		var $bgLater, $nodeLayer, $buttonLayer, $repMovable;
+		var $bgLayer, $nodeLayer, $buttonLayer, $repMovable;
+
+		$nodeLayer = $( '<div></div>' ).addClass( 'vtour-nodelayer' );
+		$buttonLayer = $( '<div></div>' ).addClass( 'vtour-buttonlayer' );
+		$repMovable = $( '<div></div>' ).addClass( 'vtour-viewcontainer' );
+
+		this.html = [$repMovable, $buttonLayer];
 
 		$bgLayer = this.generateBackground();
 		if ( !$.isArray( $bgLayer ) ) {
 			$bgLayer = [$bgLayer];
 		}
 
-		$nodeLayer = $( '<div></div>' ).addClass( 'vtour-nodelayer' );
-		$buttonLayer = $( '<div></div>' ).addClass( 'vtour-buttonlayer' );
-		$repMovable = $( '<div></div>' ).addClass( 'vtour-viewcontainer' );
-
 		$repMovable.append.apply( $repMovable, $bgLayer );
 		$repMovable.append( $nodeLayer );
-
-		this.html = [$repMovable, $buttonLayer];
 
 		this.createDefaultButtons();
 		for ( var i = 0; i < this.buttons.length; i++ ) {
@@ -119,7 +214,8 @@ var GraphicView = Class.extend( {
 		$repMovable.bind( 'selectstart dragstart', function( e ) {
 			e.preventDefault();
 		} );
-		
+
+		this.error = false;
 		return this.html;
 	},
 
@@ -127,7 +223,11 @@ var GraphicView = Class.extend( {
 	 * Update the GraphicView.
 	 */
 	update: function() {
-		this.updateLinks();
+		if ( this.isLoading() && !this.loadingBeingDisplayed ) {
+			this.showBlockingLoading();
+		} else if ( this.isReady() ) {	
+			this.updateLinks();
+		}
 	},
 
 	/**
@@ -163,12 +263,13 @@ var GraphicView = Class.extend( {
 	onMouseMove: function(x, y){
 		if ( this.mouseLast !== null ) {
 			this.move( [this.moveSensitivity * ( x - this.mouseLast[0] ),
-					this.moveSensitivity * ( y - this.mouseLast[1] )] );
+				this.moveSensitivity * ( y - this.mouseLast[1] )] );
 			this.mouseLast = [x, y];
 		}
 	},
 
 	reset: function() {
+		this.update();
 	},
 
 	/**

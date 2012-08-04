@@ -37,12 +37,10 @@
 			vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
 			
 			if ( mw.util.getParamValue( 'vtourId' ) === tourId ) {
-				$( vtour ).bind( 'load.vtour', function() {
-					vtour.move( mw.util.getParamValue( 'vtourPlace' ) || '' );
-					vtour.setPositionFromStrings( {
-						'center': mw.util.getParamValue( 'vtourCenter' ),
-						'zoom': mw.util.getParamValue( 'vtourZoom' )
-					} );
+				vtour.move( mw.util.getParamValue( 'vtourPlace' ) || '' );
+				vtour.setPositionFromStrings( {
+					'center': mw.util.getParamValue( 'vtourCenter' ),
+					'zoom': mw.util.getParamValue( 'vtourZoom' )
 				} );
 			}
 			

@@ -20,7 +20,7 @@ var PanoView = GraphicView.extend( {
 	zoomGranularity: 50,
 	moveSensitivity: 0.01,
 
-	maxZoom: 100,
+	maxZoom: 200,
 	minZoom: 100,
 
 	/**
@@ -80,12 +80,11 @@ var PanoView = GraphicView.extend( {
 	/**
 	 * Create a new PanoView.
 	 * @constructor
-	 * @param {$Image} Equirectangular panoramic image
+	 * @param {String} imageSrc URL of the image that will be shown in this view
 	 */
-	init: function( $image ){
+	init: function( imageSrc ){
 		this._super();
-		this.$image = $image;
-		this.image = $image[0];
+		this.imageSrc = imageSrc;
 		this.$canvas = $( '<canvas></canvas>' ).css( {
 			'height': '100%',
 			'width': '100%'
@@ -95,6 +94,12 @@ var PanoView = GraphicView.extend( {
 	},
 
 	generateBackground: function() {
+		var that = this;
+		this.$image = $( '<img></img>' );
+		this.loadImage( this.$image, this.imageSrc, function() {
+			that.image = that.$image[0];
+			that.update();
+		} );
 		return this.$canvas.addClass( 'vtour-background' );
 	},
 
@@ -110,36 +115,40 @@ var PanoView = GraphicView.extend( {
 	reset: function() {
 		this.changeZoom( this.baseZoom );
 		this.move( [0, 0], true );
+		this._super();
 	},
 
 	update: function() {
 		var $repMovable = this.html[0];
 		var wRatio, hRatio;
+		if ( this.isReady() ) {
+	    		if ( this.imageData === null ) {
+				this.prepare();
+			}
 
-	    	if ( this.imageData === null ) {
-			this.prepare();
-		}
+			if ( this.destBuffer === null
+					|| this.canvas.width != $repMovable.width()
+					|| this.canvas.height != $repMovable.height() ) {
+				this.canvas.width = $repMovable.width();
+				this.canvas.height = $repMovable.height();
 
-		if ( this.destBuffer === null
-				|| this.canvas.width != $repMovable.width()
-				|| this.canvas.height != $repMovable.height() ) {
-			this.canvas.width = $repMovable.width();
-			this.canvas.height = $repMovable.height();
+				this.updateBuffer();	
 
-			this.updateBuffer();	
-
-			wRatio = this.FOV[0] < this.MAX_FOV[0]?
-				Math.abs(2*Math.tan(this.FOV[0]/2)): Number.POSITIVE_INFINITY;
-			hRatio = this.FOV[1] < this.MAX_FOV[1]?
-				Math.abs(2*Math.tan(this.FOV[1]/2)): Number.POSITIVE_INFINITY;
-			var hardMinZoom = Math.max(this.canvas.width/wRatio, this.canvas.height/hRatio);
-			if (this.minZoom < hardMinZoom){
-				this.minZoom = hardMinZoom;
-				this.changeZoom( 0 );
+				wRatio = this.FOV[0] < this.MAX_FOV[0]?
+					Math.abs(2*Math.tan(this.FOV[0]/2)): Number.POSITIVE_INFINITY;
+				hRatio = this.FOV[1] < this.MAX_FOV[1]?
+					Math.abs(2*Math.tan(this.FOV[1]/2)): Number.POSITIVE_INFINITY;
+				var hardMinZoom = Math.max(this.canvas.width/wRatio, this.canvas.height/hRatio);
+				if (this.minZoom < hardMinZoom){
+					this.minZoom = hardMinZoom;
+				}
+				this.updateZoom();
 			}
 		}
 		this._super();
-		this.show();
+		if ( this.isReady() ) {
+			this.show();
+		}
 	},
 
 	/**
@@ -199,6 +208,9 @@ var PanoView = GraphicView.extend( {
 	},
 
 	updateZoom: function() {
+		if ( !this.isReady() || !this.FOV ) {
+			return;
+		}
 		this._super();
 		var wRatio = this.FOV[0] < this.MAX_FOV[0] ?
 				Math.abs( 2 * Math.tan( this.FOV[0] / 2 ) ) : Number.POSITIVE_INFINITY;
@@ -223,6 +235,9 @@ var PanoView = GraphicView.extend( {
 		var orientation = this.orientation;
 		var relativeMovement, absoluteMovement;
 		var MAX_FOV = this.MAX_FOV;
+		if ( !this.isReady() ) {
+			return;
+		}
 		if ( isAbsolute ) {
 			movement = translateGeographicCoordinates( movement );
 		}

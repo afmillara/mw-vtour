@@ -17,8 +17,6 @@ var VirtualTour = Class.extend( {
 	 */
 	currentPlace: null,
 
-	preloader: null,
-
 	placesById: null,
 	placesByName: null,
 
@@ -34,7 +32,6 @@ var VirtualTour = Class.extend( {
 	init: function( tourData, htmlElements, $localLinks ) {
 		var that = this;
 		this.htmlElements = htmlElements;
-		this.preloader = new Preloader();
 		this.placesById = {};
 		this.placesByName = {};
 		this.textPlaces = [];
@@ -106,17 +103,8 @@ var VirtualTour = Class.extend( {
 
 		this.main.addClass( 'vtour-main' );
 
-		this.preloader.start(
-			function() {
-    				that.move( that.initialNode );
-				$( that ).trigger( 'load.vtour' );
-			},
-			function( $file ){
-				var description = mw.message( 'vtour-errordesc-filenotfound',
-					imageNameFromPath( $file.attr( 'src' ) ) );
-				that.showError( description );
-			}
-		);		
+    		that.move( that.initialNode );
+		$( that ).trigger( 'load.vtour' );
 	},
 
 	showError: function( message ) {
@@ -177,7 +165,7 @@ var VirtualTour = Class.extend( {
 
 		//Crea los mapas.
 		$.each( jsonTour.maps, function( i, jsonMap ) {
-			var background = that.preloader.add( jsonMap.image );
+			var background = jsonMap.image;
 			maps.push( new Map( that, jsonMap.name, background, jsonMap.location ) );
 		} );
 
@@ -204,12 +192,12 @@ var VirtualTour = Class.extend( {
 
 			switch (jsonPlace.type) {
 				case 'image':
-					image = that.preloader.add( jsonPlace.image );
+					image = jsonPlace.image;
 					place = new ImagePlace
 						( that, name, description, visible, location, map, image );
 					break;
 				case 'pano':
-					image = that.preloader.add( jsonPlace.image );
+					image = jsonPlace.image;
 					place = new PanoPlace
 						( that, name, description, visible, location, map, image )
 					break;

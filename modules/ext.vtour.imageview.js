@@ -13,11 +13,11 @@ var ImageView = GraphicView.extend( {
 	/**
 	 * Create a new ImageView.
 	 * @constructor
-	 * @param {$Image} $image Image that will be shown in this view
+	 * @param {String} imageSrc URL of the image that will be shown in this view
 	 */
-	init: function( $image ) {
+	init: function( imageSrc ) {
 		this._super();
-		this.$image = $image;
+		this.imageSrc = imageSrc;
 	},
 
 	/**
@@ -25,18 +25,26 @@ var ImageView = GraphicView.extend( {
 	 * @return {$Image} image Content of the ImageView
 	 */
 	generateBackground: function() {
+		var that = this;
+		this.$image = $( '<img></img>' );
+		this.loadImage( this.$image, this.imageSrc, function() {
+			that.update();
+		} );
 		return this.$image.addClass( 'vtour-background' );
 	},
 
 	reset: function() {
 		this.changeZoom( 1, true );
+		this._super();
 	},
 
 	update: function() {
-		var realSizeZoom = this.getRealSizeZoom();
-		this.minZoom = Math.min( this.typicalMinZoom, realSizeZoom );
-		this.maxZoom = Math.max( 1, this.maxZoomMultiplier * realSizeZoom );
-		this.updateZoom();
+		if ( this.isReady() ) {
+			var realSizeZoom = this.getRealSizeZoom();
+			this.minZoom = Math.min( this.typicalMinZoom, realSizeZoom );
+			this.maxZoom = Math.max( 1, this.maxZoomMultiplier * realSizeZoom );
+			this.updateZoom();
+		}
 		this._super();
 	},
 
@@ -56,6 +64,10 @@ var ImageView = GraphicView.extend( {
 		var width, height;
 		var scroll;
 
+		if ( !this.isReady() ) {
+			return;
+		}
+
 		this._super();
 		scroll = this.getScroll();
 
@@ -73,6 +85,9 @@ var ImageView = GraphicView.extend( {
 
 	move: function( movement, isAbsolute ) {
 		var $image = this.$image;
+		if ( !this.isReady() ) {
+			return;
+		}
 		// If absolute: in pixels of the original image. Otherwise, in pixels of the
 		// current image.
 		if ( isAbsolute ) {

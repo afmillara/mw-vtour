@@ -95,11 +95,9 @@ var CanvasAreaLink = Link.extend( {
 	 */
 	drawCanvas: function() {
 		var color, opacity;
-		if ( this.htmlPos !== null ) {
-			opacity = this.$canvas.hasClass( 'vtour-arealink-hover' ) ?
-				this.hoverOpacity : this.noHoverOpacity;
-			this.polygon.drawCanvas( opacity );
-		}
+		opacity = this.$canvas.hasClass( 'vtour-arealink-hover' ) ?
+			this.hoverOpacity : this.noHoverOpacity;
+		this.polygon.drawCanvas( opacity );
 	}
 } );
 
