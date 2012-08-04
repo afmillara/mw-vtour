@@ -228,6 +228,7 @@ var sum = function( a, b ) {
  */
 var mult = function( array, factor ) {
 	var result = [];
+	var index;
 	if ( !$.isArray( array ) ) {
 		return null;
 	}

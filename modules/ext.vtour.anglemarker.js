@@ -271,7 +271,7 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 
 /**
  * Angle marker that uses an image. Suitable for browsers that don't support
- * HTML 5 canvas element.
+ * HTML5 canvas element.
  * @class ImageAngleMarker
  */
 var ImageAngleMarker = BaseAngleMarker.extend( {

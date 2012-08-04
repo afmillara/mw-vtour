@@ -269,7 +269,7 @@ var PanoView = GraphicView.extend( {
 	},
 
 	changeAngle: function( angle ) {
-		var center = translateGeographicCoordinates( [angle, 0] );
+		var center = translateGeographicCoordinates( [angle, this.orientation[1]] );
 		this.move( center, true );	
 	},
 

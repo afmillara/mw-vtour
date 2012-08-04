@@ -75,7 +75,7 @@ var CanvasPanoPlace = Place.extend( {
 				$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
 					that.angle = that.view.orientation[0] + that.baseAngle;
 					$( that ).trigger( 'angleChanged.vtour' );
-				});
+				} );
 			}
 			$.each( this.links, function( i, link ) {
 				that.view.addLink( link );

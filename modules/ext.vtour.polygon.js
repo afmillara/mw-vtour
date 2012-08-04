@@ -110,7 +110,6 @@ var Polygon = Class.extend( {
 				this.$canvas.attr( 'height' ) );
 			return;
 		}
-
 		this.$canvas.attr( 'width', boundingBox.width + 1 );
 		this.$canvas.attr( 'height', boundingBox.height + 1 );
 //		this.resizeIfNeeded( boundingBox.width + 1, boundingBox.height + 1 );
@@ -118,7 +117,6 @@ var Polygon = Class.extend( {
 			'left': boundingBox.x,
 			'top': boundingBox.y
 		} );
-
 		context.fillStyle = color;
 		context.globalAlpha = globalAlpha;
 
