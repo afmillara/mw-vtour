@@ -51,17 +51,9 @@ var Popup = Class.extend( {
 	 */
 	show: function( location ) {
 		var that = this;
-		this.visible = true;
 		var $popup = this.$popup = $( '<div></div>' ).addClass( 'vtour-popup' );
 		var $infoContainer = $( '<div></div>' ).addClass( 'vtour-popupinfo' )
 			.append( this.place.getInfo() );
- 		/*
-		$popup.hover( function() {
-			$( that ).trigger( 'popupHover' );
-		}, function() {
-			$( that ).trigger( 'popupNoHover' );
-		} );
-		*/
 
 		$popup.append( $infoContainer );
 		$( mw.util.$content ).append( $popup );

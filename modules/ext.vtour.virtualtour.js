@@ -65,7 +65,6 @@ var VirtualTour = Class.extend( {
 			var position;
 			var ii, currPlace;
 			var linkParts = that.extractTextLinkParams( $link.attr( 'href' ), inside );
-			
 			if ( ( inside && linkParts.tour === null )
 					 || linkParts.tour === that.id ) {
 				place = that.findPlace( linkParts.place );
@@ -82,6 +81,8 @@ var VirtualTour = Class.extend( {
 							}
 						}
 					}
+				} else {
+					$link.attr( 'href', '#vtour-tour-' + that.id );
 				}
 			}
 		} );
