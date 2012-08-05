@@ -57,7 +57,7 @@ $wgVtourAllowNonStandardDecimalSeparator = true;
  * Whether links to external images are allowed in ImagePlaces and PanoPlaces.
  * @var bool $wgVtourAllowExternalImages
  */
-$wgVtourAllowExternalImages = true;
+$wgVtourAllowExternalImages = false;
 
 /**
  * true if the order of geographic coordinates, in both Vtour elements and links,
