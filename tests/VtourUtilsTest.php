@@ -23,7 +23,7 @@ class VtourUtilsTest extends MediaWikiTestCase {
 			array( array(
 				'name' => 'aaa',
 				'attributes' => array( 'a' => '1&', 'b' => '2', 'c' => '3' ),
-				'content' => '&Content'
+				'content' => '&amp;Content'
 			) ),
 			VtourUtils::getAllTags( '<aaa a="1&amp;" b=2 c=\' 3 \'> &amp;Content</aaa>' ),
 			'Complete elements are parsed correctly'
@@ -131,9 +131,9 @@ class VtourUtilsTest extends MediaWikiTestCase {
 	}
 
 	/**
-	 * Parsing values of several types.
+	 * Parsing HTML lenghts.
 	 */
-	public function testParseFunctions() {
+	public function testParseHTMLLengths() {
 		$this->assertEquals(
 			'1px', VtourUtils::parseHTMLLength( '1.0' ),
 			'Numbers are considered lengths in pixels' );
@@ -152,7 +152,6 @@ class VtourUtilsTest extends MediaWikiTestCase {
 		$this->assertEquals(
 			'10px', VtourUtils::parseHTMLLength( ' 10  px  ' ),
 			'Spaces are ignored' );
-		// TODO: Continue.
 	}
 }
 
