@@ -137,10 +137,10 @@
 .vtour-angleicon {
 	display: block;
 	cursor: default;
-	height: 25px;
-	width: 25px;
+	height: 10px;
+	width: 10px;
 	/* @embed */
-	background: url(img/ojo.gif) 0 0 no-repeat;
+	background: url(img/marker.png) 0 0 no-repeat;
 }
 
 .vtour-button {
@@ -267,6 +267,6 @@
 	width: 50px;
 	margin: auto;
 	/* @embed */
-	background: url(img/error.png) 0 0 no-repeat;
+	background: url(img/loading.gif) 0 0 no-repeat;
 }
 
