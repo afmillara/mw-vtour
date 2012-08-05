@@ -85,12 +85,12 @@ var Map = Element.extend( {
 			this.extraButtons.push(
 				this.view.addButton( 'vtour-buttonup', function() {
 					that.tour.move( that.getNeighbour( 'up' ) );
-				} )
+				}, 'vtour-button-up' )
 			);
 			this.extraButtons.push(
 				this.view.addButton( 'vtour-buttondown', function() {
 					that.tour.move( that.getNeighbour( 'down' ) );
-				} )
+				}, 'vtour-button-down' )
 			);
 
 			this.html = this.view.generate();

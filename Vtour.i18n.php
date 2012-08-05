@@ -27,6 +27,14 @@ $messages['en'] = array(
 	'vtour-link-description' => 'This is the Vtour Special Page.', //TODO: Better message.
 	'vtour-link-badformat' => 'Bad format.',
 
+	'vtour-button-zoomin' => 'Zoom in',
+	'vtour-button-zoomout' => 'Zoom out',
+	'vtour-button-fitimage' => 'Fit the container',
+	'vtour-button-realsize' => 'Real size',
+	'vtour-button-reset' => 'Return to the starting position',
+	'vtour-button-up' => 'Go to an upper map',
+	'vtour-button-down' => 'Go to a lower map',
+
 	'vtour-elementtype-root' => 'root',
 	'vtour-elementtype-link' => 'link',
 	'vtour-elementtype-place' => 'place',
@@ -97,6 +105,14 @@ $messages['es'] = array(
 	'vtour-link-description' => 'Esta es la página especial de Vtour.', //TODO: Better message.
 	'vtour-link-badformat' => 'Formato inválido.',
 
+	'vtour-button-zoomin' => 'Aumentar',
+	'vtour-button-zoomout' => 'Reducir',
+	'vtour-button-fitimage' => 'Ajustar al contenedor',
+	'vtour-button-realsize' => 'Tamaño real',
+	'vtour-button-reset' => 'Volver a la posición inicial',
+	'vtour-button-up' => 'Ir al mapa superior',
+	'vtour-button-down' => 'Ir al mapa inferior',
+
 	'vtour-elementtype-root' => 'raíz',
 	'vtour-elementtype-link' => 'enlace',
 	'vtour-elementtype-place' => 'lugar',
@@ -145,6 +161,6 @@ $messages['es'] = array(
 	'vtour-errordesc-filenotfound' => 'El fichero $1 no pudo cargarse.',
 	'vtour-errordesc-canvaserror' => 'Ocurrió un error al intentar leer datos de la imagen $1.',
 	'vtour-errordesc-noexternalmap' => 'No hay ningún sistema de mapas externos disponible.',
-	'vtour-errordesc-externalmaperror' => 'No pudo cargarse el mapa externo.'
+	'vtour-errordesc-externalmaperror' => 'No se pudo cargar el mapa externo.'
 );
 

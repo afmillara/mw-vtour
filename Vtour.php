@@ -131,6 +131,12 @@ $wgResourceModules['ext.vtour'] = array(
 	),
 	'styles' => 'ext.vtour.virtualtour.css',
 	'messages' => array(
+		'vtour-button-zoomin',
+		'vtour-button-zoomout',
+		'vtour-button-fitimage',
+		'vtour-button-realsize',
+		'vtour-button-up',
+		'vtour-button-down',
 		'vtour-loading',
 		'vtour-loadingtext',
 		'vtour-erroroutside',

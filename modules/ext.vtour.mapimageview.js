@@ -178,7 +178,7 @@ var MapImageView = GraphicView.extend( {
 		this._super();
 		this.addButton( 'vtour-buttonreset', function() {
 			that.reset();	
-		} );
+		}, 'vtour-button-reset' );
 	},
 
 	reset: function() {

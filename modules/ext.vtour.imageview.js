@@ -53,10 +53,10 @@ var ImageView = GraphicView.extend( {
 		this._super();
 		this.addButton( 'vtour-buttonfit', function() {
 			that.changeZoom( 1, true );
-		} );
+		}, 'vtour-button-fitimage' );
 		this.addButton( 'vtour-buttonrealsize', function() {
 			that.changeExternalZoom( 1 );
-		} );
+		}, 'vtour-button-realsize' );
 	},
 
 	updateZoom: function() {

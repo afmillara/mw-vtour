@@ -163,13 +163,17 @@ var GraphicView = Class.extend( {
 	 * @param {imageClass} Class that will be added to the button
 	 * @param {function} callback Function that will be called when the
 	 * button is clicked
+	 * @param {String} tooltipMsgName Name of the tooltip message
 	 * @param {Boolean} enabled Whether the element should be enabled.
-	 * Default is true.
+	 * Default is true
 	 * @return $HTML A jQuery object which contains a button element
 	 */
-	addButton: function( imageClass, callback, enabled ) {
+	addButton: function( imageClass, callback, tooltipMsgName, enabled ) {
+		var tooltip = mw.message( tooltipMsgName ).toString();
 		var button = $( '<div></div>' )
-			.addClass( imageClass ).click( callback );
+			.attr( 'title', tooltip )
+			.addClass( imageClass )
+			.click( callback );
 		this.toggleButton( button, enabled || enabled === undefined );
 		this.buttons.push( button );
 		return button;
@@ -286,10 +290,10 @@ var GraphicView = Class.extend( {
 		var that = this;
 		this.incButton = this.addButton( 'vtour-buttonplus', function() {
 			that.changeZoom( that.zoomGranularity );
-		}, this.canZoomIn() );
+		}, 'vtour-button-zoomin', this.canZoomIn() );
 		this.decButton = this.addButton( 'vtour-buttonminus', function() {
 			that.changeZoom( -that.zoomGranularity );
-		}, this.canZoomOut() );
+		}, 'vtour-button-zoomout', this.canZoomOut() );
 	},
 
 	/**
