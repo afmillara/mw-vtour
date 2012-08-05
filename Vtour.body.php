@@ -89,16 +89,14 @@ class VtourHooks {
 	 */
 	public static function redirectAliasToSpecial( $title, $request,
 			&$ignoreRedirect, &$target ) {
-		global $wgVtourAllowLinkAlias;
-		if ( $wgVtourAllowLinkAlias ) {
-			$subpage = VtourUtils::extractParamsFromPrefixed( $title );
-			if ( $subpage !== null ) {
-				$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
-				$target = $specialPageTitle->getFullURL();
-				return false;
-			}
+		$subpage = VtourUtils::extractParamsFromPrefixed( $title );
+		if ( $subpage !== null ) {
+			$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
+			$target = $specialPageTitle->getFullURL();
+			return false;
+		} else {
+			return true;
 		}
-		return true;
 	}
 
 	/**
@@ -111,10 +109,6 @@ class VtourHooks {
 	 * @return bool true to continue, false to stop and show a error page
 	 */
 	public static function disableLinkAliasPages( $title, $user, $action, &$result ) {
-		global $wgVtourAllowLinkAlias;
-		if ( !$wgVtourAllowLinkAlias ) {
-			return true;
-		}
 		if ( $action === 'read' ) {
 			// redirectAliasToSpecial will handle it.
 			return true;
@@ -141,7 +135,7 @@ class VtourHooks {
 	 */
 	public static function handleLink( $skin, $target, &$text, &$customAttribs, &$query,
 			&$options, &$ret ) {
-		global $wgOut, $wgVtourAllowLinkAlias;
+		global $wgOut;
 
 		$paramText = null;
 
@@ -258,9 +252,6 @@ class VtourPage {
 	 * @return string HTML output
 	 */
 	public function transformTag( $input, array $args, Parser $parser, PPFrame $frame ) {
-		global $wgVtourDefaultTourDimensions;
-		// if (!$frame->getTitle()->equals($parser->getTitle())){
-
 		$tour = new VtourParser( $input, $args, $parser, $frame );
 		try {
 			$tour->parse();

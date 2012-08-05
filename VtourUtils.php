@@ -76,10 +76,17 @@ class VtourUtils {
 	 * Take a page title, possibly starting with the Vtour link prefix,
 	 * and extract the Vtour link parameters if they exist.
 	 * @param Title $title Page title
+	 * @param bool $force If true, extract the parameters regardless of
+	 * the value of $wgVtourAllowLinkAlias. false by default
 	 * @return string|null Vtour parameters part of the page title, or
 	 * null if it doesn't containt parameters
 	 */
-	public static function extractParamsFromPrefixed( $title ) {
+	public static function extractParamsFromPrefixed( $title, $force = false ) {
+		global $wgVtourAllowLinkAlias;
+		if ( !$wgVtourAllowLinkAlias && !$force ) {
+			return null;
+		}
+
 		$linkAlias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
 		$lenAlias = strlen( $linkAlias );
 		$titleText = $title->getText();
