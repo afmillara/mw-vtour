@@ -6,6 +6,7 @@
 var TextPlace = Place.extend( {
 
 	spClass: 'vtour-textnode',
+	iconClass: 'vtour-textplaceicon',
 
 	/**
 	 * Whether the TextPlace should fade in gradually.

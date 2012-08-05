@@ -115,7 +115,31 @@
 	height: 25px;
 	width: 25px;
 	/* @embed */
-	background: url(img/iconoElemento.gif) 0 0 no-repeat;
+	background: url(img/placemarker.png) 0 0 no-repeat;
+}
+
+.vtour-textplaceicon {
+	display: block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/textplacemarker.png) 0 0 no-repeat;
+}
+
+.vtour-imageplaceicon {
+	display: block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/imageplacemarker.png) 0 0 no-repeat;
+}
+
+.vtour-panoplaceicon {
+	display: block;
+	height: 25px;
+	width: 25px;
+	/* @embed */
+	background: url(img/panoplacemarker.png) 0 0 no-repeat;
 }
 
 .vtour-currentplacemarker {
@@ -123,7 +147,7 @@
 	height: 25px;
 	width: 25px;
 	/* @embed */
-	background: url(img/iconoElementoActual.gif) 0 0 no-repeat;
+	background: url(img/currentplacemarker.png) 0 0 no-repeat;
 }
 
 .vtour-anglemarker-movable {
@@ -140,7 +164,7 @@
 	height: 10px;
 	width: 10px;
 	/* @embed */
-	background: url(img/marker.png) 0 0 no-repeat;
+	background: url(img/anglemarker.png) 0 0 no-repeat;
 }
 
 .vtour-button {

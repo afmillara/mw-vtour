@@ -6,6 +6,7 @@
 var ImagePlace = Place.extend( {
 
 	spClass: 'vtour-imagenode',
+	iconClass: 'vtour-imageplaceicon',
 
 	initialPosition: {
 		zoom: null,

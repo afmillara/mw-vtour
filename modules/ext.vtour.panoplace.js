@@ -5,6 +5,7 @@
 var CanvasPanoPlace = Place.extend( {
 
 	spClass: 'vtour-panonode',
+	iconClass: 'vtour-panoplaceicon',
 
 	variableAngle: true,
 
@@ -122,6 +123,8 @@ var CanvasPanoPlace = Place.extend( {
  * @class FallbackPanoPlace
  */
 var FallbackPanoPlace = ImagePlace.extend( {
+
+	iconClass: 'vtour-panoplaceicon',
 
 	createView: function() {
 		return new FallbackPanoView( this.imageSrc );
