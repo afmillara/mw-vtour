@@ -257,8 +257,6 @@ class VtourPanoPlace extends VtourPlace {
 
 	public function __construct( $content, array $args, VtourParser $vtourParser ) {
 		$this->attributesTemplate += array(
-			//'hfov' => 'parseNatural',
-			//'vfov' => 'parseNatural',
 			'image' => array( 'parseImageTitle', true )
 		);
 

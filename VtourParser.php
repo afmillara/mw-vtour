@@ -56,6 +56,11 @@ class VtourParser {
 	 */
 	protected $parseStrict;
 
+	/**
+	 * Associative array of identifiers, divided by types:
+	 * {map: {id: ..., name: ...}, place: {id: ..., name:...}
+	 * @var array $identifiers
+	 */
 	protected $identifiers;
 
 	/**
@@ -73,6 +78,7 @@ class VtourParser {
 	public function __construct( $content, array $args, Parser $parser, PPFrame $frame,
 			$parseStrict = null, $allowExternalImages = null ) {
 		global $wgVtourParseStrict, $wgVtourAllowExternalImages;
+
 		$this->parser = $parser;
 		$this->frame = $frame;
 		$this->content = $content;
@@ -175,7 +181,7 @@ class VtourParser {
 
 		$name = $result['name'];
 		if ( !isset( $names[$name] ) ) {
-			// a reference to a name goes to the first element with that name.
+			// A reference to a name goes to the first element with that name
 			$names[$name] = $pos;
 		}
 
@@ -203,7 +209,7 @@ class VtourParser {
 		} elseif ( isset( $names[$idOrName] ) ) {
 			return $names[$idOrName];
 		} else {
-			return -1; // Not found.
+			return -1; // Not found
 		}
 	}
 

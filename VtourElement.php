@@ -41,7 +41,7 @@ abstract class VtourElement {
 	 * attributeName => array( methodName, mandatory ),
 	 * where attributeName is a string that contains the name of the attribute,
 	 * methodName is the name of a method in this class that will be called to
-	 * parse and/or check the validity of the attribute and mandatory that indicates
+	 * parse and/or check the validity of the attribute and mandatory indicates
 	 * whether the element is invalid if it doesn't contain the attribute
 	 * (false by default).
 	 * @var array $attributesTemplate

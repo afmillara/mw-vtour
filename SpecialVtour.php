@@ -34,14 +34,11 @@ class SpecialVtour extends SpecialPage {
 			} else {
 				$title = Title::newFromText( $linkParts['article'] . '#vtour-tour-'
 					. $linkParts['tour'] );
-
 				$query = array();
 				if ( $linkParts['place'] !== null ) {
 					$query = VtourUtils::linkPartsToParams( $linkParts ); 
 				}
-
 				$url = $title->getLinkURL( $query );
-
 				$wgOut->redirect( $url );
 			}
 		} else {

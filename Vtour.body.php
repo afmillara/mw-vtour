@@ -55,7 +55,7 @@ class VtourHooks {
 			// addModuleStyles is preferred because (at the moment,
 			// 1.19) it loads the CSS from HTML, which is faster than
 			// using JS. Otherwise, the user might see the HTML before
-			// the styles are applied.
+			// the styles are applied
 			$parserOutput->addModuleStyles( 'ext.vtour.links' );
 		} else {
 			$parserOutput->addModules( 'ext.vtour.links' );
@@ -110,7 +110,7 @@ class VtourHooks {
 	 */
 	public static function disableLinkAliasPages( $title, $user, $action, &$result ) {
 		if ( $action === 'read' ) {
-			// redirectAliasToSpecial will handle it.
+			// redirectAliasToSpecial will handle it
 			return true;
 		}
 		if ( VtourUtils::extractParamsFromPrefixed( $title ) !== null ) {
@@ -136,9 +136,9 @@ class VtourHooks {
 	public static function handleLink( $skin, $target, &$text, &$customAttribs, &$query,
 			&$options, &$ret ) {
 		global $wgOut;
-
 		$paramText = null;
 
+		// Extract the link components
 		if ( $target->isSpecial( 'Vtour' ) ) {
 			$firstSlash = strpos( $target->getText(), '/' );
 			if ( $firstSlash !== false ) {
@@ -148,19 +148,25 @@ class VtourHooks {
 			$paramText = VtourUtils::extractParamsFromPrefixed( $target );
 		}
 
+		// It's either a valid Vtour link or an empty link (which goes to
+		// Special:Vtour)
 		if ( $paramText !== null ) {
 			$options = array( 'known', 'noclasses' );
 		}
 		
+		// It's not a Vtour link or it's a link to Special:Vtour
 		if ( $paramText === null || strlen( $paramText ) === 0 ) {
-			// These are not the links we are looking for.
+			// These are not the links we are looking for
 			return true;
 		}
+
+		// It's an invalid Vtour link
 		$linkParts = VtourUtils::parseTextLinkParams( $paramText );
 		if ( $linkParts['tour'] === null && $linkParts['place'] === null ) {
 			return true;
 		}
 
+		// The title is generated here
 		$pageTitle = $wgOut->getTitle();
 		if ( $linkParts['article'] !== null ) {
 			$articleTitle = Title::newFromText( $linkParts['article'] );
@@ -172,6 +178,9 @@ class VtourHooks {
 			$articleTitle->getDBKey(), 'vtour-tour-' . $linkParts['tour'] );
 		}
 		
+		// If the text doesn't match the target page (which means that a different
+		// text has been specified), keep it. Otherwise, change it to the title of
+		// the new target page
 		$text = preg_replace( '/\s+/', ' ', $text );
 		if ( $text === $target->getText() ) {
 			if ( $linkParts['place'] !== null ) {
@@ -183,6 +192,7 @@ class VtourHooks {
 			}
 		}
 
+		// Add the textlink classes and the title
 		$classes = 'vtour-textlink';
 		if ( $pageTitle->equals( $articleTitle ) ) {
 			$classes .= ' vtour-textlink-local';
@@ -192,9 +202,10 @@ class VtourHooks {
 			'title' => $paramText
 		);
 
+		// Generate the GET parameters from parts of the link
 		$query = VtourUtils::linkPartsToParams( $linkParts );
 
-		// Compatibility with 1.17
+		// Create the link (compatibility with 1.17)
 		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
 		$ret = $linker->link( $articleTitle, $text, $customAttribs, $query, $options );
 		return false;
@@ -231,7 +242,7 @@ class VtourHooks {
 }
 
 /**
- * Vtour "page" for the page that is currently being parsed.
+ * Collection of tours for the page that is currently being parsed.
  * Tours must have unique ids in an article, so ids are stored
  * here.
  */
@@ -281,7 +292,7 @@ class VtourPage {
 
 		// As the output is going to be partially parsed, the JSON tour data must
 		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
-		// tags everywhere with hilarious results.
+		// tags everywhere with hilarious results
 		$tourJSON = FormatJson::encode( $tourData );
 	
 		$tourElementString = '';
@@ -315,6 +326,12 @@ class VtourPage {
 		</div>";
 	}
 
+	/**
+	 * Calculate the dimensions of an Vtour HTML element, based on the tour
+	 * attributes or the defaults.
+	 * @param array $tourData Tour data
+	 * @return array Tour width and height (width, height)
+	 */
 	protected function calculateDimensions( $tourData ) {
 		global $wgVtourDefaultTourDimensions;
 		if ( $tourData['width'] !== null ) {

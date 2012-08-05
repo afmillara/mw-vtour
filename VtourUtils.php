@@ -102,13 +102,13 @@ class VtourUtils {
 	 * in the string
 	 * @param string $linkParamsText Vtour link parameters
 	 * @return array An associative array:
-	 * 'article' => article title,
+	 * ('article' => article title,
 	 * 'tour' => tour id,
 	 * 'place' => place name/id,
 	 * 'zoom' => zoom value (number),
 	 * 'center' => center (pair of coordinates),
 	 * 'ambiguous' => whether the tour name would be understood as the place name
-	 * if the link were inside a tour: whether the 'place' was not set at all
+	 * if the link were inside a tour: whether the 'place' was not set at all)
 	 * where all the values are either strings or null (if empty or not defined)
 	 */
 	public static function parseTextLinkParams( $linkParamsText ) {
