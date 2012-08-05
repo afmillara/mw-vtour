@@ -17,12 +17,12 @@
 class SpecialVtour extends SpecialPage {
 
 	function __construct() {
-		parent::__construct( 'Vtour', '', false ); // no restrictions, not listed
+		// No restrictions, not listed
+		parent::__construct( 'Vtour', '', false ); 
 	}
 
 	function execute( $par ) {
 		global $wgOut;
-
 		if ( $par ) {
 			$error = null;
 			$linkParts = VtourUtils::parseTextLinkParams( $par );

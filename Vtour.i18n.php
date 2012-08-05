@@ -14,16 +14,12 @@ $messages = array();
  */
 $messages['en'] = array(
 	'vtour' => 'Vtour',
-
 	'vtour-description' => 'A virtual tour system for MediaWiki.',
-
-	'vtour-thismap' => 'Vtour map',
 
 	'vtour-decimalseparator' => '.',
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'This page is reserved for Vtour links.',
-
 	'vtour-link-description' => 'This is the Vtour Special Page.', //TODO: Better message.
 	'vtour-link-badformat' => 'Bad format.',
 
@@ -34,6 +30,13 @@ $messages['en'] = array(
 	'vtour-button-reset' => 'Return to the starting position',
 	'vtour-button-up' => 'Go to an upper map',
 	'vtour-button-down' => 'Go to a lower map',
+	'vtour-thismap' => 'Vtour map',
+
+	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
+	'vtour-loadingtext' => 'Loading...',
+
+	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
+	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-elementtype-root' => 'root',
 	'vtour-elementtype-link' => 'link',
@@ -54,12 +57,6 @@ $messages['en'] = array(
 	'vtour-attributetype-coordinatepair' => 'a pair of integers',
 	'vtour-attributetype-twocoordinatepairs' => 'two pairs of integers',
 	'vtour-attributetype-polygoncoordinates' => 'a list of pairs of integers',
-
-	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
-	'vtour-loadingtext' => 'Loading...',
-
-	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
-	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-parseerror' => 'Vtour parse error in $1: $2',
 	'vtour-parseerror-idandelement' => '"$1" ($2)',
@@ -92,16 +89,12 @@ $messages['en'] = array(
  */
 $messages['es'] = array(
 	'vtour' => 'Vtour',
-
 	'vtour-description' => 'Un sistema de visitas virtuales para MediaWiki.',
-
-	'vtour-thismap' => 'Mapa de Vtour',
 
 	'vtour-decimalseparator' => '.',
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'Esta página está reservada para enlaces de Vtour.',
-
 	'vtour-link-description' => 'Esta es la página especial de Vtour.', //TODO: Better message.
 	'vtour-link-badformat' => 'Formato inválido.',
 
@@ -112,6 +105,13 @@ $messages['es'] = array(
 	'vtour-button-reset' => 'Volver a la posición inicial',
 	'vtour-button-up' => 'Ir al mapa superior',
 	'vtour-button-down' => 'Ir al mapa inferior',
+	'vtour-thismap' => 'Mapa de Vtour',
+
+	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
+	'vtour-loadingtext' => 'Cargando...',
+
+	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
+	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-elementtype-root' => 'raíz',
 	'vtour-elementtype-link' => 'enlace',
@@ -132,12 +132,6 @@ $messages['es'] = array(
 	'vtour-attributetype-coordinatepair' => 'un par de números enteros',
 	'vtour-attributetype-twocoordinatepairs' => 'dos pares de números enteros',
 	'vtour-attributetype-polygoncoordinates' => 'una lista de pares de enteros',
-
-	'vtour-loading' => '<div class="vtour-loading"><div class="vtour-loadingimage"/>$1</div>',
-	'vtour-loadingtext' => 'Cargando...',
-
-	'vtour-erroroutside' => '<div><strong class="error">$1</strong></div>',
-	'vtour-errorinside' => '<div class="vtour-error"><div class="vtour-errorimage"/>$1</div>',
 
 	'vtour-parseerror' => 'Error de Vtour en $1: $2',
 	'vtour-parseerror-idandelement' => '"$1" ($2)',

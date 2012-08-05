@@ -30,6 +30,19 @@ class VtourHooks {
 	}
 
 	/**
+	 * Transform Vtour tags to HTML and inject the output in the page
+	 * (tag extension).
+	 * @param string $input Content of the vtour tag
+	 * @param array $args Arguments for Vtour
+	 * @param Parser $parser Parser object
+	 * @param PPFrame $frame Frame
+	 * @return string Output of the tag extension
+	 */
+	public static function handleTag( $input, array $args, Parser $parser, PPFrame $frame ) {
+		return self::$vtourPage->transformTag( $input, $args, $parser, $frame );
+	}
+
+	/**
 	 * Make the parser load the stylesheet for Vtour links
 	 * (ParserCleanState hook).
 	 * @param Parser $parser Parser object
@@ -112,19 +125,6 @@ class VtourHooks {
 		} else {
 			return true;
 		}
-	}
-
-	/**
-	 * Transform Vtour tags to HTML and inject the output in the page
-	 * (tag extension).
-	 * @param string $input Content of the vtour tag
-	 * @param array $args Arguments for Vtour
-	 * @param Parser $parser Parser object
-	 * @param PPFrame $frame Frame
-	 * @return string Output of the tag extension
-	 */
-	public static function handleTag( $input, array $args, Parser $parser, PPFrame $frame ) {
-		return self::$vtourPage->transformTag( $input, $args, $parser, $frame );
 	}
 
 	/**
@@ -341,8 +341,8 @@ class VtourPage {
 
 	/**
 	 * Generate an id for a tour that doesn't have one.
-	 * @return string Unique tour id outside the set of valid user-specified
-	 * tour ids
+	 * @return string Unique tour id (outside the set of valid user-specified
+	 * tour ids)
 	 */ 
 	protected function generateUniqueId() {
 		$nTours = count( $this->tours );

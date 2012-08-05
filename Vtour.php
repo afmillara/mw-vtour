@@ -1,13 +1,12 @@
 <?php
 /**
- * Vtour extension - A virtual tour system for MediaWiki.
+ * Vtour - A virtual tour system for MediaWiki.
  *
  * @file
  * @ingroup Extensions
  *
- * @author Álvaro Fernández Millara, <afmillara@gmail.com>
- * @license GNU General Public License 2.0
- * @copyright © 2012 Álvaro Fernández Millara
+ * @author Álvaro Fernández Millara <afmillara@gmail.com>
+ * @license GNU General Public License v2
  * @version 0
  */
 
@@ -15,7 +14,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 'This file is a MediaWiki extension. It is not a valid entry point' );
 }
 
-// Register the extension.
+// Register the extension
 
 $wgExtensionCredits['parserhook'][] = array(
 	'path' => __FILE__,
@@ -26,7 +25,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'url' => 'http://www.google.com'
 );
 
-// Default configuration.
+// Default configuration
 
 /**
  * true if the vtour markup parser should throw an exception if unexpected or
@@ -82,10 +81,21 @@ $wgVtourDefaultTourDimensions = array( '800px', '500px' );
  */
 $wgVtourExternalMap = 'Google';
 
+/**
+ * Google Maps Javascript API v3 url, used by the Google Maps ExternalMap
+ * implementation.
+ * @var string $wgVtourGoogleExternalMapAPIUrl
+ */
 $wgVtourGoogleExternalMapAPIUrl = 'http://maps.google.com/maps/api/js?sensor=false';
+
+/**
+ * Time to wait before giving up and showing an error when downloading the
+ * Google Maps Javascript API. -1 disables the timeout.
+ * @var int $wgVtourGoogleExternalMapTimeout
+ */
 $wgVtourGoogleExternalMapTimeout = 10000;
 
-// Setup.
+// Setup
 
 $wgVtourDir = dirname( __FILE__ ) . '/';
 
@@ -169,6 +179,8 @@ $wgResourceModules['ext.vtour.lib'] = array(
 	'remoteExtPath' => 'Vtour/modules/lib'
 );
 
+$wgSpecialPages['Vtour'] = 'SpecialVtour';
+
 $wgHooks['ParserFirstCallInit'][] = 'VtourHooks::setupParserHook';
 $wgHooks['ParserClearState'][] = 'VtourHooks::addLinkStyle';
 $wgHooks['LinkBegin'][] = 'VtourHooks::handleLink';
@@ -178,6 +190,4 @@ $wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourHooks::exportConfigVars';
 
 $wgHooks['UnitTestsList'][] = 'VtourHooks::registerPHPTests';
 $wgHooks['ResourceLoaderTestModules'][] = 'VtourHooks::registerJSTests';
-
-$wgSpecialPages['Vtour'] = 'SpecialVtour';
 
