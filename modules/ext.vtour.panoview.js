@@ -125,8 +125,8 @@ var PanoView = GraphicView.extend( {
 	    		if ( this.imageData === null ) {
 				this.prepare();
 			}
-
-			if ( this.destBuffer === null
+			// isReady is checked again because prepare may cause an error.
+			if ( this.isReady() && this.destBuffer === null
 					|| this.canvas.width != $repMovable.width()
 					|| this.canvas.height != $repMovable.height() ) {
 				this.canvas.width = $repMovable.width();
@@ -179,8 +179,15 @@ var PanoView = GraphicView.extend( {
 		imageCtx.drawImage( this.image, 0, 0,
 				this.image.width, this.image.height );
 
-		this.imageData = imageCtx.getImageData( 0, 0,
+		try {
+			this.imageData = imageCtx.getImageData( 0, 0,
 				this.image.width, this.image.height ).data;
+		} catch ( error ) {
+			// Probably a security error.
+			this.showError( mw.message( 'vtour-errordesc-canvaserror',
+				imageNameFromPath( this.imageSrc ) ) );
+			return;
+		}
 
 		this.FOV = [this.MAX_FOV[0], this.MAX_FOV[1]];
 		var ratio = this.image.width / this.image.height / 2;

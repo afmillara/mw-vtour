@@ -61,38 +61,37 @@ var CanvasPanoPlace = Place.extend( {
 	},
 
 	addTo: function( parent ) {
-		var that = this;
 		var message;
 		if ( this.view === null ) {
-			this.view = new PanoView( this.imageSrc );
-			this.$html = this.view.generate();
-			this.onMouseUp = function() {
-				this.view.onMouseUp.call( this.view );
-			};
-			this.onMouseMove = function( x, y ) {
-				this.view.onMouseMove.call( this.view, x, y );
-			};
-			if ( this.baseAngle !== null ) {
-				$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
-					that.angle = that.view.orientation[0] + that.baseAngle;
-					$( that ).trigger( 'angleChanged.vtour' );
-				} );
-			}
-			$.each( this.links, function( i, link ) {
-				that.view.addLink( link );
-			} );
+			this.createView( PanoView );
 		}
 		parent.append( this.$html[0], this.$html[1] );
-
 		this.view.reset();
 		this._super( parent );
-		//try {
-	/*	} catch ( error ) {
-			message = mw.message( 'vtour-errordesc-canvaserror',
-				imageNameFromPath( that.imageSrc ) );
-			this.showError( message, parent );
-			return;
-		}*/
+	},
+
+	createView: function( ViewClass ) {
+		var that = this;
+		this.view = new ViewClass( this.imageSrc );
+		this.$html = this.view.generate();
+		this.onMouseUp = function() {
+			this.view.onMouseUp.call( this.view );
+		};
+		this.onMouseMove = function( x, y ) {
+			this.view.onMouseMove.call( this.view, x, y );
+		};
+		if ( this.baseAngle !== null ) {
+			$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
+				that.angle = that.view.orientation[0] + that.baseAngle;
+				$( that ).trigger( 'angleChanged.vtour' );
+			} );
+		}
+		$( this.view ).bind( 'error.vtour', function( event, message ) {
+			that.tour.showError( message );
+		} );
+		$.each( this.links, function( i, link ) {
+			that.view.addLink( link );
+		} );
 	},
 
 	applyPosition: function( position ) {
