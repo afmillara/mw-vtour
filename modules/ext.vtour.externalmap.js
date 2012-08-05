@@ -9,10 +9,11 @@ var ExternalMap = Class.extend( {
 	 * Create a new ExternalMap.
 	 * @param {$HTML} $mapContainer jQuery element wrapping a DOM node that will
 	 * contain the map
-	 * @param {function()} callback Function to call when the ExternalMap can be used.
+	 * @param {function()} onLoad Function to call when the ExternalMap can be used.
 	 * Asynchronous loading might be needed
+	 * @param {function()} onError Function to call if the ExternalMap cannot be used
 	 */
-	init: function( $mapContainer, callback ) {
+	init: function( $mapContainer, onLoad, onError ) {
 		throw new Error( 'Not implemented: init' );
 	},
 

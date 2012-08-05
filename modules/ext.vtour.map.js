@@ -71,11 +71,12 @@ var Map = Element.extend( {
 				ExternalMapImplementation = this.getExternalMapClass();
 				if ( ExternalMapImplementation === null ) {
 					noExternalMapMessage = mw.message( 'vtour-errordesc-noexternalmap' );
-					this.showError( noExternalMapMessage, parent );
-					return;
+					this.tour.showError( noExternalMapMessage );
+					this.view = new ImageView( this.imageSrc );
+				} else {
+					this.view = new MapImageView( this.imageSrc,
+						this.location, ExternalMapImplementation );
 				}
-				this.view = new MapImageView( this.imageSrc,
-					this.location, ExternalMapImplementation );
 			} else {
 				this.view = new ImageView( this.imageSrc );
 			}

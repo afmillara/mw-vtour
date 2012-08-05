@@ -56,9 +56,12 @@ class VtourHooks {
 	 * @return bool Return true in order to continue hook processing
 	 */
 	public static function exportConfigVars( &$vars ) {
-		global $wgVtourStandardLatLngOrder, $wgVtourExternalMap;
+		global $wgVtourStandardLatLngOrder, $wgVtourExternalMap,
+			$wgVtourGoogleExternalMapAPIUrl, $wgVtourGoogleExternalMapTimeout;
 		$vars['wgVtourStandardLatLngOrder'] = $wgVtourStandardLatLngOrder;
 		$vars['wgVtourExternalMap'] = $wgVtourExternalMap;
+		$vars['wgVtourGoogleExternalMapAPIUrl'] = $wgVtourGoogleExternalMapAPIUrl; 
+		$vars['wgVtourGoogleExternalMapTimeout'] = $wgVtourGoogleExternalMapTimeout; 
 		return true;
 	}
 

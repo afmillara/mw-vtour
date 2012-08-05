@@ -74,7 +74,8 @@ $messages['en'] = array(
 	'vtour-errordesc-noplaces' => 'The virtual tour doesn\'t contain any places.',
 	'vtour-errordesc-filenotfound' => 'File $1 couldn\'t be loaded.',
 	'vtour-errordesc-canvaserror' => 'An error occurred when trying to read data from the image $1.',
-	'vtour-errordesc-noexternalmap' => 'There are no external map systems available.'
+	'vtour-errordesc-noexternalmap' => 'There are no external map systems available.',
+	'vtour-errordesc-externalmaperror' => 'The external map failed to load.'
 );
 
 /**
@@ -143,6 +144,7 @@ $messages['es'] = array(
 	'vtour-errordesc-noplaces' => 'La visita virtual no contiene ningún lugar.',
 	'vtour-errordesc-filenotfound' => 'El fichero $1 no pudo cargarse.',
 	'vtour-errordesc-canvaserror' => 'Ocurrió un error al intentar leer datos de la imagen $1.',
-	'vtour-errordesc-noexternalmap' => 'No hay ningún sistema de mapas externos disponible.'
+	'vtour-errordesc-noexternalmap' => 'No hay ningún sistema de mapas externos disponible.',
+	'vtour-errordesc-externalmaperror' => 'No pudo cargarse el mapa externo.'
 );
 

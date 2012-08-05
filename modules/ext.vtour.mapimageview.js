@@ -95,6 +95,7 @@ var MapImageView = GraphicView.extend( {
 	 */
 	generateBackground: function() {
 		var that = this;
+		var errorMessage;
 		var externalMapWrapper = $('<div></div>').addClass( 'vtour-externalmap' );
 		this.$image = $( '<img></img>' );
 		this.loadImage( this.$image, this.imageSrc, function() {
@@ -110,7 +111,15 @@ var MapImageView = GraphicView.extend( {
 						that.zoom = zoom;
 						that.updateZoom();
 					} );
+					that.removeBlockingLoading();
+				}, function() {
+					that.removeBlockingLoading();
+					errorMessage = mw.message( 'vtour-errordesc-externalmaperror' );
+					that.showError( errorMessage );
 				} );
+			if ( !that.externalMap.isReady() ) {
+				that.showBlockingLoading();
+			}
 		} );
 		var $imageBackground = this.$imageBackground =
 			this.$image.addClass( 'vtour-background' );

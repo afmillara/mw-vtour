@@ -30,13 +30,13 @@ var GoogleExternalMap = ExternalMap.extend( {
 	 */
 	maxZoomHere: 22,
 
-	init: function( $mapContainer, callback ) {
+	init: function( $mapContainer, onLoad, onError ) {
 		var that = this;
 		this.$mapContainer = $mapContainer;
 		GoogleExternalMap.loadGoogleMaps( function() {
 			that.prepareContainer();
-			callback();
-		} );
+			onLoad();
+		}, onError );
 	},
 
 	setBounds: function( bounds, callback ) {
@@ -198,8 +198,10 @@ GoogleExternalMap.gmaps = null;
  * Path to the GoogleMaps API (including a callback).
  * @var {string} APIUrl
  */
-GoogleExternalMap.APIUrl =
-	'http://maps.google.com/maps/api/js?sensor=false&callback=wfVtourGMapsApiLoaded';
+GoogleExternalMap.APIUrl = mw.config.get( 'wgVtourGoogleExternalMapAPIUrl' )
+	+ '&callback=wfVtourGMapsApiLoaded';
+
+GoogleExternalMap.APITimeout = mw.config.get( 'wgVtourGoogleExternalMapTimeout' );
 
 /**
  * Whether GoogleExternalMap is currently loading.
@@ -212,7 +214,7 @@ GoogleExternalMap.loadStarted = false;
  * @param {function()} onLoad Function that will be called when the API finishes loading,
  * or immediately if it is already available
  */
-GoogleExternalMap.loadGoogleMaps = function( onLoad ){
+GoogleExternalMap.loadGoogleMaps = function( onLoad, onError ){
 	var callback;
 	GoogleExternalMap.gmaps = GoogleExternalMap.gmaps
 			|| ( window.google ? window.google.maps : null );
@@ -225,7 +227,14 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad ){
 
 		if ( !GoogleExternalMap.loadStarted ) {
 			GoogleExternalMap.loadStarted = true;
-			$.getScript( GoogleExternalMap.APIUrl );
+			$.ajax( {
+				url: GoogleExternalMap.APIUrl,
+				dataType: 'script',
+				timeout: GoogleExternalMap.APITimeout,
+				error: function() {
+					( onError || $.noop )();
+				}
+			} );
 		}
 	} else {
 		callback();

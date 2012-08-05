@@ -82,6 +82,9 @@ $wgVtourDefaultTourDimensions = array( '800px', '500px' );
  */
 $wgVtourExternalMap = 'Google';
 
+$wgVtourGoogleExternalMapAPIUrl = 'http://maps.google.com/maps/api/js?sensor=false';
+$wgVtourGoogleExternalMapTimeout = 10000;
+
 // Setup.
 
 $wgVtourDir = dirname( __FILE__ ) . '/';
@@ -136,6 +139,7 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-errordesc-filenotfound',
 		'vtour-errordesc-canvaserror',
 		'vtour-errordesc-noexternalmap',
+		'vtour-errordesc-externalmaperror',
 		'vtour-thismap'
 	),
 	'dependencies' => array( 'ext.vtour.lib' ),

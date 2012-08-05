@@ -84,14 +84,13 @@ var GraphicView = Class.extend( {
 			$( that ).trigger( 'ready.vtour' );
 		} );
 		$image.one( 'error', function() {
-			// one() is used instead of error() because sometimes
-			// the handler receives events for the wrong image in
-			// case of concurrent errors, at least in FF14.
+			// one() is used instead of error() because sometimes handlers
+			//  fired
+			// for the wrong image, at least in FF14.
 			var message = mw.message( 'vtour-errordesc-filenotfound',
 				imageNameFromPath( imageSrc ) );
 			that.$imageBeingLoaded = null;
 			that.removeBlockingLoading();
-			$( that ).trigger( 'error.vtour', message );
 			that.showError( message );
 		} );
 		$image.attr( 'src', imageSrc );
@@ -109,6 +108,7 @@ var GraphicView = Class.extend( {
 		this.html[0].children().detach();
 		this.html[1].children().detach();
 		this.showMessage( description, this.html[0] );
+		$( this ).trigger( 'error.vtour', message );
 		this.error = true;
 	},
 
@@ -135,6 +135,9 @@ var GraphicView = Class.extend( {
 
 	removeBlockingLoading: function() {
 		var ii;
+		if ( !this.parent ) {
+			return;
+		}
 		for ( ii = 0; ii < this.html.length; ii++ ) {
 			this.parent.append( this.html[ii] );
 		}
