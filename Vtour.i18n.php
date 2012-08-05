@@ -20,8 +20,15 @@ $messages['en'] = array(
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'This page is reserved for Vtour links.',
-	'vtour-link-description' => 'This is the Vtour Special Page.', //TODO: Better message.
-	'vtour-link-badformat' => 'Bad format.',
+	'vtour-linkspecialpage-header' => 'This special page can be used to create links to virtual tours. The syntax is as follows:',
+	'vtour-linkspecialpage-badformat' => 'The page name is not valid. The correct syntax for virtual tour links is as follows:',
+	'vtour-linkspecialpage-linkinfo' => '\'\'$1/article/tour[:place][?center[:zoom]]\'\', where:
+* \'\'article\'\' is the name of the article where the tour is,
+* \'\'tour\'\' is the id of the tour itself,
+* \'\'place\'\' is, optionally, the name or id of the place inside the tour where it will start,
+* \'\'center\'\' is, optionally, the coordinates that will be in the center of the view when the tour starts, and
+* \'\'zoom\'\' is, optionally, the initial zoom level.',
+	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 
 	'vtour-button-zoomin' => 'Zoom in',
 	'vtour-button-zoomout' => 'Zoom out',
@@ -95,8 +102,15 @@ $messages['es'] = array(
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'Esta página está reservada para enlaces de Vtour.',
-	'vtour-link-description' => 'Esta es la página especial de Vtour.', //TODO: Better message.
-	'vtour-link-badformat' => 'Formato inválido.',
+	'vtour-linkspecialpage-header' => 'Esta página especial puede utilizarse para crear enlaces a visitas virtuales. La sintáxis es como sigue:',
+	'vtour-linkspecialpage-badformat' => 'El nombre de la página no es válido. Es posible que se haya llegado a esta página siguiendo un enlace en formato incorrecto a una visita virtual. Si es así, la sintaxis correcta de los enlaces a visitas virtuales es la siguiente:',
+	'vtour-linkspecialpage-linkinfo' => '\'\'$1/artículo/visita[:lugar][?centro[:zoom]]\'\', donde:
+* \'\'artículo\'\' es el nombre del artículo donde está la visita,
+* \'\'visita\'\' es el id de la visita,
+* \'\'lugar\'\' es, opcionalmente, el nombre o id del lugar de la visita donde esta empezará,
+* \'\'centro\'\' es, opcionalmente, las coordenadas del punto que estará en el centro de la zona visible cuando empiece la visita, y
+* \'\'zoom\'\' es, opcionalmente, el nivel de zoom inicial.',
+	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
 
 	'vtour-button-zoomin' => 'Aumentar',
 	'vtour-button-zoomout' => 'Reducir',

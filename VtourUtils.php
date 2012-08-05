@@ -82,17 +82,13 @@ class VtourUtils {
 	 * null if it doesn't containt parameters
 	 */
 	public static function extractParamsFromPrefixed( $title, $force = false ) {
-		global $wgVtourAllowLinkAlias;
-		if ( !$wgVtourAllowLinkAlias && !$force ) {
-			return null;
-		}
-
-		$linkAlias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
-		$lenAlias = strlen( $linkAlias );
-		$titleText = $title->getText();
-		if ( $lenAlias !== 0
-				&& substr( $titleText, 0, $lenAlias ) === $linkAlias ) {
-			return substr( $titleText, $lenAlias );
+		$linkAlias = self::getLinkAlias( $force );
+		if ( $linkAlias !== null ) {
+			$lenAlias = strlen( $linkAlias );
+			$titleText = $title->getText();
+			if ( substr( $titleText, 0, $lenAlias ) === $linkAlias ) {
+				return substr( $titleText, $lenAlias );
+			}
 		}
 		return null;
 	}
@@ -400,6 +396,7 @@ class VtourUtils {
 	}
 
 	/**
+	 * Get the alternative decimal separator.
 	 * @return string|null $decimalSeparator String that will be used to separate
 	 * the whole part from the fractional part in numbers. Regardless of this value,
 	 * '.' is always considered a valid decimal separator
@@ -412,6 +409,24 @@ class VtourUtils {
 		} else {
 			return '.';
 		}
+	}
+
+	/**
+	 * Get the alias of Special:Vtour/ used for Vtour links.
+	 * @param bool $force If true, get the alias message regardless of the
+	 * value of $wgVtourAllowLinkAlias. false by default
+	 * @return string Link alias, or null if it has been disabled
+	 */
+	public static function getLinkAlias( $force = false ) {
+		global $wgVtourAllowLinkAlias;
+		if ( !$wgVtourAllowLinkAlias && !$force ) {
+			return null;
+		}
+		$alias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
+		if ( strlen( $alias ) === 0 ) {
+			return null;
+		}
+		return $alias;
 	}
 	
 	/**
