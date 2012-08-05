@@ -10,6 +10,7 @@
 		var $error, $vtourLinks;
 		// mw.util.$content can be null somehow in 1.17.0
 		var $content = mw.util.$content || $( document );
+		var position = null;
 		var $vtourNodes = $content.find( 'div[id^="vtour-tour-"]' );
 		$vtourNodes.each( function() {
 			$vtourNode = $( this );
@@ -35,16 +36,19 @@
 			} ).data( 'vtour-textlink-in', tourId );
 
 			vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
-			
+
 			if ( mw.util.getParamValue( 'vtourId' ) === tourId ) {
-				vtour.move( mw.util.getParamValue( 'vtourPlace' ) || '' );
-				vtour.setPositionFromStrings( {
+				vtour.setInitialPlace( mw.util.getParamValue( 'vtourPlace' ) );
+				position = {
 					'center': mw.util.getParamValue( 'vtourCenter' ),
 					'zoom': mw.util.getParamValue( 'vtourZoom' )
-				} );
+				};
 			}
-			
+
 			vtour.start( $main, $secondary, $map, $error );
+			if ( position !== null ) {
+				vtour.setPositionFromStrings( position );
+			}
 		});
 	});
 }( mediaWiki, jQuery ) );

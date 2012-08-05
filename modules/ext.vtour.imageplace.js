@@ -52,7 +52,7 @@ var ImagePlace = Place.extend( {
 		var that = this;
 		if ( this.view === null ) {
 			this.view = this.createView();
-			this.$html = this.view.generate();
+			this.$html = this.view.getHTML();
 			this.onMouseUp = function(){
 				this.view.onMouseUp.call( this.view );
 			};
@@ -66,7 +66,7 @@ var ImagePlace = Place.extend( {
 				that.view.addLink( link );
 			} );
 		}
-		parent.append( this.$html[0], this.$html[1] );
+		parent.append( this.$html );
 		this.view.reset();
 		this._super( parent );
 	},

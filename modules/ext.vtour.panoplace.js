@@ -65,7 +65,7 @@ var CanvasPanoPlace = Place.extend( {
 		if ( this.view === null ) {
 			this.createView( PanoView );
 		}
-		parent.append( this.$html[0], this.$html[1] );
+		parent.append( this.$html );
 		this.view.reset();
 		this._super( parent );
 	},
@@ -73,7 +73,7 @@ var CanvasPanoPlace = Place.extend( {
 	createView: function( ViewClass ) {
 		var that = this;
 		this.view = new ViewClass( this.imageSrc );
-		this.$html = this.view.generate();
+		this.$html = this.view.getHTML();
 		this.onMouseUp = function() {
 			this.view.onMouseUp.call( this.view );
 		};

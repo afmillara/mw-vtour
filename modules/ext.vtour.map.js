@@ -93,7 +93,7 @@ var Map = Element.extend( {
 				}, 'vtour-button-down' )
 			);
 
-			this.html = this.view.generate();
+			this.html = this.view.getHTML();
 			this.onMouseUp = function(){
 				this.view.onMouseUp.call( this.view );
 			};
@@ -107,7 +107,7 @@ var Map = Element.extend( {
 				that.view.addLink( place.getMapLink() );
 			} );
 		}
-		parent.append( this.html[0], this.html[1] );
+		parent.append( this.html );
 		this.view.reset();
 	},
 

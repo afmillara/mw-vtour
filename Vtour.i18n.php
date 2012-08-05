@@ -20,13 +20,14 @@ $messages['en'] = array(
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'This page is reserved for Vtour links.',
+
 	'vtour-linkspecialpage-header' => 'This special page can be used to create links to virtual tours. The syntax is as follows:',
-	'vtour-linkspecialpage-badformat' => 'The page name is not valid. The correct syntax for virtual tour links is as follows:',
+	'vtour-linkspecialpage-badformat' => 'The page name is not valid. Maybe it was supposed to be a link to a virtual tour. If that is the case, the correct syntax for virtual tour links is as follows:',
 	'vtour-linkspecialpage-linkinfo' => '\'\'$1/article/tour[:place][?center[:zoom]]\'\', where:
 * \'\'article\'\' is the name of the article where the tour is,
 * \'\'tour\'\' is the id of the tour itself,
 * \'\'place\'\' is, optionally, the name or id of the place inside the tour where it will start,
-* \'\'center\'\' is, optionally, the coordinates that will be in the center of the view when the tour starts, and
+* \'\'center\'\' is, optionally, the coordinates of the point that will be in the center of the view when the tour starts, and
 * \'\'zoom\'\' is, optionally, the initial zoom level.',
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 

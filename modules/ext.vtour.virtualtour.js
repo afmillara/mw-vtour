@@ -113,21 +113,30 @@ var VirtualTour = Class.extend( {
 		this.error.append( errorHTML );
 	},
 
+	normalizePlace: function( place ) {
+		if ( place === null ) {
+			return null;
+		}
+		if ( typeof place === 'string' ) {
+			place = this.findPlace( place );
+			if ( place ) {
+				return place;
+			}
+			return null;
+		}
+		return place;
+	},
+
 	/**
 	 * Change the 'current place' displayed.
 	 * @param {Place|String} place New current place (Place object or id/name)
 	 */
 	move: function( place ) {
+		place = this.normalizePlace( place );
 		if ( place === null ) {
 			return;
 		}
-		if ( typeof place === 'string' ) {
-			place = this.findPlace( place );
-			if ( place ) {
-				this.move( place );
-			}
-			return;
-		}
+
 		if ( this.currentPlace !== place ) {
 			var mapChanged = this.currentPlace === null
 				|| this.currentPlace.map !== place.map;
@@ -265,6 +274,10 @@ var VirtualTour = Class.extend( {
 		} );
 
 		this.initialNode = places[jsonTour.start];
+	},
+
+	setInitialPlace: function( place ) {
+		this.initialNode = this.normalizePlace( place ) || this.initialNode;
 	},
 
 	/**

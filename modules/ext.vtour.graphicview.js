@@ -45,12 +45,11 @@ var GraphicView = Class.extend( {
 	zoom: 1,
 
 	mouseLast: null,
+	viewContainer: null,
 	html: null,
 
 	$imageBeingLoaded: null,
 	loadingBeingDisplayed: false,
-
-	parent: null,
 
 	/**
 	 * Create a new GraphicView.
@@ -100,8 +99,6 @@ var GraphicView = Class.extend( {
 	/**
 	 * Show an error message.
 	 * @param {Message} message MediaWiki message object
-	 * @param {$HTML} parent Parent element where the error message
-	 * will be shown
 	 */
 	showError: function( message ) {
 		var description = mw.message( 'vtour-errorinside', message.toString() ).toString(); 
@@ -114,20 +111,19 @@ var GraphicView = Class.extend( {
 
 	showLoading: function() {
 		var description = mw.message( 'vtour-loadingtext' ).toString();
-		var parent = this.html[0].parent();
 		this.loadingBeingDisplayed = true;
-		this.showMessage( mw.message( 'vtour-loading', description ).toString(), parent );
+		this.showMessage( mw.message( 'vtour-loading', description ).toString(),
+			this.viewContainer );
 	},
 
 	removeLoading: function() {
 		this.loadingBeingDisplayed = false;
-		this.html[0].parent().find( '.vtour-loading' ).detach();
+		this.viewContainer.find( '.vtour-loading' ).detach();
 	},
 
 	showBlockingLoading: function() {
 		var ii;
 		this.showLoading();
-		this.parent = this.html[0].parent();
 		for ( ii = 0; ii < this.html.length; ii++ ) {
 			this.html[ii].detach();
 		}
@@ -135,11 +131,8 @@ var GraphicView = Class.extend( {
 
 	removeBlockingLoading: function() {
 		var ii;
-		if ( !this.parent ) {
-			return;
-		}
 		for ( ii = 0; ii < this.html.length; ii++ ) {
-			this.parent.append( this.html[ii] );
+			this.viewContainer.append( this.html[ii] );
 		}
 		this.removeLoading();
 	},
@@ -185,6 +178,16 @@ var GraphicView = Class.extend( {
 		button.toggleClass( 'vtour-button', show );
 	},
 
+	getHTML: function() {
+		if ( this.viewContainer === null ) {
+			this.viewContainer = $( '<div></div>' )
+				.addClass( 'vtour-viewcontainer' );
+			this.generate();
+			this.viewContainer.append( this.html[0], this.html[1] );
+		}
+		return this.viewContainer;
+	},
+
 	/**
 	 * Generate the HTML code for this GraphicView.
 	 * @return {$Node} Generated HTML node
@@ -195,7 +198,7 @@ var GraphicView = Class.extend( {
 
 		$nodeLayer = $( '<div></div>' ).addClass( 'vtour-nodelayer' );
 		$buttonLayer = $( '<div></div>' ).addClass( 'vtour-buttonlayer' );
-		$repMovable = $( '<div></div>' ).addClass( 'vtour-viewcontainer' );
+		$repMovable = $( '<div></div>' ).addClass( 'vtour-repmovable' );
 
 		this.html = [$repMovable, $buttonLayer];
 
@@ -227,7 +230,6 @@ var GraphicView = Class.extend( {
 		} );
 
 		this.error = false;
-		return this.html;
 	},
 
 	/**
