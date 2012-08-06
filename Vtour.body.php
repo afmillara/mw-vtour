@@ -192,9 +192,11 @@ class VtourHooks {
 			}
 		}
 
-		// Add the textlink classes and the title
+		// Add the textlink classes and the title attribute
 		$classes = 'vtour-textlink';
-		if ( $pageTitle->equals( $articleTitle ) ) {
+		if ( !$articleTitle->exists() ) {
+			$classes .= ' vtour-textlink-new';
+		} elseif ( $pageTitle->equals( $articleTitle ) ) {
 			$classes .= ' vtour-textlink-local';
 		}
 		$customAttribs = array(
