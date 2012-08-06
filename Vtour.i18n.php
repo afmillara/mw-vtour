@@ -21,8 +21,8 @@ $messages['en'] = array(
 
 	'vtour-reservedpage' => 'This page is reserved for Vtour links.',
 
-	'vtour-linkspecialpage-header' => 'This special page can be used to create links to virtual tours. The syntax is as follows:',
-	'vtour-linkspecialpage-badformat' => 'The page name is not valid. Maybe it was supposed to be a link to a virtual tour. If that is the case, the correct syntax for virtual tour links is as follows:',
+	'vtour-linkspecialpage-header' => 'This special page can be used to create links to \'\'\'Vtour\'\'\' virtual tours. The syntax is as follows:',
+	'vtour-linkspecialpage-badformat' => 'The page name is not valid. Maybe it was supposed to be a link to a virtual tour. If that is the case, the correct syntax for \'\'\'Vtour\'\'\' virtual tour links is as follows:',
 	'vtour-linkspecialpage-linkinfo' => '\'\'$1/article/tour[:place][?center[:zoom]]\'\', where:
 * \'\'article\'\' is the name of the article where the tour is,
 * \'\'tour\'\' is the id of the tour itself,
@@ -103,8 +103,8 @@ $messages['es'] = array(
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'Esta página está reservada para enlaces de Vtour.',
-	'vtour-linkspecialpage-header' => 'Esta página especial puede utilizarse para crear enlaces a visitas virtuales. La sintáxis es como sigue:',
-	'vtour-linkspecialpage-badformat' => 'El nombre de la página no es válido. Es posible que se haya llegado a esta página siguiendo un enlace en formato incorrecto a una visita virtual. Si es así, la sintaxis correcta de los enlaces a visitas virtuales es la siguiente:',
+	'vtour-linkspecialpage-header' => 'Esta página especial puede utilizarse para crear enlaces a visitas virtuales de \'\'\'Vtour\'\'\'. La sintaxis es como sigue:',
+	'vtour-linkspecialpage-badformat' => 'El nombre de la página no es válido. En caso de que se haya llegado a esta página tratando de crear un enlace a una visita virtual de \'\'\'Vtour\'\'\', la sintaxis correcta es la siguiente:',
 	'vtour-linkspecialpage-linkinfo' => '\'\'$1/artículo/visita[:lugar][?centro[:zoom]]\'\', donde:
 * \'\'artículo\'\' es el nombre del artículo donde está la visita,
 * \'\'visita\'\' es el id de la visita,
