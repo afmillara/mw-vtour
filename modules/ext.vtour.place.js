@@ -131,12 +131,8 @@ var Place = Element.extend( {
 	},
 
 	setInitialPosition: function( position ) {
-		if ( position.zoom !== null ) {
-			this.initialPosition.zoom = position.zoom;
-		}
-		if ( position.center !== null ) {
-			this.initialPosition.center = position.center;
-		}
+		this.initialPosition = this.mergePositions
+			( position, this.initialPosition );
 	},
 
 	/**
@@ -145,11 +141,23 @@ var Place = Element.extend( {
 	 * 'center': position of the center of the view or null
 	 */
 	setPosition: function( position ) {
+		position = this.mergePositions( position, this.initialPosition );
 		if ( this.installed ) {
 			this.applyPosition( position );	
 		} else {
 			this.movePending = position;
 		}
+	},
+
+	mergePositions: function( newPosition, basePosition ) {
+		newPosition = clone( newPosition );
+		if ( newPosition.zoom === null ) {
+			newPosition.zoom = basePosition.zoom;
+		}
+		if ( newPosition.center === null ) {
+			newPosition.center = basePosition.center;
+		}
+		return newPosition;
 	},
 
 	applyPosition: function( position ) {
