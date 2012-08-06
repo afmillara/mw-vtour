@@ -60,7 +60,7 @@ var ImageView = GraphicView.extend( {
 	},
 
 	updateZoom: function() {
-		var $repMovable = this.html[0];
+		var $movableLayer = this.$movableLayer;
 		var width, height;
 		var scroll;
 
@@ -71,13 +71,13 @@ var ImageView = GraphicView.extend( {
 		this._super();
 		scroll = this.getScroll();
 
-		width = this.zoom * $repMovable.parent().width();
-		height = this.zoom * $repMovable.parent().height();
-		resizeToFit( $repMovable.children(), width, height );
-		center( $repMovable.children(), $repMovable );
-		$repMovable.toggleClass( 'vtour-movable',
-			this.$image.width() > $repMovable.width()
-				|| this.$image.height() > $repMovable.height() );
+		width = this.zoom * $movableLayer.parent().width();
+		height = this.zoom * $movableLayer.parent().height();
+		resizeToFit( $movableLayer.children(), width, height );
+		center( $movableLayer.children(), $movableLayer );
+		$movableLayer.toggleClass( 'vtour-movable',
+			this.$image.width() > $movableLayer.width()
+				|| this.$image.height() > $movableLayer.height() );
 
 		this.move( scroll, true );
 		this.updateLinks();
@@ -91,10 +91,10 @@ var ImageView = GraphicView.extend( {
 		// If absolute: in pixels of the original image. Otherwise, in pixels of the
 		// current image.
 		if ( isAbsolute ) {
-			movement = this.updateSinglePoint( movement );
+			movement = this.translateSinglePoint( movement );
 		}
 		if ( movement !== null ) {
-			scroll( this.html[0], movement, isAbsolute );
+			scroll( this.$movableLayer, movement, isAbsolute );
 		}
 	},
 
@@ -114,10 +114,10 @@ var ImageView = GraphicView.extend( {
 	 */
 	getRealSizeZoom: function() {
 		var $image = this.$image;
-		var $repMovable = this.html[0];
+		var $movableLayer = this.$movableLayer;
 		return Math.min(
-			$image.data( 'nativeWidth' ) / $repMovable.parent().width(),
-			$image.data( 'nativeHeight' ) / $repMovable.parent().height()
+			$image.data( 'nativeWidth' ) / $movableLayer.parent().width(),
+			$image.data( 'nativeHeight' ) / $movableLayer.parent().height()
 		);
 	},
 
@@ -126,11 +126,11 @@ var ImageView = GraphicView.extend( {
 	 * @return Array Scroll ([horizontal, vertical])
 	 */
 	getScroll: function() {
-		var $repMovable = this.html[0];
-		// FIXME: Scrolling doesn't always work as it should. $repMovable -> $image in some cases?
+		var $movableLayer = this.$movableLayer;
+		// FIXME: Scrolling doesn't always work as it should. $movableLayer -> $image in some cases?
 		var relativeCenter = [
-			this.html[0].scrollLeft() + $repMovable.width() / 2,
-			this.html[0].scrollTop() + $repMovable.height() / 2
+			$movableLayer.scrollLeft() + $movableLayer.width() / 2,
+			$movableLayer.scrollTop() + $movableLayer.height() / 2
 		];
 		return this.contentPointToLinkPoint( relativeCenter );
 	},
@@ -143,11 +143,11 @@ var ImageView = GraphicView.extend( {
 		];
 	},
 
-	updateSinglePoint: function( delta ) {
+	translateSinglePoint: function( point ) {
 		var $image = this.$image;
 		var result = [
-			delta[0] * $image.width() / $image.data( 'nativeWidth' ),
-			delta[1] * $image.height() / $image.data( 'nativeHeight' )
+			point[0] * $image.width() / $image.data( 'nativeWidth' ),
+			point[1] * $image.height() / $image.data( 'nativeHeight' )
 		];
 		result[0] = limitToRange( result[0], 0, $image.width() - 1 );
 		result[1] = limitToRange( result[1], 0, $image.height() - 1 );

@@ -324,7 +324,7 @@ var MapImageView = GraphicView.extend( {
 		this._super();
 	},
 
-	updateSinglePoint: function( delta ) {
+	translateSinglePoint: function( point ) {
 		var $image;
 		var nativeWidth, nativeHeight;
 		var vector, mapPoint;
@@ -338,8 +338,8 @@ var MapImageView = GraphicView.extend( {
 		nativeWidth = $image.data( 'nativeWidth' );
 		nativeHeight = $image.data( 'nativeHeight' );
 		vector = sum(
-			mult( this.mapX, delta[0] / nativeWidth ),
-			mult( this.mapY, delta[1] / nativeHeight )
+			mult( this.mapX, point[0] / nativeWidth ),
+			mult( this.mapY, point[1] / nativeHeight )
 		);
 		mapPoint = sum( this.location[0], vector );
 		return this.externalMap.geoToPixel( mapPoint, false );

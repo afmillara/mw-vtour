@@ -6,7 +6,7 @@
 var ImagePlace = Place.extend( {
 
 	spClass: 'vtour-imagenode',
-	iconClass: 'vtour-imageplaceicon',
+	iconClass: 'vtour-imageplacemarker',
 
 	initialPosition: {
 		zoom: null,
@@ -44,10 +44,6 @@ var ImagePlace = Place.extend( {
 		this.view.move( center, true );
 	},
 
-	isReady: function() {
-		return !!this.view && this.view.isReady() && this._super();
-	},
-
 	addTo: function( parent ) {
 		var that = this;
 		if ( this.view === null ) {
@@ -74,17 +70,9 @@ var ImagePlace = Place.extend( {
 	applyPosition: function( position ) {
 		var that = this;
 		var _super = that._super;
-		this.whenReadyDo( function() {
+		this.view.whenReadyDo( function() {
 			_super.call( that, position );
 		} );
-	},
-
-	whenReadyDo: function( callback ) {
-		if ( this.isReady() ) {
-			callback();
-		} else {
-			$( this.view ).bind( 'ready.vtour', callback );
-		}
 	},
 
 	/**

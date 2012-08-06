@@ -2,7 +2,7 @@
 /**
  * Base class for angle markers in maps. Implementations must override show, generate
  * and setHighlighted.
- * @class AngleMarker
+ * @class BaseAngleMarker
  */
 var BaseAngleMarker = Class.extend( {
 
@@ -14,9 +14,9 @@ var BaseAngleMarker = Class.extend( {
 
 	/**
 	 * Base location of the angle marker, relative to the parent element.
-	 * @var {Array} location
+	 * @var {Array} coordinates
 	 */
-	location: [0, 0],
+	coordinates: [0, 0],
 
 	/**
 	 * Absolute base location of the angle marker.
@@ -48,13 +48,10 @@ var BaseAngleMarker = Class.extend( {
 	 */
 	$marker: null,
 
-
-	// "Public" methods
-
 	/**
-	 * Crete a new AngleMarker.
+	 * Create a new AngleMarker.
 	 * @constructor
-	 * @param {Boolean} variableAngle Whether the angle may be changed
+	 * @fn init(aaaaa)
 	 */
 	init: function( variableAngle ) {
 		this.variableAngle = variableAngle;
@@ -72,11 +69,11 @@ var BaseAngleMarker = Class.extend( {
 
 	/**
 	 * Set the base location.
-	 * @param {Number} location Base location
+	 * @param {Number} coordinates Base location
 	 */
-	setLocation: function( location ) {
+	setLocation: function( coordinates ) {
 		this.absoluteLocation = null;
-		this.location = location;
+		this.coordinates = coordinates;
 	},
 
 	/**
@@ -110,9 +107,6 @@ var BaseAngleMarker = Class.extend( {
 		throw new Error( 'Not implemented: show' );
 	},
 
-
-	// "Protected" methods
-	
 	/**
 	 * Start dragging the marker.
 	 * Implementations must call this method when appropriate.
@@ -162,9 +156,6 @@ var BaseAngleMarker = Class.extend( {
 		throw new Error( 'Not implemented: generate' );
 	},
 
-
-	// "Private" methods	
-
 	/**
 	 * Return the absolute location of the marker.
 	 * @return {Array} Absolute location of the marker
@@ -174,7 +165,7 @@ var BaseAngleMarker = Class.extend( {
 		if ( this.absoluteLocation === null ) {
 			offset = this.$marker.parent().offset();
 			this.absoluteLocation =
-				sum( this.location, [offset.left, offset.top] );
+				sum( this.coordinates, [offset.left, offset.top] );
 		}
 		return this.absoluteLocation;
 	}
@@ -253,12 +244,12 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 
 	show: function() {
 		this.polygon.setVertices( [
-			this.location,
+			this.coordinates,
 			calculateCircumferencePoint
-				( this.location, this.coneRadius,
+				( this.coordinates, this.coneRadius,
 				this.angle - this.coneAngle / 2 ),
 			calculateCircumferencePoint
-				( this.location, this.coneRadius,
+				( this.coordinates, this.coneRadius,
 				this.angle + this.coneAngle / 2 )
 		] );
 		this.polygon.drawCanvas( this.currentOpacity );
@@ -296,7 +287,7 @@ var ImageAngleMarker = BaseAngleMarker.extend( {
 
 	generate: function() {
 		var that = this;
-		var $angleIcon = $( '<div></div>' ).addClass( 'vtour-angleicon' );
+		var $angleIcon = $( '<div></div>' ).addClass( 'vtour-anglemarkerimage' );
 		if ( this.variableAngle ) {
 			$angleIcon.addClass( 'vtour-anglemarker-movable' );
 		} else {
@@ -323,7 +314,7 @@ var ImageAngleMarker = BaseAngleMarker.extend( {
 	},
 
 	show: function() {
-		setPosition( this.$marker, calculateCircumferencePoint( this.location,
+		setPosition( this.$marker, calculateCircumferencePoint( this.coordinates,
 			this.radius, this.angle ) );
 	}
 } );

@@ -81,9 +81,6 @@ var Place = Element.extend( {
 	 */
 	transitionTime: 'slow',
 
-
-	// "Public" methods
-
 	/**
 	 * Create a new Place.
 	 * @param {VirtualTour} tour VirtualTour to which this Place belongs
@@ -130,6 +127,11 @@ var Place = Element.extend( {
 		return this.$infoNode;
 	},
 
+	/**
+	 * Set the initial position of this place.
+	 * @param {Object} position Object: {'zoom': zoom level or null, 
+	 * 'center': position of the center of the view or null
+	 */
 	setInitialPosition: function( position ) {
 		this.initialPosition = this.mergePositions
 			( position, this.initialPosition );
@@ -137,7 +139,7 @@ var Place = Element.extend( {
 
 	/**
 	 * Change the position shown in this place.
-	 * @param {Array} position Array: {'zoom': zoom level or null, 
+	 * @param {Object} position Object: {'zoom': zoom level or null, 
 	 * 'center': position of the center of the view or null
 	 */
 	setPosition: function( position ) {
@@ -149,6 +151,14 @@ var Place = Element.extend( {
 		}
 	},
 
+	/**
+	 * Merge two position objects, generating a position where the parameters that
+	 * are present in the first one are taken from it and the rest are taken from
+	 * the second one.
+	 * @param {Object} newPosition First position
+	 * @param {Object} basePosition Second position
+	 * @return Object Merged positions
+	 */
 	mergePositions: function( newPosition, basePosition ) {
 		newPosition = clone( newPosition );
 		if ( newPosition.zoom === null ) {
@@ -160,6 +170,10 @@ var Place = Element.extend( {
 		return newPosition;
 	},
 
+	/**
+	 * Apply a position to the place now.
+	 * @param {Object} position Position to apply
+	 */
 	applyPosition: function( position ) {
 		if ( position.zoom !== null ) {
 			this.changeZoom( position.zoom );
@@ -167,10 +181,6 @@ var Place = Element.extend( {
 		if ( position.center !== null ) {
 			this.move( position.center );
 		}
-	},
-
-	isReady: function() {
-		return !this.error;
 	},
 
 	/**
@@ -251,9 +261,6 @@ var Place = Element.extend( {
 		}
 		return this.mapLink;
 	},
-
-
-	// "Protected" methods
 
 	/**
 	 * Clean after hiding this place.

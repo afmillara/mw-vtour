@@ -115,7 +115,7 @@
 	cursor: pointer;
 }
 
-.vtour-textplaceicon {
+.vtour-textplacemarker {
 	display: block;
 	height: 25px;
 	width: 25px;
@@ -123,7 +123,7 @@
 	background: url(img/textplacemarker.png) 0 0 no-repeat;
 }
 
-.vtour-imageplaceicon {
+.vtour-imageplacemarker {
 	display: block;
 	height: 25px;
 	width: 25px;
@@ -131,7 +131,7 @@
 	background: url(img/imageplacemarker.png) 0 0 no-repeat;
 }
 
-.vtour-panoplaceicon {
+.vtour-panoplacemarker {
 	display: block;
 	height: 25px;
 	width: 25px;
@@ -155,7 +155,7 @@
 	cursor: default;
 }
 
-.vtour-angleicon {
+.vtour-anglemarkerimage {
 	display: block;
 	cursor: default;
 	height: 10px;

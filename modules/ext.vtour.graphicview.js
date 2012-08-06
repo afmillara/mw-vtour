@@ -6,11 +6,21 @@
  * to control the contents and the behavior when moving and zooming, respectively,
  * and updateLinkPosition([x, y]): [x, y] to translate link coordinates relative to
  * the content to coordinates in the GraphicView.
+ * When an error occurs in the view, the error.vtour event is triggered.
  * @class GraphicView
  */
 var GraphicView = Class.extend( {
 
+	/**
+	 * Opacity (0-1) of an enabled interface button.
+	 * @var {Number} enabledButtonOpacity
+	 */
 	enabledButtonOpacity: 1,
+
+	/**
+	 * Opacity (0-1) of a disabled interface button.
+	 * @var {Number} disabledButtonOpacity
+	 */
 	disabledButtonOpacity: 0.3,
 
 	/**
@@ -44,11 +54,39 @@ var GraphicView = Class.extend( {
 	 */
 	zoom: 1,
 
+	/**
+	 * Last position of the mouse while dragging the view (x, y).
+	 * @var {Array} mouseLast
+	 */
 	mouseLast: null,
-	viewContainer: null,
-	html: null,
 
+	/**
+	 * Container of all the elements of the view.
+	 * @var {$HTML} viewContainer
+	 */
+	viewContainer: null,
+
+	/**
+	 * Layer that contains the background and can be moved.
+	 * @var {$HTML} $movableLayer
+	 */
+	$movableLayer: null,
+
+	/**
+	 * Layer that contains the interface buttons.
+	 * @var {$HTML} $buttonLayer
+	 */
+	$buttonLayer: null,
+
+	/**
+	 * Image that is being loaded at the moment.
+	 * @var {$Image} $imageBeingLoaded
+	 */
 	$imageBeingLoaded: null,
+
+	/**
+	 * Whether a "loading" symbol is being displayed.
+	 * @var {Boolean} loadingBeingDisplayed
 	loadingBeingDisplayed: false,
 
 	/**
@@ -60,6 +98,13 @@ var GraphicView = Class.extend( {
 		this.links = [];
 	},
 
+	/**
+	 * Start loading an image. Trigger the ready.vtour event when the image
+	 * is done loading. Only one image can be loaded at a time
+	 * @param {$Image} $image Image object
+	 * @param {string} imageSrc Path to the image
+	 * @param {function( $Image )} onLoad Function to call when the image is loaded
+	 */
 	loadImage: function( $image, imageSrc, onLoad ) {
 		if ( this.$imageBeingLoaded !== null ) {
 			throw new Error( 'Trying to load an image without waiting for the last one.' );
@@ -84,8 +129,7 @@ var GraphicView = Class.extend( {
 		} );
 		$image.one( 'error', function() {
 			// one() is used instead of error() because sometimes handlers
-			//  fired
-			// for the wrong image, at least in FF14.
+			//  fired for the wrong image
 			var message = mw.message( 'vtour-errordesc-filenotfound',
 				imageNameFromPath( imageSrc ) );
 			that.$imageBeingLoaded = null;
@@ -97,18 +141,33 @@ var GraphicView = Class.extend( {
 	},
 
 	/**
+	 * Call a given function when the view is ready (immediately if the view is ready now).
+	 * @param {function()} callback Function to call
+	 */
+	whenReadyDo: function( callback ) {
+		if ( this.isReady() ) {
+			callback();
+		} else {
+			$( this ).bind( 'ready.vtour', callback );
+		}
+	},
+
+	/**
 	 * Show an error message.
 	 * @param {Message} message MediaWiki message object
 	 */
 	showError: function( message ) {
 		var description = mw.message( 'vtour-errorinside', message.toString() ).toString(); 
-		this.html[0].children().detach();
-		this.html[1].children().detach();
-		this.showMessage( description, this.html[0] );
+		this.$movableLayer.children().detach();
+		this.$buttonLayer.children().detach();
+		this.showMessage( description, this.$movableLayer );
 		$( this ).trigger( 'error.vtour', message );
 		this.error = true;
 	},
 
+	/**
+	 * Show a symbol that indicates that the view is currently loading.
+	 */
 	showLoading: function() {
 		var description = mw.message( 'vtour-loadingtext' ).toString();
 		this.loadingBeingDisplayed = true;
@@ -116,37 +175,57 @@ var GraphicView = Class.extend( {
 			this.viewContainer );
 	},
 
+	/**
+	 * Remove the 'loading' symbol, if present.
+	 */
 	removeLoading: function() {
 		this.loadingBeingDisplayed = false;
 		this.viewContainer.find( '.vtour-loading' ).detach();
 	},
 
+	/**
+	 * Show a 'loading' symbol, and remove everything else from the view.
+	 */
 	showBlockingLoading: function() {
 		var ii;
 		this.showLoading();
-		for ( ii = 0; ii < this.html.length; ii++ ) {
-			this.html[ii].detach();
-		}
+		this.$movableLayer.detach();
+		this.$buttonLayer.detach();
 	},
 
+	/**
+	 * Remove the 'loading' symbol, and restore the removed elements.
+	 */
 	removeBlockingLoading: function() {
 		var ii;
-		for ( ii = 0; ii < this.html.length; ii++ ) {
-			this.viewContainer.append( this.html[ii] );
-		}
+		this.viewContainer.append( this.$movableLayer );
+		this.viewContainer.append( this.$buttonLayer );
 		this.removeLoading();
 	},
 
-	showMessage: function( $html, parent ) {
+	/**
+	 * Add a DOM element to a given parent and center it.
+	 * @param {$HTML} $html DOM element that will be added
+	 * @param {$HTML} $parent Element where the first one will be added
+	 */
+	showMessage: function( $html, $parent ) {
 		$html = $( $html );
-		parent.append( $html );
-		center( $html, parent );
+		$parent.append( $html );
+		center( $html, $parent );
 	},
 
+	/**
+	 * Return whether an image is currently loading.
+	 * @return Boolean Whether an image is currently loading
+	 */
 	isLoading: function() {
 		return this.$imageBeingLoaded !== null;
 	},	
 
+	/**
+	 * Return whether the view is ready.
+	 * @return Boolean Whether the view is ready
+	 */
 	isReady: function() {
 		return !this.isLoading() && !this.error;
 	},
@@ -178,54 +257,58 @@ var GraphicView = Class.extend( {
 		button.toggleClass( 'vtour-button', show );
 	},
 
+	/**
+	 * Get the HTML code for this GraphicView.
+	 * @return {$HTML} HTML node
+	 */
 	getHTML: function() {
 		if ( this.viewContainer === null ) {
 			this.viewContainer = $( '<div></div>' )
 				.addClass( 'vtour-viewcontainer' );
 			this.generate();
-			this.viewContainer.append( this.html[0], this.html[1] );
+			this.viewContainer.append( this.$movableLayer, this.$buttonLayer );
 		}
 		return this.viewContainer;
 	},
 
 	/**
-	 * Generate the HTML code for this GraphicView.
-	 * @return {$Node} Generated HTML node
+	 * Generate the view layers.
 	 */
 	generate: function() {
 		var that = this;
-		var $bgLayer, $nodeLayer, $buttonLayer, $repMovable;
+		var $bgLayer, $nodeLayer, $buttonLayer, $movableLayer;
 
-		$nodeLayer = $( '<div></div>' ).addClass( 'vtour-nodelayer' );
-		$buttonLayer = $( '<div></div>' ).addClass( 'vtour-buttonlayer' );
-		$repMovable = $( '<div></div>' ).addClass( 'vtour-repmovable' );
-
-		this.html = [$repMovable, $buttonLayer];
+		$buttonLayer = this.$buttonLayer =
+			$( '<div></div>' ).addClass( 'vtour-buttonlayer' );
+		$movableLayer = this.$movableLayer =
+			$( '<div></div>' ).addClass( 'vtour-repmovable' );
 
 		$bgLayer = this.generateBackground();
+		$nodeLayer = $( '<div></div>' ).addClass( 'vtour-nodelayer' );
+
 		if ( !$.isArray( $bgLayer ) ) {
 			$bgLayer = [$bgLayer];
 		}
 
-		$repMovable.append.apply( $repMovable, $bgLayer );
-		$repMovable.append( $nodeLayer );
+		$movableLayer.append.apply( $movableLayer, $bgLayer );
+		$movableLayer.append( $nodeLayer );
 
 		this.createDefaultButtons();
 		for ( var i = 0; i < this.buttons.length; i++ ) {
 			$buttonLayer.append( this.buttons[i] );
 		}
 
-		$repMovable.mousedown( function( event ) {
+		$movableLayer.mousedown( function( event ) {
 			that.mouseLast = [event.pageX, event.pageY];
 			return false;
 		} );
 
-		$repMovable.mousewheel( function( event, delta ) {
+		$movableLayer.mousewheel( function( event, delta ) {
 			that.changeZoom( that.zoomGranularity * delta );
 			return false;
 		} );
 
-		$repMovable.bind( 'selectstart dragstart', function( e ) {
+		$movableLayer.bind( 'selectstart dragstart', function( e ) {
 			e.preventDefault();
 		} );
 
@@ -281,6 +364,9 @@ var GraphicView = Class.extend( {
 		}
 	},
 
+	/**
+	 * Reset the view to the original position.
+	 */
 	reset: function() {
 		this.update();
 	},
@@ -339,7 +425,7 @@ var GraphicView = Class.extend( {
 	 * @param {$Node} HTML node
 	 */
 	addOver: function( htmlNode ) {
-		this.html[0].children( '.vtour-nodelayer' ).append( htmlNode );
+		this.$movableLayer.children( '.vtour-nodelayer' ).append( htmlNode );
 	},
 
 	/**
@@ -353,9 +439,9 @@ var GraphicView = Class.extend( {
 		link.setPosCallback( function( position ) {
 			var result, current, index;
 			if ( $.isArray( position[0] ) ) {
-				return that.updateMultiplePoints( position );
+				return that.translateMultiplePoints( position );
 			} else {
-				return that.updateSinglePoint( position );
+				return that.translateSinglePoint( position );
 			}
 
 		} );
@@ -383,12 +469,12 @@ var GraphicView = Class.extend( {
 	 * @return Array|null Array of pairs of coordinates, or null if the
 	 * given coordinates can't be translated
 	 */
-	updateMultiplePoints: function( position ) {
+	translateMultiplePoints: function( position ) {
 		var index;
 		var current;
 		var result = [];
 		for ( index = 0; index < position.length; index++ ) {
-			current = this.updateSinglePoint( position[index] );
+			current = this.translateSinglePoint( position[index] );
 			if ( current === null ) {
 				return null;
 			}
@@ -396,14 +482,15 @@ var GraphicView = Class.extend( {
 		}
 		return result;
 	},
+
 	/**
 	 * Translate a pair of coordinates.
-	 * @param {Array} position Pair of coordinates
+	 * @param {Array} point Pair of coordinates
 	 * @return Array|null Pair of coordinates, or null if the given coordinates
 	 * can't be translated
 	 */
-	updateSinglePoint: function( position ) {
-		throw new Error( 'Not implemented: updateSinglePoint' );
+	translateSinglePoint: function( point ) {
+		throw new Error( 'Not implemented: translateSinglePoint' );
 	}
 } );
 

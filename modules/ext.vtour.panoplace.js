@@ -1,3 +1,4 @@
+
 /**
  * Place whose main content is a panorama.
  * @class CanvasPanoPlace
@@ -5,7 +6,7 @@
 var CanvasPanoPlace = Place.extend( {
 
 	spClass: 'vtour-panonode',
-	iconClass: 'vtour-panoplaceicon',
+	iconClass: 'vtour-panoplacemarker',
 
 	variableAngle: true,
 
@@ -30,7 +31,7 @@ var CanvasPanoPlace = Place.extend( {
 	 * @param {Boolean} visible Whether this place can be seen in a map
 	 * @param {Number[]} location Location of the place in the map ([x, y])
 	 * @param {Map} map Map that contains this place
-	 * @param {$Image} $image Image contained in this PanoPlace
+	 * @param {String} imageSrc URL of the image
 	 */
 	init: function( tour, name, description, visible, location, map, imageSrc ) {
 		this._super( tour, name, description, visible, location, map);
@@ -97,21 +98,9 @@ var CanvasPanoPlace = Place.extend( {
 	applyPosition: function( position ) {
 		var that = this;
 		var _super = that._super;
-		this.whenReadyDo( function() {
+		this.view.whenReadyDo( function() {
 			_super.call( that, position );
 		} );
-	},
-
-	whenReadyDo: function( callback ) {
-		if ( this.isReady() ) {
-			callback();
-		} else {
-			$( this.view ).bind( 'ready.vtour', callback );
-		}
-	},
-
-	isReady: function() {
-		return !!this.view && this.view.isReady() && this._super();
 	}
 } );
 
@@ -122,7 +111,7 @@ var CanvasPanoPlace = Place.extend( {
  */
 var FallbackPanoPlace = ImagePlace.extend( {
 
-	iconClass: 'vtour-panoplaceicon',
+	iconClass: 'vtour-panoplacemarker',
 
 	createView: function() {
 		return new FallbackPanoView( this.imageSrc );

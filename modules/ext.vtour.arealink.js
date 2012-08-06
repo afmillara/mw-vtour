@@ -29,9 +29,6 @@ var CanvasAreaLink = Link.extend( {
 	 */
 	$canvas: null,
 
-
-	// "Public" methods
-
 	/**
 	 * Create a new AreaLink
 	 * @constructor

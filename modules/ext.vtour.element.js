@@ -1,15 +1,9 @@
 
 /**
- * Element that can be added to or removed from a Vtour view.
+ * Element that can be added to or removed from a tour.
  * @class Element
  */
 var Element = Class.extend( {
-
-	/**
-	 * Whether an error has occurred.
-	 * @var {Boolean} error
-	 */
-	error: false,
 
 	/**
 	 * Create an Element.
@@ -29,40 +23,6 @@ var Element = Class.extend( {
 	end: function( $parent ) {
 		//.empty() also destroys the event handlers
 		$parent.children().detach();
-	},
-
-	/**
-	 * Check whether an image has been loaded correctly, and show an error
-	 * message if it hasn't.
-	 * @param {$Image} $image $image object created by a Preloader
-	 * @param {$HTML} $parent Parent element
-	 * @return Boolean true if the image has been loaded, false otherwise
-	 */
-	checkImage: function( $image, $parent ) {
-		var message;
-		if ( $image.data( 'error' ) ) {
-			message = mw.message( 'vtour-errordesc-filenotfound',
-				imageNameFromPath( $image.attr( 'src' ) ) );
-			this.showError( message, $parent );
-			return false;
-		} else {
-			return true;
-		}
-	},
-
-	/**
-	 * Show an error message.
-	 * @param {Message} message MediaWiki message object
-	 * @param {$HTML} parent Parent element where the error message
-	 * will be shown
-	 */
-	showError: function( message, $parent ) {
-		var $description = mw.message( 'vtour-errorinside', message.toString() ).toString(); 
-		var $errorHTML = $( $description );
-		$parent.children().detach();
-		$parent.append( $errorHTML );
-		center( $errorHTML, $parent );	
-		this.error = true;
 	},
 
 	onMouseUp: function() {

@@ -119,7 +119,7 @@ var PanoView = GraphicView.extend( {
 	},
 
 	update: function() {
-		var $repMovable = this.html[0];
+		var $movableLayer = this.$movableLayer;
 		var wRatio, hRatio;
 		if ( this.isReady() ) {
 			if ( this.imageData === null ) {
@@ -127,10 +127,10 @@ var PanoView = GraphicView.extend( {
 			}
 			// isReady is checked again because prepare may cause an error.
 			if ( this.isReady() && this.destBuffer === null
-					|| this.canvas.width != $repMovable.width()
-					|| this.canvas.height != $repMovable.height() ) {
-				this.canvas.width = $repMovable.width();
-				this.canvas.height = $repMovable.height();
+					|| this.canvas.width != $movableLayer.width()
+					|| this.canvas.height != $movableLayer.height() ) {
+				this.canvas.width = $movableLayer.width();
+				this.canvas.height = $movableLayer.height();
 
 				this.updateBuffer();	
 
@@ -169,7 +169,7 @@ var PanoView = GraphicView.extend( {
 	prepare: function() {
 		var possibleMaxZoom;
 
-		this.html[0].addClass( 'vtour-movable' );
+		this.$movableLayer.addClass( 'vtour-movable' );
 
 		this.imageCanvas = $( '<canvas></canvas>' )[0];
 		this.imageCanvas.width = this.image.width;
@@ -357,7 +357,7 @@ var PanoView = GraphicView.extend( {
 		this.ctx.putImageData( this.destBuffer, 0, 0 );
 	},
 
-	updateSinglePoint: function( delta ) { // TODO: Implement again, but in a sane way.
+	translateSinglePoint: function( point ) {
 		var x, y;
 
 		var PI = Math.PI;
@@ -376,13 +376,13 @@ var PanoView = GraphicView.extend( {
 		var diff;
 		var index;
 	
-		delta = translateGeographicCoordinates( delta );
+		point = translateGeographicCoordinates( point );
 	
 		baseLon = this.orientation[0];
 		baseLat = this.orientation[1];
 
-		lon = delta[0]*DEG2RAD;
-		lat = delta[1]*DEG2RAD;
+		lon = point[0]*DEG2RAD;
+		lat = point[1]*DEG2RAD;
 
 		xPx = sin( baseLon );
 		xPy = sin( baseLat ) * cos( baseLon );
@@ -477,15 +477,15 @@ var FallbackPanoView = ImageView.extend( {
 		] );
 	},
 
-	updateSinglePoint: function( delta ) {
+	translateSinglePoint: function( point ) {
 		var width = this.$image.width();
 		var height = this.$image.height();
 		var FOV = this.getFOV();
 		var distanceToCenter;
-		delta = translateGeographicCoordinates( delta );
+		point = translateGeographicCoordinates( point );
 		distanceToCenter = [
-			normalizeAngle( delta[0] * DEG2RAD + FOV[0] / 2 ),
-			normalizeAngle( delta[1] * DEG2RAD + FOV[1] / 2 )
+			normalizeAngle( point[0] * DEG2RAD + FOV[0] / 2 ),
+			normalizeAngle( point[1] * DEG2RAD + FOV[1] / 2 )
 		];
 		return [
 			distanceToCenter[0] / FOV[0] * width,
