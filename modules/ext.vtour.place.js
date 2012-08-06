@@ -30,7 +30,7 @@ var Place = Element.extend( {
 	 * CSS class with the icon for this place.
 	 * @var {String} iconClass
 	 */
-	iconClass: 'vtour-placeicon',
+	iconClass: null,
 
 	/**
 	 * CSS class that will be applied to the parent element.

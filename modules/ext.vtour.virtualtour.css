@@ -115,14 +115,6 @@
 	cursor: pointer;
 }
 
-.vtour-placeicon {
-	display: block;
-	height: 25px;
-	width: 25px;
-	/* @embed */
-	background: url(img/placemarker.png) 0 0 no-repeat;
-}
-
 .vtour-textplaceicon {
 	display: block;
 	height: 25px;
