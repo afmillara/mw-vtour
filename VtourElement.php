@@ -108,7 +108,8 @@ abstract class VtourElement {
 
 	/**
 	 * Determine whether the element contains information that may be used by an human 
-	 * to identify it, such as a name.
+	 * to identify it, such as a name. Unless getFullId is overriden, this requires a
+	 * 'name' attribute in the result and an optional 'id' attribute.
 	 * @return bool Whether the element can be identified
 	 */
 	protected function hasIdInfo() {
@@ -339,7 +340,7 @@ abstract class VtourElement {
 		if ( $this->vtourParser->getParseStrict() ) {
 			foreach ( $tagAttrs as $key => $value ) {
 				if ( !array_key_exists( $key, $validAttrs ) ) {
-					$this->throwBadFormat( 'vtour-errordesc-badattrs',
+					$this->throwBadFormat( 'vtour-errordesc-badattr',
 						$key, $value );
 				}
 			}

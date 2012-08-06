@@ -12,7 +12,7 @@
 class VtourParserTest extends MediaWikiTestCase {
 
 	/**
-	 * Parsing correct Vtours.
+	 * Test correct Vtour markup.
 	 */
 	public function testCorrect() {
 		$vtourParser = $this->parseVtour(
@@ -20,265 +20,192 @@ class VtourParserTest extends MediaWikiTestCase {
 			<panoplace name="aaa" image="fakeImage"/>
 			<imageplace name="bbb" id="aaa" image="fakeImage"/>',
 			array( 'start' => 'aaa', 'id' => 'id' ) );
-		$vtourParser->parse();
 		$this->assertEquals( 1, $vtourParser->getTourData()['start'],
 			'When resolving name/id references, ids are checked first' );
-	}
 
-	public function testNeighbourSymmetry() {
 		$vtourParser = $this->parseVtour(
 			'<imageplace name="place" image="image.jpg"/>'
 			. '<map name=a1 image=b up=a2/>'
 			. '<map name=a2 image=b/>', array() );
-		$vtourParser->parse();
 		$this->assertEquals( 0, $vtourParser->getTourData()['maps'][1]['down'],
 			'When a map doesn\'t specify neighbours, neighbours are set automatically'
 			. ' for it based on references to it from other maps' );
-	}
 
-	public function testNeighbourAsymmetry() {
 		$vtourParser = $this->parseVtour(
 			'<imageplace name="place" image="image.jpg"/>'
 			. '<map name=a1 image=b up=a2/>'
 			. '<map name=a2 image=b down=""/>', array() );
-		$vtourParser->parse();
 		$this->assertEquals( null, $vtourParser->getTourData()['maps'][1]['down'],
 			'When a map specifies a neighbour, even if it\'s null, it is not'
 			. 'overwritten' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testUnexpectedContent() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="place" image="image.jpg"/>'
-			. 'This doesn\'t go here.', array() );
-		$vtourParser->parse();
-	}
-
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testStartNotContained() {
-		$vtourParser = $this->parseVtour(
-			'<map name="Map 1" start="Image" image="image.jpg"/>'
-			. '<map name="Map 2" image="image.png"/>'
-			. '<imageplace name="Image" map="Mapa 2" image="imagen.gif"/>',
-			array() );
-		$vtourParser->parse();
-	}
-
-	public function testStartContained() {
 		$vtourParser = $this->parseVtour(
 			'<map name="Map 1" image="image.jpg"/>'
 			. '<map name="Map 2" start="Image 2" image="image.png"/>'
 			. '<imageplace name="Image 1" map="Map 2" image="image.gif"/>'
 			. '<imageplace name="Image 2" map="Map 2" image="image.gif"/>',
 			array() );
-		$vtourParser->parse();
 		$this->assertEquals( 1, $vtourParser->getTourData()['maps'][1]['start'],
 			'The place specified in the start attribute is used as the start' );
-	}
 
-	public function testNoStart() {
 		$vtourParser = $this->parseVtour(
 			'<map name="Map 1" image="image.jpg"/>'
 			. '<map name="Map 2" image="image.png"/>'
 			. '<imageplace name="Image 1" map="Map 2" image="image.gif"/>'
 			. '<imageplace name="Image 2" map="Map 2" image="image.gif"/>',
 			array() );
-		$vtourParser->parse();
 		$this->assertEquals( 0, $vtourParser->getTourData()['maps'][1]['start'],
 			'When no start attribute exists, the first place in the map is used' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testNoMandatoryProperty() {
-		$vtourParser = $this->parseVtour(
-			'<textplace name="aaa"/>', array() );
-		$vtourParser->parse();
-	}
-
-	public function testMandatoryPropertyAttribute() {
-		$vtourParser = $this->parseVtour(
+		$this->parseVtour(
 			'<textplace name="aaa" text="aaa"/>', array() );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No mandatory property exception occurs when a text attribute is present' );
-	}
-
-	public function testMandatoryPropertyElement() {
-		$vtourParser = $this->parseVtour(
+		
+		$this->parseVtour(
 			'<textplace name="aaa"><text>aaa</text></textplace>', array() );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No mandatory property exception occurs when a text element is present' );
-	}
 
-	public function testMandatoryPropertyBoth() {
-		$vtourParser = $this->parseVtour(
+		$this->parseVtour(
 			'<textplace name="aaa" text="aaa"><text>bbb</text></textplace>', array() );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No mandatory property exception occurs when both a text element'
 			. ' and a text attribute are present' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testInvalidAttribute() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg" zoom="Inv!á!lido"/>',
-			array() );
-		$vtourParser->parse();
-	}
-
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testInvalidAttributeInLink() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg">'
-			. ' <pointlink location="!!!!!" destination="Img"/>'
-			. ' </imageplace>',
-			array() );
-		$vtourParser->parse();
-	}
-
-	public function testInvalidAttributeNonStrict() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg" zoom="Inv!á!lido"/>',
+		$this->parseVtour(
+			'<imageplace name="Img" image="image.jpg" zoom="wrong"/>',
 			array(), false );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No exception occurs for invalid optional attributes when nonstrict' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testInvalidMandatoryAttributeNonStrict() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace image="><>|||||"/>',
-			array(), false );
-		$vtourParser->parse();
-	}
-
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testDependencyError() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg" location="123 456"/>',
-			array() );
-		$vtourParser->parse();
-	}
-
-	public function testDependencyNonStrict() {
-		$vtourParser = $this->parseVtour(
+		$this->parseVtour(
 			'<imageplace name="Img" image="image.jpg" location="123 456"/>',
 			array(), false );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No exception occurs for dependency errors when nonstrict' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testUnexpectedAttribute() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg" attribute="unexpected"/>',
-			array() );
-		$vtourParser->parse();
-	}
-
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testUnexpectedElement() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img" image="image.jpg">'
-				. '<unexpected/>'
-			. '</imageplace>', array() );
-		$vtourParser->parse();
-	}
-
-	public function testUnexpectedAttributeNonStrict() {
-		$vtourParser = $this->parseVtour(
+		$this->parseVtour(
 			'<imageplace name="Img" image="image.jpg" attribute="unexpected"/>',
 			array(), false );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No exception occurs for unexpected attributes when nonstrict' );
-	}
 
-	public function testUnexpectedElementNonStrict() {
-		$vtourParser = $this->parseVtour(
+		$this->parseVtour(
 			'<imageplace name="Img" image="image.jpg">'
-				. '<unexpected/>'
+			. '<unexpected/>'
 			. '</imageplace>', array(), false );
-		$vtourParser->parse();
 		$this->assertTrue( true,
 			'No exception occurs for unexpected elements when nonstrict' );
-	}
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testIdMismatch() {
 		$vtourParser = $this->parseVtour(
 			'<map name="Map 1" image="image.jpg">'
-				. '<imageplace name="Img" image="image.png"'
-				. ' map="Map 2"/>'
-			. '</map>'
-			. '<map name="Map 2" image="image.gif">', array() );
-		$vtourParser->parse();
-	}
-
-	public function testNoIdMismatch() {
-		$vtourParser = $this->parseVtour(
-			'<map name="Map 1" image="image.jpg">'
-				. '<imageplace name="Img" image="image.png"'
-				. ' map="Map 1"/>'
+			. '<imageplace name="Img" image="image.png"'
+			. ' map="Map 1"/>'
 			. '</map>'
 			. '<map name="Map 2" image="image.gif"/>', array() );
-		$vtourParser->parse();
-		$this->assertEquals( 0, $vtourParser->getTourData()['places'][0]['map'] );
+		$this->assertEquals( 0, $vtourParser->getTourData()['places'][0]['map'],
+			'Places can explicitly reference the map that contains them' );
 	}
 
 	/**
-	 * @expectedException VtourParseException
+	 * Test incorrect Vtour markup.
 	 */
-	public function testDuplicate() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Img 1" id="Place" image="image.png"/>'
+	public function testIncorrect() {
+		$this->assertEquals( 'vtour-errordesc-badcontent',
+			$this->parseVtourExpectError(
+				'<imageplace name="place" image="image.jpg"/>'
+				. 'This doesn\'t go here.', array() ),
+			'Invalid content in the root element is detected' );
+
+		$this->assertEquals( 'vtour-errordesc-badstart',
+			$this->parseVtourExpectError(
+				'<map name="Map 1" start="Image" image="image.jpg"/>'
+				. '<map name="Map 2" image="image.png"/>'
+				. '<imageplace name="Image" map="Map 2" image="imagen.gif"/>',
+				array() ),
+			'A map cannot start in a place that is not contained in it' );
+
+		$this->assertEquals( 'vtour-errordesc-notset',
+			$this->parseVtourExpectError(
+				'<textplace/>', array() ),
+			'Mandatory attributes are enforced' );
+
+		$this->assertEquals( 'vtour-errordesc-notsetorchild',
+			$this->parseVtourExpectError(
+				'<textplace name="aaa"/>', array() ),
+			'Textplaces must define a text property' );
+
+		$this->assertEquals( 'vtour-errordesc-invalid',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img" image="image.jpg" zoom="Inv!á!lido"/>',
+				array() ),
+			'Invalid attributes are considered an error in strict mode' );
+
+		$this->assertEquals( 'vtour-errordesc-invalid',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img" image="image.jpg">'
+				. ' <pointlink location="!!!!!" destination="Img"/>'
+				. ' </imageplace>',
+				array() ),
+			'Invalid attributes in links are detected properly' );
+
+		$this->assertEquals( 'vtour-errordesc-invalid',
+			$this->parseVtourExpectError(
+				'', array( 'id' => '!!!' ) ),
+			'Invalid attributes in the root element are detected' );
+
+		$this->assertEquals( 'vtour-errordesc-invalid',
+			$this->parseVtourExpectError(
+				'<imageplace name="aaa" image="|||"/>',
+				array(), false ),
+			'Invalid mandatory attributes are considered an error in nonstrict mode too' );
+
+		$this->assertEquals( 'vtour-errordesc-attrdepends',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img" image="image.jpg" location="123 456"/>',
+				array() ),
+			'Attribute dependency errors cause exceptions' );
+
+		$this->assertEquals( 'vtour-errordesc-badattr',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img" image="image.jpg" attribute="unexpected"/>',
+				array() ),
+			'Unexpected attributes are considered an error in strict mode' );
+
+		$this->assertEquals( 'vtour-errordesc-badtag',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img" image="image.jpg">'
+				. '<unexpected/>'
+				. '</imageplace>', array() ),
+			'Unexpected tags are considered an error in strict mode' );
+
+		$this->assertEquals( 'vtour-errordesc-idmismatch',
+			$this->parseVtourExpectError(
+				'<map name="Map 1" image="image.jpg">'
+				. '<imageplace name="Img" image="image.png"'
+				. ' map="Map 2"/>'
+				. '</map>'
+				. '<map name="Map 2" image="image.gif"/>', array() ),
+			'Places cannot reference a different map than the one that contains them' );
+
+		$this->assertEquals( 'vtour-errordesc-duplicate',
+			$this->parseVtourExpectError(
+				'<imageplace name="Img 1" id="Place" image="image.png"/>'
 				. '<textplace name="Txt 1" id="Place" text="Lorem ipsum"/>',
-			array() );
-		$vtourParser->parse();
-	}
+				array() ),
+			'There can\'t be more than one element of the same type with the same id' );
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testBrokenReference() {
-		$vtourParser = $this->parseVtour(
-			'<imageplace name="Image" image="image.jpg"'
-				. ' map="broken"/>', array() );
-		$vtourParser->parse();
-	}
+		$this->assertEquals( 'vtour-errordesc-refnotfound',
+			$this->parseVtourExpectError(
+				'<imageplace name="Image" image="image.jpg"'
+				. ' map="broken"/>', array() ),
+			'Broken references are detected' );
 
-	/**
-	 * @expectedException VtourParseException
-	 */
-	public function testEmptyTour() {
-		$vtourParser = $this->parseVtour(
-			'', array() );
-		$vtourParser->parse();
+		$this->assertEquals( 'vtour-errordesc-noplaces',
+			$this->parseVtourExpectError(
+				'', array() ),
+			'An empty tour cannot exist' );
 	}
 
 	private function parseVtour( $content, $args, $parseStrict = true ) {
@@ -289,8 +216,19 @@ class VtourParserTest extends MediaWikiTestCase {
 				$this->getMock( 'OutputPage', array( 'addImage' ) )
 			) );
 		$frame = $this->getMock( 'PPFrame' );
-		return new VtourParser( $content, $args,
+		$vtourParser = new VtourParser( $content, $args,
 			$parser, $frame, $parseStrict );
+		$vtourParser->parse();
+		return $vtourParser;
+	}
+
+	private function parseVtourExpectError( $content, $args, $parseStrict = true ) {
+		try {
+			$this->parseVtour( $content, $args, $parseStrict );
+		} catch ( VtourParseException $e ) {
+			return $e->getErrorKey();
+		}
+		return null;
 	}
 }
 
