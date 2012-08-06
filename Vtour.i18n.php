@@ -70,7 +70,7 @@ $messages['en'] = array(
 	'vtour-parseerror-inelement' => '$1 ($2)',
 	'vtour-parseerror-notinelement' => '$1',
 	'vtour-parseerror-idformat' => '"$1"',
-	'vtour-parseerror-noid' => 'an anonymous virtual tour',
+	'vtour-parseerror-noid' => 'a virtual tour with no id',
 
 	'vtour-warning' => 'Vtour warning: $1',
 
@@ -153,7 +153,7 @@ $messages['es'] = array(
 	'vtour-parseerror-inelement' => '$1 ($2)',
 	'vtour-parseerror-notinelement' => '$1',
 	'vtour-parseerror-idformat' => '"$1"',
-	'vtour-parseerror-noid' => 'una visita virtual anónima',
+	'vtour-parseerror-noid' => 'una visita virtual sin id',
 
 	'vtour-warning' => 'Advertencia de Vtour: $1',
 
