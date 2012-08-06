@@ -125,7 +125,7 @@ abstract class VtourElement {
 		if ( $this->hasIdInfo() ) {
 			$type = $this->getGenericType();
 			$name = $this->result['name'];
-			$id = $this->result['id'];
+			$id = isset( $this->result['id'] ) ? $this->result['id'] : null;
 			if ( $id ) {
 				$idMsg = wfMessage( 'vtour-typenameid', $type, $name, $id );
 			} else {
@@ -287,13 +287,12 @@ abstract class VtourElement {
 	protected function throwBadFormat( $errorKey /* ... */ ) {
 		$params = func_get_args();
 		array_shift( $params );
-		$description = wfMessage( $errorKey, $params )->inContentLanguage()->text();
 		$tourId = $this->vtourParser->getTourId();
-		if ( $tourId === null || $this->hasIdInfo() ) {
+		if ( $this->hasIdInfo() ) {
 			$elementIdText = $this->getFullId();
-			throw new VtourParseException( $tourId, $elementIdText, $description );
+			throw new VtourParseException( $tourId, $elementIdText, $errorKey, $params );
 		} else {
-			throw new VtourNoIdParseException( $this->getGenericType(), $description );
+			throw new VtourNoIdParseException( $this->getGenericType(), $errorKey, $params );
 		}
 	}
 
@@ -311,11 +310,12 @@ abstract class VtourElement {
 			$childIndex ) {
 		$tourId = $this->vtourParser->getTourId();
 		$childType = $exception->getElementType();
-		$description = $exception->getDescription();
+		$errorKey = $exception->getErrorKey();
+		$params = $exception->getParams();
 		$elementIdMessage = wfMessage( 'vtour-typenamefromchild', $childType,
 			$childIndex + 1, $this->getFullId() );
 		$elementIdText = $elementIdMessage->inContentLanguage()->text();
-		throw new VtourParseException( $tourId, $elementIdText, $description );
+		throw new VtourParseException( $tourId, $elementIdText, $errorKey, $params );
 	}
 
 	/**

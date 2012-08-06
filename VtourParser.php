@@ -319,27 +319,48 @@ class VtourParser {
 class VtourParseException extends Exception {
 
 	/**
+	 * Error key
+	 * @var string $errorKey
+	 */
+	protected $errorKey;
+
+	/**
 	 * Create a VtourParseException.
 	 * @param string $tourId Tour id
 	 * @param string $elementIdText Human-readable identification information
 	 * for the element
-	 * @param string $description Description of the problem
+	 * @param string $errorKey Name of the error
+	 * @param array $params Error message parameters
 	 */
-	public function __construct( $tourId, $elementIdText, $description ) {
+	public function __construct( $tourId, $elementIdText, $errorKey, $params ) {
 		if ( $tourId !== null ) {
-			if ( $elementIdText !== null ) {
-				$tourIdMsg = wfMessage( 'vtour-parseerror-idandelement', $tourId,
-					$elementIdText );
-			} else {
-				$tourIdMsg = wfMessage( 'vtour-parseerror-idnoelement', $tourId );
-			}
+			$tourIdMsg = wfMessage( 'vtour-parseerror-idformat', $tourId );
 		} else {
 			$tourIdMsg = wfMessage( 'vtour-parseerror-noid' );
 		}
+		$tourIdStr = $tourIdMsg->inContentLanguage()->text();
 
-		$errorMessage = wfMessage( 'vtour-parseerror', $tourIdMsg->inContentLanguage()->text(),
+		if ( $elementIdText !== null ) {
+			$fullIdMsg = wfMessage( 'vtour-parseerror-inelement', $tourIdStr,
+				$elementIdText );
+		} else {
+			$fullIdMsg = wfMessage( 'vtour-parseerror-notinelement', $tourIdStr );
+		}
+
+		$description = wfMessage( $errorKey, $params )->inContentLanguage()->text();
+		$errorMessage = wfMessage( 'vtour-parseerror', $fullIdMsg->inContentLanguage()->text(),
 			$description );
+
 		parent::__construct( $errorMessage->inContentLanguage()->text() );
+		$this->errorKey = $errorKey;
+	}
+
+	/**
+	 * Return the error key of the particular problem.
+	 * @return string Error key
+	 */
+	public function getErrorKey() {
+		return $this->errorKey;
 	}
 }
 
@@ -356,19 +377,26 @@ class VtourNoIdParseException extends Exception {
 	protected $elementType;
 	
 	/**
-	 * Description of the problem.
-	 * @var string $description
+	 * Error key.
+	 * @var string $errorKey
 	 */
-	protected $description;
+	protected $errorKey;
+
+	/**
+	 * Error message parameters.
+	 * @var array $params
+	 */
+	protected $params;
 
 	/**
 	 * Create a new VtourNoIdParseException.
-	 * @param String $elementType String describing the element type
-	 * @param string $description Description
+	 * @param string $errorKey Name of the error
+	 * @param array $params Error message parameters
 	 */
-	public function __construct( $elementType, $description ) {
+	public function __construct( $elementType, $errorKey, $params ) {
 		$this->elementType = $elementType;
-		$this->description = $description;
+		$this->errorKey = $errorKey;
+		$this->params = $params;
 	}
 	
 	/**
@@ -380,11 +408,19 @@ class VtourNoIdParseException extends Exception {
 	}
 	
 	/**
-	 * Get the problem description.
-	 * @return string Description of the problem
+	 * Return the error key of the particular problem.
+	 * @return string Error key
 	 */
-	public function getDescription() {
-		return $this->description;
+	public function getErrorKey() {
+		return $this->errorKey;
+	}
+
+	/**
+	 * Return the error message parameters.
+	 * @return array Parameters
+	 */
+	public function getParams() {
+		return $this->params;
 	}
 }
 

@@ -67,9 +67,10 @@ $messages['en'] = array(
 	'vtour-attributetype-polygoncoordinates' => 'a list of pairs of integers',
 
 	'vtour-parseerror' => 'Vtour parse error in $1: $2',
-	'vtour-parseerror-idandelement' => '"$1" ($2)',
-	'vtour-parseerror-idnoelement' => '"$1"',
-	'vtour-parseerror-noid' => 'an unnamed tour',
+	'vtour-parseerror-inelement' => '$1 ($2)',
+	'vtour-parseerror-notinelement' => '$1',
+	'vtour-parseerror-idformat' => '"$1"',
+	'vtour-parseerror-noid' => 'an anonymous virtual tour',
 
 	'vtour-warning' => 'Vtour warning: $1',
 
@@ -149,9 +150,10 @@ $messages['es'] = array(
 	'vtour-attributetype-polygoncoordinates' => 'una lista de pares de enteros',
 
 	'vtour-parseerror' => 'Error de Vtour en $1: $2',
-	'vtour-parseerror-idandelement' => '"$1" ($2)',
-	'vtour-parseerror-idnoelement' => '"$1"',
-	'vtour-parseerror-noid' => 'una visita virtual sin nombre',
+	'vtour-parseerror-inelement' => '$1 ($2)',
+	'vtour-parseerror-notinelement' => '$1',
+	'vtour-parseerror-idformat' => '"$1"',
+	'vtour-parseerror-noid' => 'una visita virtual anónima',
 
 	'vtour-warning' => 'Advertencia de Vtour: $1',
 

@@ -137,6 +137,18 @@ class VtourParserTest extends MediaWikiTestCase {
 		$vtourParser->parse();
 	}
 
+	/**
+	 * @expectedException VtourParseException
+	 */
+	public function testInvalidAttributeInLink() {
+		$vtourParser = $this->parseVtour(
+			'<imageplace name="Img" image="image.jpg">'
+			. ' <pointlink location="!!!!!" destination="Img"/>'
+			. ' </imageplace>',
+			array() );
+		$vtourParser->parse();
+	}
+
 	public function testInvalidAttributeNonStrict() {
 		$vtourParser = $this->parseVtour(
 			'<imageplace name="Img" image="image.jpg" zoom="Inv!á!lido"/>',
