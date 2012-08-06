@@ -180,7 +180,8 @@ var Link = Class.extend({
 	 */
 	checkHover: function() {
 		var that = this;
-		var shouldChange = this.hovering !== !!this.popup;
+		var popupIsActive = !!this.popup;
+		var shouldChange = ( this.hovering !== popupIsActive );
 		var changeAfterWaiting, wait;
 		if ( shouldChange ) {
 			if ( this.lastTime === null ) {

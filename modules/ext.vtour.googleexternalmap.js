@@ -217,7 +217,7 @@ GoogleExternalMap.loadStarted = false;
 GoogleExternalMap.loadGoogleMaps = function( onLoad, onError ){
 	var callback;
 	GoogleExternalMap.gmaps = GoogleExternalMap.gmaps
-			|| ( window.google ? window.google.maps : null );
+		|| ( window.google ? window.google.maps : null );
 	callback = function() {
 		GoogleExternalMap.MapOverlay = GoogleExternalMap.initMapOverlay();
 		onLoad();
@@ -274,5 +274,5 @@ GoogleExternalMap.initMapOverlay = function() {
 
 GoogleExternalMap.canAddHTML = true;
 
-ExternalMap.classes['Google'] = GoogleExternalMap;
+ExternalMap.classes.Google = GoogleExternalMap;
 

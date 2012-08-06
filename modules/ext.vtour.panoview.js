@@ -36,9 +36,9 @@ var PanoView = GraphicView.extend( {
 	baseZoom: 200,
 
 	/**
- 	 * Current angle of the panorama viewer.
- 	 * @var {Array} orientation
- 	 */
+	 * Current angle of the panorama viewer.
+	 * @var {Array} orientation
+	 */
 	orientation: [0, 0],
 	zoom: 200,
 
@@ -122,7 +122,7 @@ var PanoView = GraphicView.extend( {
 		var $repMovable = this.html[0];
 		var wRatio, hRatio;
 		if ( this.isReady() ) {
-	    		if ( this.imageData === null ) {
+			if ( this.imageData === null ) {
 				this.prepare();
 			}
 			// isReady is checked again because prepare may cause an error.

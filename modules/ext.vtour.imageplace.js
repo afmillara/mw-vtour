@@ -14,9 +14,9 @@ var ImagePlace = Place.extend( {
 	},
 
 	/**
- 	 * ImageView used in this ImagePlace.
- 	 * @var {ImageView} view
- 	 */
+	 * ImageView used in this ImagePlace.
+	 * @var {ImageView} view
+	 */
 	view: null,
 
 	imageSrc: null,

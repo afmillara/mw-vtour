@@ -105,7 +105,7 @@ var dotProduct = function(v1, v2){
 		product += v1[index] * v2[index];
 	}
 	return product;
-}
+};
 
 /**
  * Calculate the length of the hypotenuse of a right-angled triangle,
@@ -118,7 +118,7 @@ var hypotenuse = function( c1, c2 ) {
 	var powC1 = c1 * c1;
 	var powC2 = c2 * c2;
 	return Math.sqrt( powC1 + powC2 );
-}
+};
 
 /**
  * Set the position of an element.
@@ -137,7 +137,7 @@ var setPosition = function( $element, position, center ) {
 		'left': position[0] - ( center ? ( $element.width() / 2 ) : 0 ),
 		'top': position[1] - ( center ? ( $element.height() / 2 ) : 0 )
 	} );
-}
+};
 
 /**
  * Scroll a view to reveal a different area of its contents.
@@ -157,7 +157,7 @@ var scroll = function( $element, movement, isAbsolute ) {
 	} 
 	$element.scrollLeft( topLeftScroll[0] );
 	$element.scrollTop( topLeftScroll[1] );
-}
+};
 
 /**
  * Calculate a point in a circumference.
@@ -171,9 +171,9 @@ var scroll = function( $element, movement, isAbsolute ) {
 var calculateCircumferencePoint = function( center, radius, angle ) {
 	return [
 		center[0] + radius * Math.cos( angle - Math.PI / 2 ),
-		center[1] + radius * Math.sin( angle - Math.PI / 2 ),
+		center[1] + radius * Math.sin( angle - Math.PI / 2 )
 	];
-}
+};
 
 /**
  * Calculate the angle between the line from a reference point to another point
@@ -190,7 +190,7 @@ var calculateAngle = function( reference, point ) {
 	} else {
 		return null;
 	}
-}
+};
 
 /**
  * Sum the elements of two arrays (a[i] + b[i]) of the same length, or the elements
@@ -218,7 +218,7 @@ var sum = function( a, b ) {
 		}
 	}
 	return c;
-}
+};
 
 /**
  * Multiply all the elements of an array by a given factor (array[i] * factor).
@@ -236,7 +236,7 @@ var mult = function( array, factor ) {
 		result.push( array[index] * factor );
 	}
 	return result;
-}
+};
 
 /**
  * Make a shallow copy of an object.
@@ -247,7 +247,7 @@ var clone = function( object ) {
 	var Clone = function(){};
 	Clone.prototype = object;
 	return new Clone();
-}
+};
 
 // FIXME: It would be better to send the image name and just recover it here.
 /**
@@ -259,7 +259,7 @@ var imageNameFromPath = function( path ) {
 	// MediaWiki image names can't contain slashes, so this should work
 	var lastSlash = path.lastIndexOf( '/' );
 	return decodeURIComponent( path.substr( lastSlash + 1 ) );
-}
+};
 
 /**
  * Calculate an angle that is equivalent to a given one and is contained
@@ -273,7 +273,7 @@ var normalizeAngle = function( angle ) {
 		angle = Math.PI * 2 + angle;
 	}
 	return angle;
-}
+};
 
 /**
  * Calculate a "mean point" of a series of 2D points, defined as the point
@@ -290,7 +290,7 @@ var calculateMeanPoint = function( points ) {
 		}
 	}
 	return mult( total, 1 / points.length );
-}
+};
 
 /**
  * Translate a pair of geographical coordinates to (or from) the [lon, lat] format
@@ -305,7 +305,7 @@ var translateGeographicCoordinates = function( coordinates ) {
 		coordinates.reverse();
 	}
 	return coordinates;
-}
+};
 
 /**
  * Given a numerical value, return the nearest number in the range [min, max].
@@ -321,7 +321,7 @@ var limitToRange = function( value, min, max ) {
 		value = max;
 	}
 	return value;
-}
+};
 
 /**
  * Find whether the browser supports the HTML5 Canvas element.
@@ -330,5 +330,5 @@ var limitToRange = function( value, min, max ) {
  */
 var supports2DCanvas = function() {
 	return !!window.CanvasRenderingContext2D;
-}
+};
 

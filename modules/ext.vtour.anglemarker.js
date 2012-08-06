@@ -166,8 +166,8 @@ var BaseAngleMarker = Class.extend( {
 	// "Private" methods	
 
 	/**
- 	 * Return the absolute location of the marker.
- 	 * @return {Array} Absolute location of the marker
+	 * Return the absolute location of the marker.
+	 * @return {Array} Absolute location of the marker
 	 */
 	getAbsoluteLocation: function() {
 		var offset;

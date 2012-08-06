@@ -112,8 +112,7 @@ var CanvasPanoPlace = Place.extend( {
 
 	isReady: function() {
 		return !!this.view && this.view.isReady() && this._super();
-	},
-
+	}
 } );
 
 /**

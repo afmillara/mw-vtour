@@ -101,7 +101,6 @@ var Polygon = Class.extend( {
 		var boundingBox = calculateBoundingBox( this.vertices );
 		var firstVertex = this.vertices[0];
 		var vertexIndex, currentVertex;
-		var boundingBox = calculateBoundingBox( this.vertices );
 
 		if ( boundingBox.width >= this.maxCanvasSize
 			|| boundingBox.height >= this.maxCanvasSize ) {

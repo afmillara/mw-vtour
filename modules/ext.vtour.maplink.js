@@ -34,7 +34,7 @@ var MapLink = PointLink.extend( {
 		var markerLeft, markerTop;
 		var $icon = $('<div></div>').addClass(this.destination.getIconClass()).css( {
 			'top' : 0,
-			'left' : 0,
+			'left' : 0
 		} );
 		this.$currentPlaceMarker = $('<div></div>')
 			.addClass('vtour-currentplacemarker').hide();
@@ -43,7 +43,7 @@ var MapLink = PointLink.extend( {
 		this.$currentPlaceMarker.css( {
 			'position' : 'absolute',
 			'left' : -markerLeft,
-			'top' : -markerTop,
+			'top' : -markerTop
 		} );
 		if (this.destination.angle !== null){
 			var that = this;
@@ -122,6 +122,6 @@ var MapLink = PointLink.extend( {
 			ret.push( this.angleMarker.getHTML() );
 		}
 		return ret;
-	},
+	}
 } );
 

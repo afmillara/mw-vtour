@@ -174,9 +174,9 @@ var Place = Element.extend( {
 	},
 
 	/**
- 	 * Change the zoom level.
- 	 * @param {Number} zoom Zoom level
- 	 */
+	 * Change the zoom level.
+	 * @param {Number} zoom Zoom level
+	 */
 	changeZoom: function( zoom ) {
 	},
 

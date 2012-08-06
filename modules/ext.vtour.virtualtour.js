@@ -66,7 +66,7 @@ var VirtualTour = Class.extend( {
 			var ii, currPlace;
 			var linkParts = that.extractTextLinkParams( $link.attr( 'href' ), inside );
 			if ( ( inside && linkParts.tour === null )
-					 || linkParts.tour === that.id ) {
+					|| linkParts.tour === that.id ) {
 				place = that.findPlace( linkParts.place );
 				if ( place ) {
 					position = that.createPositionFromStrings( linkParts );		
@@ -75,7 +75,7 @@ var VirtualTour = Class.extend( {
 					textlink.getHTML();
 					if ( inside ) {
 						for ( ii = 0; ii < that.textPlaces.length; ii++ ) {
-							var currPlace = that.textPlaces[ii];
+							currPlace = that.textPlaces[ii];
 							if ( currPlace.registerLinkIfInside( textlink ) ) {
 								break;
 							}
@@ -104,7 +104,7 @@ var VirtualTour = Class.extend( {
 
 		this.main.addClass( 'vtour-main' );
 
-    		that.move( that.initialNode );
+		this.move( that.initialNode );
 		$( that ).trigger( 'load.vtour' );
 	},
 
@@ -209,7 +209,7 @@ var VirtualTour = Class.extend( {
 				case 'pano':
 					image = jsonPlace.image;
 					place = new PanoPlace
-						( that, name, description, visible, location, map, image )
+						( that, name, description, visible, location, map, image );
 					break;
 				case 'text':
 					place = new TextPlace( that, name, description, visible,
@@ -227,7 +227,7 @@ var VirtualTour = Class.extend( {
 			initialPosition = {
 				zoom: jsonPlace.zoom,
 				center: jsonPlace.center
-			}
+			};
 			place.setInitialPosition( initialPosition );
 
 			if ( jsonPlace.tooltip !== null ) {

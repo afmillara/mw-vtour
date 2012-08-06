@@ -262,15 +262,15 @@ var GraphicView = Class.extend( {
 	},
 
 	/**
- 	 * Update the zoom level in the view.
- 	 */
+	 * Update the zoom level in the view.
+	 */
 	updateZoom: function() {
 		this.toggleButton( this.incButton, this.canZoomIn() );
 		this.toggleButton( this.decButton, this.canZoomOut() );
 	},
 
 	onMouseUp: function() {
-	    this.mouseLast = null;
+		this.mouseLast = null;
 	},
 
 	onMouseMove: function(x, y){
@@ -363,7 +363,7 @@ var GraphicView = Class.extend( {
 		if ( !$.isArray( elements ) ) {
 			elements = [elements];
 		}
-		for ( var index = 0; index < elements.length; index++ ) {
+		for ( index = 0; index < elements.length; index++ ) {
 			this.addOver( elements[index] );
 		}
 	},
