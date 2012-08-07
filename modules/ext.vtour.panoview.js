@@ -384,25 +384,25 @@ var PanoView = GraphicView.extend( {
 		lon = point[0]*DEG2RAD;
 		lat = point[1]*DEG2RAD;
 
-		xPx = sin( baseLon );
-		xPy = sin( baseLat ) * cos( baseLon );
-		yPy = cos( baseLat );
-		zPx = cos( baseLon );
-		zPy = -sin( baseLat ) * sin( baseLon );
+		var xPx = sin( baseLon );
+		var xPy = sin( baseLat ) * cos( baseLon );
+		var yPx = cos( baseLon );
+		var yPy = -sin( baseLat ) * sin( baseLon );
+		var zPy = cos( baseLat );
 
 		dX = this.canvas.width / 2;
 		dY = this.canvas.height / 2;
 
 		basePos = [
 			-this.zoom * cos( baseLat ) * cos( baseLon ),
-			this.zoom * sin( baseLat ),
-			this.zoom * cos( baseLat ) * sin( baseLon )
+			this.zoom * cos( baseLat ) * sin( baseLon ),
+			this.zoom * sin( baseLat )
 		];
 
 		linkPos = [
 			-cos( lat ) * cos( lon ),
-			sin( lat ),
-			cos( lat ) * sin( lon )
+			cos( lat ) * sin( lon ),
+			sin( lat )
 		];
 
 		//Intersection
@@ -419,18 +419,18 @@ var PanoView = GraphicView.extend( {
 		if ( baseLat === PI/2 ){ // yPy ~= 0
 			if ( baseLon === 0 ){ // xPx ~= 0
 				y = diff[0] / xPy;
-				x = diff[2] / zPx;
-			} else if ( baseLon === PI / 2 ) { // zPx ~= 0
-				y = diff[2] / zPy;
+				x = diff[1] / yPx;
+			} else if ( baseLon === PI / 2 ) { // yPx ~= 0
+				y = diff[1] / yPy;
 				x = diff[0] / xPx;
 			} else {
-				y = ( diff[2] * xPx / zPx - diff[0] ) / ( zPy * xPx / zPx - xPy );
+				y = ( diff[1] * xPx / yPx - diff[0] ) / ( yPy * xPx / yPx - xPy );
 				x = ( diff[0] - xPy * y ) / xPx;
 			}
 		} else {
-			y = diff[1] / yPy;
+			y = diff[2] / zPy;
 			if ( baseLon === 0 ){ // xPx ~= 0
-				x = diff[2] / zPx;
+				x = diff[1] / yPx;
 			} else {
 				x = ( diff[0] - xPy * y ) / xPx;
 			}

@@ -53,11 +53,11 @@ var CanvasPanoPlace = Place.extend( {
 
 	/**
 	 * Change the current angle.
-	 * @param {Number} angle New angle (in radians)
+	 * @param {Number} angle New angle (in degrees)
 	 */
-	changeAngle: function( angle ){ // FIXME: rad or deg?
+	changeAngle: function( angle ) {
 		if ( !this.error ) {
-			this.view.changeAngle( angle - this.baseAngle );
+			this.view.changeAngle( angle * DEG2RAD - this.baseAngle );
 		}
 	},
 

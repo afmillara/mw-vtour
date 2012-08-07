@@ -114,7 +114,7 @@ var MapLink = PointLink.extend( {
 				that.follow();
 			} );
 			$( this.angleMarker ).bind( 'angleChanged.vtour', function( e, angle ) {
-				that.destination.changeAngle( angle + that.rotationAngle );
+				that.destination.changeAngle( ( angle + that.rotationAngle ) / DEG2RAD );
 			} );
 			$( this.destination ).bind( 'angleChanged.vtour', function() {
 				that.updateAngleMarker();
