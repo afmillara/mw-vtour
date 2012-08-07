@@ -374,7 +374,7 @@ var PanoView = GraphicView.extend( {
 
 		var baseLon, baseLat;
 		var lon, lat;
-		var xPx, xPy, yPy, zPx, zPy;
+		var xPx, xPy, yPx, yPy, zPy;
 		var dX, dY;
 
 		var basePos, linkPos;
@@ -391,11 +391,11 @@ var PanoView = GraphicView.extend( {
 		lon = point[0]*DEG2RAD;
 		lat = point[1]*DEG2RAD;
 
-		var xPx = sin( baseLon );
-		var xPy = sin( baseLat ) * cos( baseLon );
-		var yPx = cos( baseLon );
-		var yPy = -sin( baseLat ) * sin( baseLon );
-		var zPy = cos( baseLat );
+		xPx = sin( baseLon );
+		xPy = sin( baseLat ) * cos( baseLon );
+		yPx = cos( baseLon );
+		yPy = -sin( baseLat ) * sin( baseLon );
+		zPy = cos( baseLat );
 
 		dX = this.canvas.width / 2;
 		dY = this.canvas.height / 2;

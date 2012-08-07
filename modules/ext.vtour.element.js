@@ -23,6 +23,6 @@ var Element = Class.extend( {
 	end: function( $parent ) {
 		//.empty() also destroys the event handlers
 		$parent.children().detach();
-	},
+	}
 } );
 

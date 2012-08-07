@@ -91,6 +91,7 @@ var GraphicView = Class.extend( {
 	/**
 	 * Whether a "loading" symbol is being displayed.
 	 * @var {Boolean} loadingBeingDisplayed
+	 */
 	loadingBeingDisplayed: false,
 
 	/**
