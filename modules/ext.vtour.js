@@ -1,32 +1,40 @@
 
 /**
- * Initialization code for virtual tours.
+ * Initialization code for Vtour.
  */
 $( document ).ready( function() {
-	var vtour, $vtourNode, tourId;
-	var $main, $secondary, $map;
-	var $json, jsonData, $htmlElements;
-	var $error, $vtourLinks;
+	var vtour, tourId;
+	var $main, $secondary, $map, $error;
+	var $json, $html;
+	var tourData, $htmlElements;
+	var $vtourLinks;
+	var position = null;
+
 	// mw.util.$content can be null somehow in 1.17.0
 	var $content = mw.util.$content || $( document );
-	var position = null;
-	var $vtourNodes = $content.find( 'div[id^="vtour-tour-"]' );
-	$vtourNodes.each( function() {
+
+	// Collection of nodes whose ids start with 'vtour-tour-'
+	$content.find( 'div[id^="vtour-tour-"]' ).each( function() {
 		$vtourNode = $( this );
 		tourId = $vtourNode.attr( 'id' ).split( '-' )[2];
 
+		// Finding all the containers for tour elements
 		$main = $vtourNode.find( '#vtour-main-' + tourId );
 		$secondary = $vtourNode.find( '#vtour-secondary-' + tourId );
 		$map = $vtourNode.find( '#vtour-map-' + tourId );
-		
-		$json = $vtourNode.find( '#vtour-json-' + tourId );
-		jsonData = $.parseJSON( $json.html() );
-			
-		$htmlElements = $vtourNode.find( '#vtour-html-' + tourId ).children();
-		
 		$error = $vtourNode.find( '#vtour-error-' + tourId );
+		
+		// Finding the tour data containers
+		$json = $vtourNode.find( '#vtour-json-' + tourId );
+		$html = $vtourNode.find( '#vtour-html-' + tourId );
 
+		tourData = $.parseJSON( $json.html() );
+		$htmlElements = $html.children();
+
+		// Extracting all Vtour links to the same page
 		$vtourLinks = $content.find( 'a.vtour-textlink-local' );
+
+		// Marking the links that are directly inside this tour
 		$vtourLinks.filter( function() {
 			var closest = $( this ).closest( 'div[id^="vtour-tour-"]' ); 
 			var thisTourId = $vtourNode.attr( 'id' );
@@ -34,8 +42,11 @@ $( document ).ready( function() {
 			return thisTourId === closestId;
 		} ).data( 'vtour-textlink-in', tourId );
 
-		vtour = new VirtualTour( jsonData, $htmlElements, $vtourLinks );
+		// Creating the tour
+		vtour = new VirtualTour( tourData, $htmlElements, $vtourLinks );
 
+		// Extracting the initial position from the url, and setting the
+		// initial place
 		if ( mw.util.getParamValue( 'vtourId' ) === tourId ) {
 			vtour.setInitialPlace( mw.util.getParamValue( 'vtourPlace' ) );
 			position = {
@@ -44,7 +55,10 @@ $( document ).ready( function() {
 			};
 		}
 
+		// Starting the tour
 		vtour.start( $main, $secondary, $map, $error );
+
+		// Setting the initial position
 		if ( position !== null ) {
 			vtour.setPositionFromStrings( position );
 		}

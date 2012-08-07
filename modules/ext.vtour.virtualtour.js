@@ -17,9 +17,22 @@ var VirtualTour = Class.extend( {
 	 */
 	currentPlace: null,
 
+	/**
+	 * id -> place map.
+	 * @var {Object} placesById
+	 */
 	placesById: null,
+
+	/**
+	 * name -> place map.
+	 * @var {Object} placesByName
+	 */
 	placesByName: null,
 
+	/**
+	 * Array of all the TextPlaces in the tour
+	 * @var {Array} textPlaces
+	 */
 	textPlaces: null,
 
 	/**
@@ -35,6 +48,7 @@ var VirtualTour = Class.extend( {
 		this.placesById = {};
 		this.placesByName = {};
 		this.textPlaces = [];
+
 		$( document ).mouseup( function() {
 			var current = that.currentPlace;
 			if ( current !== null ){
@@ -46,6 +60,7 @@ var VirtualTour = Class.extend( {
 				} );
 			}
 		} );
+
 		$( document ).mousemove( function( event ) {
 			var current = that.currentPlace;
 			if ( that.currentPlace !== null ){
@@ -57,7 +72,9 @@ var VirtualTour = Class.extend( {
 				} );
 			}
 		} );
+
 		this.createNodesFromJSON( tourData );
+
 		$localLinks.each( function() {
 			var place, textlink;
 			var $link = $( this );
@@ -108,12 +125,22 @@ var VirtualTour = Class.extend( {
 		$( that ).trigger( 'load.vtour' );
 	},
 
+	/**
+	 * Show an error message in the appropriate container.
+	 * @param {Message} message MediaWiki message object
+	 */
 	showError: function( message ) {
 		var errorContent = mw.message( 'vtour-warning', message.toString() ).toString();
 		var errorHTML = mw.message( 'vtour-erroroutside', errorContent.toString() ).toString();
 		this.error.append( errorHTML );
 	},
 
+	/**
+	 * Take either a Place object or an id/name string and return the
+	 * matching Place object.
+	 * @param {String|Place} place Place object or id/name string
+	 * @return Place|null Place object, or null if it doesn't exist in this tour
+	 */
 	normalizePlace: function( place ) {
 		if ( place === null ) {
 			return null;
@@ -129,8 +156,8 @@ var VirtualTour = Class.extend( {
 	},
 
 	/**
-	 * Change the 'current place' displayed.
-	 * @param {Place|String} place New current place (Place object or id/name)
+	 * Change the current place.
+	 * @param {Place|String} place New place (Place object or id/name)
 	 */
 	move: function( place ) {
 		place = this.normalizePlace( place );
@@ -250,11 +277,6 @@ var VirtualTour = Class.extend( {
 		$.each( jsonTour.places, function( i, jsonPlace ) {
 			var place = places[i];
 			place.links = that.createLinks( places, jsonPlace );
-			/*if ( place.description !== null ) {
-				place.description.links =
-						that.createLinks( places, jsonPlace['description'] );
-			}
-			*/
 			$.each( ['up', 'down'], function( j, link ) {
 				if ( jsonPlace[link] !== null ) {
 					place[link] = places[jsonPlace[link]];
@@ -283,7 +305,7 @@ var VirtualTour = Class.extend( {
 
 	/**
 	 * Set the position in the current place.
-	 * @param {Position} position Object: {"center": Array ([x, y]), "zoom": number}
+	 * @param {Position} position Object: {center: Array ([x, y]), zoom: number}
 	 */
 	setPosition: function( position ) {
 		this.currentPlace.setPosition( position );
@@ -293,31 +315,33 @@ var VirtualTour = Class.extend( {
 	 * Set the position in the current place from a position string.
 	 * @param String strPosition Position string
 	 */
-	setPositionFromStrings: function( strPosition ) {
+	setPositionFromStrings: function( positionStrings ) {
 		this.currentPlace.setPosition
-			( this.createPositionFromStrings( strPosition ) );
+			( this.createPositionFromStrings( positionStrings ) );
 	},
 
 	/**
 	 * Create a position from a string.
-	 * @param String strPosition Position string
-	 * @return Position Created position object
+	 * @param Object positionStrings Object that contains the position data
+	 * as strings ({center: String, zoom: String})
+	 * @return Object Created position object
+	 * ({center: Array, zoom: Number})
 	 */
-	createPositionFromStrings: function( strPosition ) {
+	createPositionFromStrings: function( positionStrings ) {
 		var centerArr;
 		var position = {
 			center: null,
 			zoom: null
 		};
-		if ( strPosition.center !== null ) {
-			centerArr = strPosition.center.split( ',' );
+		if ( positionStrings.center !== null ) {
+			centerArr = positionStrings.center.split( ',' );
 			if ( centerArr.length === 2 ) {
 				centerArr[0] = parseFloat( centerArr[0] ) || 0;
 				centerArr[1] = parseFloat( centerArr[1] ) || 0;
 				position.center = centerArr;
 			}
-			if ( strPosition.zoom !== null ) {
-				position.zoom = parseFloat( strPosition.zoom ) || 0;
+			if ( positionStrings.zoom !== null ) {
+				position.zoom = parseFloat( positionStrings.zoom ) || 0;
 			}
 		}
 		return position;
