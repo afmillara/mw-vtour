@@ -247,7 +247,12 @@ var PanoView = GraphicView.extend( {
 		if ( !this.isReady() ) {
 			return;
 		}
+
 		if ( isAbsolute ) {
+			// FIXME: Internally, longitude is -180 E to 180 W, and latitude
+			// is -90 N to 90 S, while the standard is the opposite. This should
+			// be fixed in show() and similar places rather than here.
+			movement = mult( movement, -1 );
 			movement = translateGeographicCoordinates( movement );
 		}
 		for (var i = 0; i < 2; i++ ) {
@@ -278,7 +283,9 @@ var PanoView = GraphicView.extend( {
 	},
 
 	changeAngle: function( angle ) {
-		var center = translateGeographicCoordinates( [angle, this.orientation[1]] );
+		var center = mult(
+			translateGeographicCoordinates( [angle, this.orientation[1]] ), -1
+		);
 		this.move( center, true );	
 	},
 
@@ -376,7 +383,7 @@ var PanoView = GraphicView.extend( {
 		var diff;
 		var index;
 	
-		point = translateGeographicCoordinates( point );
+		point = mult( translateGeographicCoordinates( point ), -1 );
 	
 		baseLon = this.orientation[0];
 		baseLat = this.orientation[1];
@@ -471,10 +478,10 @@ var FallbackPanoView = ImageView.extend( {
 		var width = this.$image.width();
 		var height = this.$image.height();
 		contentPoint = sum( contentPoint, [-width / 2, -height / 2] );
-		return translateGeographicCoordinates( [
+		return mult( translateGeographicCoordinates( [
 			contentPoint[0] / width * FOV[0] / DEG2RAD,
 			contentPoint[1] / height * FOV[1] / DEG2RAD
-		] );
+		] ), -1 );
 	},
 
 	translateSinglePoint: function( point ) {
@@ -482,7 +489,7 @@ var FallbackPanoView = ImageView.extend( {
 		var height = this.$image.height();
 		var FOV = this.getFOV();
 		var distanceToCenter;
-		point = translateGeographicCoordinates( point );
+		point = mult( translateGeographicCoordinates( point ), -1 );
 		distanceToCenter = [
 			normalizeAngle( point[0] * DEG2RAD + FOV[0] / 2 ),
 			normalizeAngle( point[1] * DEG2RAD + FOV[1] / 2 )
