@@ -322,21 +322,21 @@ var PanoView = GraphicView.extend( {
 
 		var basePos = [
 			-this.zoom * cos( baseLat ) * cos( baseLon ),
-			this.zoom * sin( baseLat ),
-			this.zoom * cos( baseLat ) * sin( baseLon )
+			this.zoom * cos( baseLat ) * sin( baseLon ),
+			this.zoom * sin( baseLat )
 		];
 
 		var xPx = sin( baseLon );
 		var xPy = sin( baseLat ) * cos( baseLon );
-		var yPy = cos( baseLat );
-		var zPx = cos( baseLon );
-		var zPy = -sin( baseLat ) * sin( baseLon );
+		var zPy = cos( baseLat );
+		var yPx = cos( baseLon );
+		var yPy = -sin( baseLat ) * sin( baseLon );
 
 		for ( y = 0; y < canvasHeight; y++ ) {
-			sY = basePos[1] + yPy * ( y - dY );
+			sY = basePos[2] + zPy * ( y - dY );
 			for ( x = 0; x < canvasWidth; x++ ) {
 				sX = basePos[0] + xPx * ( x - dX ) + xPy * ( y - dY );
-				sZ = basePos[2] + zPx * ( x - dX ) + zPy * ( y - dY );
+				sZ = basePos[1] + yPx * ( x - dX ) + yPy * ( y - dY );
 
 				lat = atan( sY / sqrt( sX * sX + sZ * sZ ) );
 				lon = atan2( sX, sZ ) + PI / 2;
