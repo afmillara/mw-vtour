@@ -333,13 +333,13 @@ var PanoView = GraphicView.extend( {
 		var yPy = -sin( baseLat ) * sin( baseLon );
 
 		for ( y = 0; y < canvasHeight; y++ ) {
-			sY = basePos[2] + zPy * ( y - dY );
+			sZ = basePos[2] + zPy * ( y - dY );
 			for ( x = 0; x < canvasWidth; x++ ) {
 				sX = basePos[0] + xPx * ( x - dX ) + xPy * ( y - dY );
-				sZ = basePos[1] + yPx * ( x - dX ) + yPy * ( y - dY );
+				sY = basePos[1] + yPx * ( x - dX ) + yPy * ( y - dY );
 
-				lat = atan( sY / sqrt( sX * sX + sZ * sZ ) );
-				lon = atan2( sX, sZ ) + PI / 2;
+				lat = atan( sZ / sqrt( sX * sX + sY * sY ) );
+				lon = atan2( sX, sY ) + PI / 2;
 				if ( lon > PI ) {
 					lon = -( PI * 2 - lon );
 				}
