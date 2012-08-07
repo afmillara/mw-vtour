@@ -215,24 +215,34 @@ var CanvasAngleMarker = BaseAngleMarker.extend( {
 	 */
 	currentOpacity: 0,
 
+	onMouseMove: null,
+
+	onMouseUp: null,
+
 	generate: function() {
 		var that = this;
 		var polygon = this.polygon = new Polygon();
 		var $polygonCanvas = polygon.getHTML();
 
-		$( polygon ).bind( 'polygonMouseDown.vtour', function( e, x, y ) {
-			that.mouseDown( x, y );
-		} );
+		this.onMouseUp = function() {
+			$( document )
+				.unbind( 'mouseup', that.onMouseUp )
+				.unbind( 'mousemove', that.onMouseMove );
+			that.mouseUp();
+		};
+
+		this.onMouseMove = function( event ) {
+			that.mouseMove( event.pageX, event.pageY );
+		};
 
 		if ( this.variableAngle ) {
-			$( document ).mouseup( function() {
-				// FIXME: Shouldn't bind to document events.
-				that.mouseUp();
+			$( polygon ).bind( 'polygonMouseDown.vtour', function( e, x, y ) {
+				$( document )
+					.mousemove( that.onMouseMove )
+					.mouseup( that.onMouseUp );
+				that.mouseDown( x, y );
 			} );
-			$( document ).mousemove( function( event ) {
-				that.mouseMove( event.pageX, event.pageY );
-			} );
-		}
+		}		
 
 		$( polygon ).bind( 'polygonHoverChanged.vtour', function( event, hover ) {
 			var className = that.variableAngle ?
@@ -287,27 +297,42 @@ var ImageAngleMarker = BaseAngleMarker.extend( {
 	 */
 	lowOpacity: 0.35,
 
+	onMouseMove: null,
+
+	onMouseUp: null,
+
 	generate: function() {
 		var that = this;
 		var $angleIcon = $( '<div></div>' ).addClass( 'vtour-anglemarkerimage' );
+
 		if ( this.variableAngle ) {
 			$angleIcon.addClass( 'vtour-anglemarker-movable' );
 		} else {
 			$angleIcon.addClass( 'vtour-anglemarker-fixed' );
 		}
-		$angleIcon.mousedown( function( e ) {
-			that.mouseDown( e.pageX, e.pageY );
-			e.stopPropagation();
-		} );
+
+		this.onMouseUp = function() {
+			$( document )
+				.unbind( 'mouseup', that.onMouseUp )
+				.unbind( 'mousemove', that.onMouseMove );
+			that.mouseUp();
+		};
+
+		this.onMouseMove = function( event ) {
+			that.mouseMove( event.pageX, event.pageY );
+		};
+
 		if ( this.variableAngle ) {
-			// FIXME: Shouldn't bind to document events.
-			$( document ).mouseup( function() {
-				that.mouseUp();
+			$angleIcon.mousedown( function( e ) {
+				$( document )
+					.mousemove( that.onMouseMove )
+					.mouseup( that.onMouseUp );
+				that.mouseDown( e.pageX, e.pageY );
+				e.stopPropagation();
+				e.preventDefault();
 			} );
-			$( document ).mousemove( function( event ) {
-				that.mouseMove( event.pageX, event.pageY );
-			});
 		}
+
 		return $angleIcon;
 	},
 

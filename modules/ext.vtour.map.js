@@ -94,12 +94,6 @@ var Map = Element.extend( {
 			);
 
 			this.html = this.view.getHTML();
-			this.onMouseUp = function(){
-				this.view.onMouseUp.call( this.view );
-			};
-			this.onMouseMove = function( x, y ){
-				this.view.onMouseMove.call( this.view, x, y );
-			};
 			$( this.view ).bind( 'error.vtour', function( event, message ) {
 				that.tour.showError( message );
 			} );

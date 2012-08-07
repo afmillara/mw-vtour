@@ -24,11 +24,5 @@ var Element = Class.extend( {
 		//.empty() also destroys the event handlers
 		$parent.children().detach();
 	},
-
-	onMouseUp: function() {
-	},
-
-	onMouseMove: function( x, y ) {
-	}
 } );
 

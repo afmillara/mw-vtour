@@ -39,19 +39,33 @@ var Polygon = Class.extend( {
 	init: function() {
 		var that = this;
 		var $canvas = this.$canvas = $( '<canvas></canvas>' ).addClass( 'vtour-polygon' );
-		this.context = $canvas[0].getContext( '2d' );
-		// FIXME: Doesn't fire when it should.
-		$canvas.bind( 'mousemove mouseenter mouseleave', function( e ) {
-			$( that ).trigger( 'polygonHoverChanged.vtour',
-				[that.inCanvas( e.pageX, e.pageY ), e.pageX, e.pageY] );
+
+		var mouseMayBeOut = function( event ) {
+			if ( event.target !== that.$canvas[0]
+					|| !that.inCanvas( event.pageX, event.pageY ) ) {
+				$( that ).trigger( 'polygonHoverChanged.vtour',
+					[false, event.pageX, event.pageY] );
+				$( document ).unbind( 'mousemove', mouseMayBeOut );
+			}
+		};
+
+		$canvas.mousemove( function( event ) {
+			if ( that.inCanvas( event.pageX, event.pageY ) ) {
+				$( that ).trigger( 'polygonHoverChanged.vtour',
+					[true, event.pageX, event.pageY] );
+				$( document ).mousemove( mouseMayBeOut );
+			}			
 		} );
+
 		this.createEventForEventInCanvas( 'click', 'polygonClick.vtour' );
 		this.createEventForEventInCanvas( 'mousedown', 'polygonMouseDown.vtour' );
+
+		this.context = $canvas[0].getContext( '2d' );
 	},
 
 	/**
-	 * Trigger an event in the polygon when another event is triggered
-	 * inside the canvas.
+	 * Trigger an event in the Polygon object when another event is triggered
+	 * in the canvas element inside the displayed polygon.
 	 * @param {String} eventInCanvas Name of the event that may be triggered in the canvas
 	 * @param {String} newEvent Name of the event that will be triggered
 	 */
@@ -61,6 +75,7 @@ var Polygon = Class.extend( {
 			if ( that.inCanvas( e.pageX, e.pageY ) ) {
 				$( that ).trigger( newEvent, [e.pageX, e.pageY] );
 				e.stopPropagation();
+				e.preventDefault();
 			}
 		} );
 	},
@@ -79,24 +94,6 @@ var Polygon = Class.extend( {
 	 */
 	setVertices: function( vertices ) {
 		this.vertices = vertices;
-	},
-
-	resizeIfNeeded: function( width, height ) {
-		var $canvas = this.$canvas;
-		var canvasWidth = $canvas.attr( 'width' );
-		var canvasHeight = $canvas.attr( 'height' );
-		var resized = false;
-		if ( width > canvasWidth ) {
-			$canvas.attr( 'width', width );
-			resized = true;
-		}
-		if ( height > canvasHeight ) {
-			$canvas.attr( 'height', height );
-			resized = true;
-		}
-		if ( !resized ) {
-			this.context.clearRect( 0, 0, canvasWidth, canvasHeight );
-		}
 	},
 
 	/**
@@ -119,7 +116,6 @@ var Polygon = Class.extend( {
 		}
 		this.$canvas.attr( 'width', boundingBox.width + 1 );
 		this.$canvas.attr( 'height', boundingBox.height + 1 );
-//		this.resizeIfNeeded( boundingBox.width + 1, boundingBox.height + 1 );
 		this.$canvas.css( {
 			'left': boundingBox.x,
 			'top': boundingBox.y

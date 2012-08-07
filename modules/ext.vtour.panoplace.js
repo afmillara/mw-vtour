@@ -75,12 +75,6 @@ var CanvasPanoPlace = Place.extend( {
 		var that = this;
 		this.view = new ViewClass( this.imageSrc );
 		this.$html = this.view.getHTML();
-		this.onMouseUp = function() {
-			this.view.onMouseUp.call( this.view );
-		};
-		this.onMouseMove = function( x, y ) {
-			this.view.onMouseMove.call( this.view, x, y );
-		};
 		if ( this.baseAngle !== null ) {
 			$( this.view ).bind( 'panoOrientationChanged.vtour', function() {
 				that.angle = that.view.orientation[0] + that.baseAngle;

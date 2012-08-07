@@ -84,6 +84,10 @@ var GraphicView = Class.extend( {
 	 */
 	$imageBeingLoaded: null,
 
+	mouseUp: null,
+
+	mouseMove: null,
+
 	/**
 	 * Whether a "loading" symbol is being displayed.
 	 * @var {Boolean} loadingBeingDisplayed
@@ -245,7 +249,11 @@ var GraphicView = Class.extend( {
 		var button = $( '<div></div>' )
 			.attr( 'title', tooltip )
 			.addClass( imageClass )
-			.click( callback );
+			.click( function( event ) {
+				callback();
+				event.stopPropagation();
+				event.preventDefault();
+			} );
 		this.toggleButton( button, enabled || enabled === undefined );
 		this.buttons.push( button );
 		return button;
@@ -300,6 +308,7 @@ var GraphicView = Class.extend( {
 
 		$movableLayer.mousedown( function( event ) {
 			that.mouseLast = [event.pageX, event.pageY];
+			$( document ).mousemove( that.mouseMove ).mouseup( that.mouseUp );
 			return false;
 		} );
 
@@ -311,6 +320,23 @@ var GraphicView = Class.extend( {
 		$movableLayer.bind( 'selectstart dragstart', function( e ) {
 			e.preventDefault();
 		} );
+
+		this.mouseUp = function() {
+			that.mouseLast = null;
+			$( document )
+				.unbind( 'mousemove', that.mouseMove )
+				.unbind( 'mouseup', that.mouseUp );
+		};
+
+		this.mouseMove = function( event ) {
+			var x = event.pageX;
+			var y = event.pageY;
+			if ( that.mouseLast !== null ) {
+				that.move( [that.moveSensitivity * ( x - that.mouseLast[0] ),
+				that.moveSensitivity * ( y - that.mouseLast[1] )] );
+				that.mouseLast = [x, y];
+			}
+		};
 
 		this.error = false;
 	},
@@ -350,18 +376,6 @@ var GraphicView = Class.extend( {
 	updateZoom: function() {
 		this.toggleButton( this.incButton, this.canZoomIn() );
 		this.toggleButton( this.decButton, this.canZoomOut() );
-	},
-
-	onMouseUp: function() {
-		this.mouseLast = null;
-	},
-
-	onMouseMove: function(x, y){
-		if ( this.mouseLast !== null ) {
-			this.move( [this.moveSensitivity * ( x - this.mouseLast[0] ),
-				this.moveSensitivity * ( y - this.mouseLast[1] )] );
-			this.mouseLast = [x, y];
-		}
 	},
 
 	/**

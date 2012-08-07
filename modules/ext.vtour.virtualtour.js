@@ -49,30 +49,6 @@ var VirtualTour = Class.extend( {
 		this.placesByName = {};
 		this.textPlaces = [];
 
-		$( document ).mouseup( function() {
-			var current = that.currentPlace;
-			if ( current !== null ){
-				current.onMouseUp();
-				$.each( [current.map, current.description], function( index, place) {
-					if ( place !== null ) {
-						place.onMouseUp();
-					}
-				} );
-			}
-		} );
-
-		$( document ).mousemove( function( event ) {
-			var current = that.currentPlace;
-			if ( that.currentPlace !== null ){
-				that.currentPlace.onMouseMove( event.pageX, event.pageY );
-				$.each( [current.map, current.description], function( index, place) {
-					if ( place !== null ) {
-						place.onMouseMove( event.pageX, event.pageY );
-					}
-				} );
-			}
-		} );
-
 		this.createNodesFromJSON( tourData );
 
 		$localLinks.each( function() {
