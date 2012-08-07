@@ -77,6 +77,8 @@ var PanoView = GraphicView.extend( {
 	hsFOV: 0,
 	vsFOV: 0,
 
+	getPixel: null,
+
 	/**
 	 * Create a new PanoView.
 	 * @constructor
@@ -192,7 +194,6 @@ var PanoView = GraphicView.extend( {
 		this.FOV = [this.MAX_FOV[0], this.MAX_FOV[1]];
 		var ratio = this.image.width / this.image.height / 2;
 		if (ratio > 1){
-			// FIXME: Was /= ratio - 0.1. Why?
 			this.FOV[1] /= ratio;
 		} else if ( ratio < 1 ) {
 			this.FOV[0] *= ratio;
@@ -212,6 +213,8 @@ var PanoView = GraphicView.extend( {
 			this.image.height / this.FOV[1]
 		) * this.maxZoomMultiplier;
 		this.maxZoom = Math.max( possibleMaxZoom, this.baseZoom );
+
+		this.getPixel = this.prepareGetPixel();
 	},
 
 	updateZoom: function() {
@@ -285,6 +288,8 @@ var PanoView = GraphicView.extend( {
 	 * Paint a frame on the canvas.
 	 */
 	show: function() {
+		var getPixel = this.getPixel;
+
 		var round = Math.round;
 		var sin = Math.sin;
 		var cos = Math.cos;
@@ -312,7 +317,8 @@ var PanoView = GraphicView.extend( {
 		var x, y;
 		var sX, sY, sZ;
 		var lat, lon;
-		var pixelX, pixelY;
+
+		var pixelArray = [];
 
 		var originPixel, destinationPixel;
 		destinationPixel = 0;
@@ -320,23 +326,21 @@ var PanoView = GraphicView.extend( {
 		var baseLon = this.orientation[0];
 		var baseLat = this.orientation[1];
 
-		var basePos = [
-			-this.zoom * cos( baseLat ) * cos( baseLon ),
-			this.zoom * cos( baseLat ) * sin( baseLon ),
-			this.zoom * sin( baseLat )
-		];
+		var baseX = -this.zoom * cos( baseLat ) * cos( baseLon );
+		var baseY = this.zoom * cos( baseLat ) * sin( baseLon );
+		var baseZ = this.zoom * sin( baseLat );
 
 		var xPx = sin( baseLon );
 		var xPy = sin( baseLat ) * cos( baseLon );
-		var zPy = cos( baseLat );
 		var yPx = cos( baseLon );
 		var yPy = -sin( baseLat ) * sin( baseLon );
+		var zPy = cos( baseLat );
 
 		for ( y = 0; y < canvasHeight; y++ ) {
-			sZ = basePos[2] + zPy * ( y - dY );
+			sZ = baseZ + zPy * ( y - dY );
 			for ( x = 0; x < canvasWidth; x++ ) {
-				sX = basePos[0] + xPx * ( x - dX ) + xPy * ( y - dY );
-				sY = basePos[1] + yPx * ( x - dX ) + yPy * ( y - dY );
+				sX = baseX + xPx * ( x - dX ) + xPy * ( y - dY );
+				sY = baseY + yPx * ( x - dX ) + yPy * ( y - dY );
 
 				lat = atan( sZ / sqrt( sX * sX + sY * sY ) );
 				lon = atan2( sX, sY ) + PI / 2;
@@ -344,18 +348,32 @@ var PanoView = GraphicView.extend( {
 					lon = -( PI * 2 - lon );
 				}
 
-				pixelX = round( widthMul * ( lon + hsFOV ) );
-				pixelY = round( heightMul * ( lat + vsFOV ) );
-				originPixel = 4 * ( pixelY * imageWidth + pixelX );
+				getPixel(
+					round( widthMul * ( lon + hsFOV ) ),
+					round( heightMul * ( lat + vsFOV ) ),
+					pixelArray
+				);
 
-				destBufferData[destinationPixel] = imageData[originPixel];
-				destBufferData[destinationPixel+1] = imageData[originPixel+1];
-				destBufferData[destinationPixel+2] = imageData[originPixel+2];
+				destBufferData[destinationPixel] = pixelArray[0];
+				destBufferData[destinationPixel+1] = pixelArray[1];
+				destBufferData[destinationPixel+2] = pixelArray[2];
 				destinationPixel += 4;
 			}
 		}
 
 		this.ctx.putImageData( this.destBuffer, 0, 0 );
+	},
+
+	prepareGetPixel: function() {
+		var imageWidth = this.image.width;
+		var imageData = this.imageData;
+		var origin;
+		return function( x, y, pixelArray ) {
+			origin = 4 * ( y * imageWidth + x );
+			pixelArray[0] = imageData[origin];
+			pixelArray[1] = imageData[origin + 1];
+			pixelArray[2] = imageData[origin + 2];
+		};
 	},
 
 	translateSinglePoint: function( point ) {
