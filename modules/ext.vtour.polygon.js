@@ -1,6 +1,14 @@
 
 /**
  * Graphic polygon that is displayed in a given place and detects mouse events occurring inside.
+ * The following events may be triggered in the generated nodes:
+ * - polygonHoverChanged: When the mouse is moved inside the polygon or exits it. It includes
+ *   whether the mouse is inside the canvas, e.pageX and e.pageY as additional arguments,
+ *   in that order.
+ * - polygonClick: When the polygon is clicked. e.pageX and e.pageY are passed as additional
+ *   arguments.
+ * - polygonMouseDown: When the mouse button is pressed. e.pageX and e.pageY are passed as
+ *   additional arguments.
  * @class Polygon
  */
 var Polygon = Class.extend( {
@@ -35,7 +43,7 @@ var Polygon = Class.extend( {
 		// FIXME: Doesn't fire when it should.
 		$canvas.bind( 'mousemove mouseenter mouseleave', function( e ) {
 			$( that ).trigger( 'polygonHoverChanged.vtour',
-				[that.inCanvas( e.pageX, e.pageY ), [e.pageX, e.pageY]] );
+				[that.inCanvas( e.pageX, e.pageY ), e.pageX, e.pageY] );
 		} );
 		this.createEventForEventInCanvas( 'click', 'polygonClick.vtour' );
 		this.createEventForEventInCanvas( 'mousedown', 'polygonMouseDown.vtour' );

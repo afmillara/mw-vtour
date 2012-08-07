@@ -122,7 +122,6 @@ var VirtualTour = Class.extend( {
 		this.main.addClass( 'vtour-main' );
 
 		this.move( that.initialNode );
-		$( that ).trigger( 'load.vtour' );
 	},
 
 	/**

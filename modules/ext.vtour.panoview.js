@@ -233,7 +233,8 @@ var PanoView = GraphicView.extend( {
 	},
 
 	/**
-	 * Scroll the view to reveal a different area of its contents.
+	 * Scroll the view to reveal a different area of its contents. panoOrientationChanged
+	 * is triggered whenever the longitude value is modified.
 	 * @param {Number[]} movement	movement ([x, y])
 	 * @param {Boolean} isAbsolute if true, the first argument is the new
 	 * center of the view. Otherwise, it is substracted from the current position
@@ -271,7 +272,7 @@ var PanoView = GraphicView.extend( {
 			orientation[1] = -MAX_FOV[1] / 2;
 		}
 		this.updateLinks();
-		$(this).trigger( 'panoOrientationChanged.vtour' );
+		$( this ).trigger( 'panoOrientationChanged.vtour' );
 		this.show();
 	},
 

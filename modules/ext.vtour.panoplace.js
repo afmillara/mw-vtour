@@ -1,6 +1,6 @@
 
 /**
- * Place whose main content is a panorama.
+ * Place whose main content is a spherical panorama.
  * @class CanvasPanoPlace
  */
 var CanvasPanoPlace = Place.extend( {

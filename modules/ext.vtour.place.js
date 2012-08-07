@@ -197,6 +197,13 @@ var Place = Element.extend( {
 	move: function( center ) {
 	},
 
+	/**
+	 * Set the orientation of the place. It is not displayed inside it,
+	 * but it can be used by map links. In places whose orientation may
+	 * change, the angleChanged.vtour event is triggered when it does,
+	 * passing the angle as an additional parameter.
+	 * @param {Number} Angle in degrees
+	 */
 	setAngle: function( angle ){
 		this.angle = angle*DEG2RAD;
 	},

@@ -1,7 +1,9 @@
 
 /**
  * Base class for angle markers in maps. Implementations must override show, generate
- * and setHighlighted.
+ * and setHighlighted. The press.vtour event is fired when the angle marker is pressed
+ * (whatever that means for the implementation used) and the angleChanged.vtour event is
+ * fired (passing the new angle as an additional parameter) when the marker is moved.
  * @class BaseAngleMarker
  */
 var BaseAngleMarker = Class.extend( {
