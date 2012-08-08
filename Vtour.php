@@ -8,7 +8,7 @@
  *
  * @author Álvaro Fernández Millara <afmillara@gmail.com>
  * @license GNU General Public License v2
- * @version 0
+ * @version 0.0.1
  */
 
 if ( !defined( 'MEDIAWIKI' ) ) {
@@ -21,7 +21,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'path' => __FILE__,
 	'name' => 'Vtour',
 	'descriptionmsg' => 'vtour-description',
-	'version' => 0,
+	'version' => '0.0.1',
 	'author' => 'Álvaro Fernández Millara',
 	'url' => 'http://www.google.com'
 );
