@@ -23,7 +23,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'descriptionmsg' => 'vtour-description',
 	'version' => '0.0.1',
 	'author' => 'Álvaro Fernández Millara',
-	'url' => 'http://www.google.com'
+	'url' => 'http://www.mediawiki.org/wiki/Extension:Vtour'
 );
 
 // Default configuration
