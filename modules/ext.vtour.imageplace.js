@@ -1,3 +1,11 @@
+/**
+ * Place that displays an image.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Place whose main content is an image.

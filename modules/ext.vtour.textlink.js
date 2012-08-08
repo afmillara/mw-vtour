@@ -1,5 +1,14 @@
 /**
  * Text-based link to a Place.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
+
+/**
+ * Link from a TextPlace to another place.
  * @class TextLink
  */
 var TextLink = Link.extend( {

@@ -1,3 +1,11 @@
+/**
+ * Interactive view that can be moved and zoomed.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Interactive view which provides a graphic interface for resizing or moving

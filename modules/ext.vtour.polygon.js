@@ -1,3 +1,11 @@
+/**
+ * Graphic polygon that uses a canvas.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Graphic polygon that is displayed in a given place and detects mouse events occurring inside.

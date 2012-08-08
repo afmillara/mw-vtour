@@ -1,6 +1,9 @@
 <?php
 /**
  * Map element in a Vtour tour.
+ * 
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
  *
  * @file
  * @ingroup Extensions

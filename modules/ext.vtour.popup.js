@@ -1,6 +1,14 @@
+/**
+ * "Tooltip" popup.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
- * "Tooltip" popup describing a place.
+ * "Tooltip" popup describing a Place.
  * @class Popup
  */
 var Popup = Class.extend( {

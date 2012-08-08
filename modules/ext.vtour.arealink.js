@@ -1,3 +1,11 @@
+/**
+ * Link in the shape of a polygon, and fallback implementation based in a PointLink.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Link in the shape of a polygon.

@@ -1,3 +1,11 @@
+/**
+ * Place that contains a panorama.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Place whose main content is a spherical panorama.

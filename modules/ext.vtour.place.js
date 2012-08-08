@@ -1,3 +1,11 @@
+/**
+ * Place inside a tour.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Place that is part of a VirtualTour.

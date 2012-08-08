@@ -1,3 +1,11 @@
+/**
+ * View that displays a map image over an external map.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * ImageView with an external map as a background.

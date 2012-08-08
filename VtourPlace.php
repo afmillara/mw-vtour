@@ -1,6 +1,9 @@
 <?php
 /**
  * Place elements in Vtour tours: ImagePlace, PanoPlace and TextPlace.
+ * 
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
  *
  * @file
  * @ingroup Extensions

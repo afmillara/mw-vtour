@@ -1,3 +1,11 @@
+/**
+ * Graphic elements that display the places angles on the map.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Base class for angle markers in maps. Implementations must override show, generate

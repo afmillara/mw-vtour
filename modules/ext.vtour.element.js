@@ -1,3 +1,11 @@
+/**
+ * Basic displayable element.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Element that can be added to or removed from a tour.

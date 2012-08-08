@@ -1,3 +1,12 @@
+/**
+ * Class that controls what is being displayed in the tour.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
+
 
 /**
  * A single virtual tour, containing Places and Maps.

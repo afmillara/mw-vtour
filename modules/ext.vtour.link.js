@@ -1,3 +1,11 @@
+/**
+ * Base link that provides common behaviour.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Base class for links inside a Vtour. Implementations must define getHTML

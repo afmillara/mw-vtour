@@ -1,3 +1,11 @@
+/**
+ * Special link for places in a map.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Link from a single point in a Map to a Place contained in it.

@@ -1,3 +1,11 @@
+/**
+ * "Interface" for external maps.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Common interface for external map APIs.

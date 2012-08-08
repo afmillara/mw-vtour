@@ -1,3 +1,11 @@
+/**
+ * Vtour JavaScript unit tests.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 module( 'ext.vtour', QUnit.newMwEnvironment() );
 

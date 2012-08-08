@@ -1,3 +1,11 @@
+/**
+ * Map that displays an image and links to places.
+ *
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
+ * 
+ * @file
+ */
 
 /**
  * Map with one or more Places on it.

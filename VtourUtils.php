@@ -1,6 +1,9 @@
 <?php
 /**
  * Utility functions for Vtour.
+ * 
+ * Vtour - a virtual tour system for MediaWiki
+ * Copyright (C) 2012 Álvaro Fernández Millara
  *
  * @file
  * @ingroup Extensions
