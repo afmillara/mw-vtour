@@ -303,7 +303,7 @@ class VtourPage {
 				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
 		}
 
-		return "<div id='vtour-tour-$tourId'>
+		return "<div id='vtour-tour-$tourId' class='vtour-tour'>
 		<div id='vtour-error-$tourId'>
 			$warningHTML
 		</div>

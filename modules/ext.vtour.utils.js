@@ -10,7 +10,7 @@
 var DEG2RAD = Math.PI/180;
 
 var loadImage = function( $img, src, onLoad, onError ) {
-	$img.load( function() {
+	$img.one( 'load', function() {
 		// Store the native size of the image
 		$img.data( 'nativeHeight', $img[0].height );
 		$img.data( 'nativeWidth', $img[0].width );
