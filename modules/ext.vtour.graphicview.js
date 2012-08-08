@@ -116,32 +116,18 @@ var GraphicView = Class.extend( {
 		}
 		var that = this;
 		this.$imageBeingLoaded = $image;
-		$image.load( function() {
-			// Store the native size of the image
-			$image.data( 'nativeHeight', $image[0].height );
-			$image.data( 'nativeWidth', $image[0].width );
-
-			// jQuery doesn't set the dimensions until the
-			// element is in the DOM, so they are set
-			// here explicitly
-			$image.height( $image[0].height );
-			$image.width( $image[0].width );
-
+		loadImage( $image, imageSrc, function() {
 			that.$imageBeingLoaded = null;
 			that.removeBlockingLoading();
 			( onLoad || $.noop )( $image );
 			$( that ).trigger( 'ready.vtour' );
-		} );
-		$image.one( 'error', function() {
-			// one() is used instead of error() because sometimes handlers
-			//  fired for the wrong image
+		}, function() {
 			var message = mw.message( 'vtour-errordesc-filenotfound',
 				imageNameFromPath( imageSrc ) );
 			that.$imageBeingLoaded = null;
 			that.removeBlockingLoading();
 			that.showError( message );
 		} );
-		$image.attr( 'src', imageSrc );
 		return $image;
 	},
 

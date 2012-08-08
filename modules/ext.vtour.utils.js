@@ -9,6 +9,29 @@
  */
 var DEG2RAD = Math.PI/180;
 
+var loadImage = function( $img, src, onLoad, onError ) {
+	$img.load( function() {
+		// Store the native size of the image
+		$img.data( 'nativeHeight', $img[0].height );
+		$img.data( 'nativeWidth', $img[0].width );
+
+		// jQuery doesn't set the dimensions until the
+		// element is in the DOM, so they are set
+		// here explicitly
+		$img.height( $img[0].height );
+		$img.width( $img[0].width );
+
+		( onLoad || $.noop )( $img );	
+	} ).one( 'error', function() {
+		( onError || $.noop )();
+	} );
+	// one() is used instead of error() because sometimes handlers
+	//  fired for the wrong image
+	
+	$img.attr( 'src', src );
+	return $img;
+};
+
 /**
  * Resize one or more elements so they fit in a box of a provided size, while
  * preserving their proportions.
@@ -177,18 +200,18 @@ var calculateCircumferencePoint = function( center, radius, angle ) {
 
 /**
  * Calculate the angle between the line from a reference point to another point
- * and the line from the reference point to 3 o'clock.
+ * and the line from the reference point to 12 o'clock.
  * @param {Array} reference Reference point ([x, y])
  * @param {Array} point Other point ([x, y])
- * @return {Number|null} Angle (in radians), or null if the two points are the same
+ * @return {Number|null} Angle (in radians), or NaN if the two points are the same
  */
 var calculateAngle = function( reference, point ) {
 	var delta = sum( point, mult( reference, -1 ) );
 
-	if (delta[0] !== 0 && delta[1] !== 0){
-		return Math.atan2( delta[1], delta[0] );
+	if (delta[0] !== 0 || delta[1] !== 0){
+		return Math.atan2( delta[1], delta[0] ) - Math.PI / 2;
 	} else {
-		return null;
+		return NaN;
 	}
 };
 

@@ -144,7 +144,7 @@ var BaseAngleMarker = Class.extend( {
 		var mouseAngle, newAngle;
 		if (this.mouseIsDown){
 			mouseAngle = calculateAngle( this.getAbsoluteLocation(), [x, y] );
-			if ( mouseAngle !== null ){
+			if ( !isNaN( mouseAngle !== null ) ) {
 				newAngle = mouseAngle - this.initialAngleDiff;
 				$( this ).trigger( 'angleChanged.vtour', newAngle );
 			}

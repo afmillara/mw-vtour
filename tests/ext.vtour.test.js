@@ -1,39 +1,36 @@
+
 module( 'ext.vtour', QUnit.newMwEnvironment() );
 
 test( 'Loading images', 4, function() {
-	var preloader = new Preloader();
 	var imgPath = mw.config.get('wgExtensionAssetsPath')
-			+ '/Vtour/modules/img/iconoElemento.gif';
-	var img1 = preloader.add( imgPath );
-	var img2 = preloader.add( imgPath );
+		+ '/Vtour/modules/img/reset.png';
+	var $img = $( '<img></img>' );
 	stop();
-	preloader.start( function() {
+	loadImage( $img, imgPath, function() {
 		start();
-		equals( img1.width(), 25, 'Image width set' );
-		equals( img1.height(), 25, 'Image height set' );
-		equals( img2.data( 'nativeWidth' ), 25, 'Native image width stored' );
-		equals( img2.data( 'nativeHeight' ), 25, 'Native image height stored' );
+		equals( $img.width(), 20, 'Image width set' );
+		equals( $img.height(), 20, 'Image height set' );
+		equals( $img.data( 'nativeWidth' ), 20, 'Native image width stored' );
+		equals( $img.data( 'nativeHeight' ), 20, 'Native image height stored' );
 	}, function() {
-		ok( false, 'Couldn\'t load the images' );
+		ok( false, 'Couldn\'t load the image' );
 	} );
 } );
 
 test( 'Resizing images', 2, function() {
-	var preloader = new Preloader();
 	var imgPath = mw.config.get('wgExtensionAssetsPath')
-			+ '/Vtour/modules/img/ojo.gif';
-	testImg = preloader.add( imgPath );
+		+ '/Vtour/modules/img/loading.gif';
+	var $img = $( '<img></img>' );
+	var $resizedImg;
 	stop();
-	preloader.start( function() {
+	loadImage( $img, imgPath, function() {
 		start();
-		var resizedImg = resizeToFit( testImg.clone( true ), 200, 200 );
-		equals( resizedImg.width() / resizedImg.height(),
-			resizedImg.data( 'nativeWidth' ) / resizedImg.data( 'nativeHeight' ),
+		$resizedImg = resizeToFit( $img.clone( true ), 200, 200 );
+		equals( $resizedImg.width() / $resizedImg.height(),
+			$img.width() / $img.height(),
 			'Image proportions preserved' );
-		ok( resizedImg.width() <= 200 && resizedImg.height() <= 200,
+		ok( $resizedImg.width() <= 200 && $resizedImg.height() <= 200,
 			'Image not larger than provided size' );
-	}, function() {
-		ok( false, 'Couldn\'t load the image' );
 	} );
 } );
 
@@ -44,3 +41,31 @@ test( 'Calculating minimum bounding box', 4, function() {
 	equals( box.width, 12, 'Box width' );
 	equals( box.height, 24, 'Box height' );
 } );
+
+test( 'Other functions', 12, function() {
+	var circumferencePoint;
+
+	equals( dotProduct( [0, 1], [1, 0] ), 0, 'The dot product of orthogonal vectors is 0' );
+	equals( dotProduct( [1, 3, -5], [4, -2, -1] ), 3,
+		'Dot products are calculated for tridimensional vectors' );
+	equals( hypotenuse( 3, 4 ), 5, 'Hypotenuses are calculated correctly' );
+
+	circumferencePoint = calculateCircumferencePoint( [0, 0], 3, 270 * DEG2RAD );
+	same( [Math.round( circumferencePoint[0] ), Math.round( circumferencePoint[1] )], [-3, 0],
+		'Points in a circumference are calculated' );
+	equals( calculateAngle( [1, 0], [-3, 0] ), 90 * DEG2RAD, 'Angles are calculated' );
+	ok( isNaN( calculateAngle( [0, 10], [0, 10] ) ),
+		'NaN is returned by calculateAngle when the two points are the same' );
+	equals( Math.round( normalizeAngle( 725 * DEG2RAD ) / DEG2RAD ), 5,
+		'Angles > 360º are normalized' );
+	equals( Math.round( normalizeAngle( -30 * DEG2RAD ) / DEG2RAD ), 330,
+		'Angles < 0º are normalized' );
+
+	same( calculateMeanPoint( [[1, 2], [2, 2], [1, 1], [3, 0]] ), [1.75, 1.25],
+		'Mean points are calculated' );
+
+	same( sum( [1, 2, 3, 4], [5, 5, 2, 0] ), [6, 7, 5, 4], 'Vectors are summed' );
+	same( sum( [1, 2, 3, 4], 3 ), [4, 5, 6, 7], 'Vectors and numbers are summed' );
+	same( mult( [1, 2, 3, 4], 5 ), [5, 10, 15, 20], 'Vectors can be multiplied by numerical factors' );
+} );
+
