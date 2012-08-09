@@ -305,10 +305,10 @@ class VtourPage {
 		// Warning message for users whose browsers don't have JavaScript support
 		$noJSHeader = '';
 		if ( $wgVtourWarnNoJS ) {
-			$noJSText = wfMessage( 'vtour-nojs' )->inContentLanguage()->parse();
+			$noJSText = wfMessage( 'vtour-nojs' )->inContentLanguage()->text();
 			if ( count( $tourHTMLElements ) !== 0 && $wgVtourDisplayElementsNoJS ) {
 				$noJSText .= wfMessage( 'vtour-nojs-htmlfollows' )
-					->inContentLanguage()->parse();
+					->inContentLanguage()->text();
 			}
 			$noJSHeader = "<div id='vtour-nojs-$tourId'>$noJSText</div>";
 		}
@@ -361,12 +361,12 @@ class VtourPage {
 				$elementParent = $element['parent'];
 				if ( $lastElement !== null ) {
 					$contentString .= wfMessage( 'vtour-nojs-elementseparator' )
-						->inContentLanguage()->parse();
+						->inContentLanguage()->text();
 				}
 				if ( $elementParent !== $lastElement ) {
-					$title = $elementParent->getName();
+					$title = htmlspecialchars( $elementParent->getName() );
 					$contentString .= wfMessage( 'vtour-nojs-placetitle', $title )
-						->inContentLanguage()->parse();
+						->inContentLanguage()->text();
 				}
 				$lastElement = $elementParent;
 			}

@@ -34,10 +34,10 @@ $messages['en'] = array(
 * \'\'zoom\'\' is, optionally, the initial zoom level.',
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 
-	'vtour-nojs' => '<div class="errorbox">This is a \'\'\'virtual tour\'\'\' interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
+	'vtour-nojs' => '<div class="errorbox">This is a <strong>virtual tour</strong> interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
 	'vtour-nojs-htmlfollows' => 'The text contained inside the tour follows:',
-	'vtour-nojs-elementseparator' => '----',
-	'vtour-nojs-placetitle' => '\'\'\'$1\'\'\'',
+	'vtour-nojs-elementseparator' => '<hr>',
+	'vtour-nojs-placetitle' => '<strong>$1</strong>',
 
 	'vtour-button-zoomin' => 'Zoom in',
 	'vtour-button-zoomout' => 'Zoom out',
@@ -122,10 +122,10 @@ $messages['es'] = array(
 * \'\'zoom\'\' es, opcionalmente, el nivel de zoom inicial.',
 	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
 
-	'vtour-nojs' => '<div class="errorbox">Esto es una \'\'\'visita virtual\'\'\', un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',
+	'vtour-nojs' => '<div class="errorbox">Esto es una <strong>visita virtual</strong>, un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',
 	'vtour-nojs-htmlfollows' => 'El texto contenido en la visita es el siguiente:',
-	'vtour-nojs-elementseparator' => '----',
-	'vtour-nojs-placetitle' => '\'\'\'$1\'\'\'',
+	'vtour-nojs-elementseparator' => '<hr>',
+	'vtour-nojs-placetitle' => '<strong>$1</strong>',
 
 	'vtour-button-zoomin' => 'Aumentar',
 	'vtour-button-zoomout' => 'Reducir',
