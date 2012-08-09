@@ -77,6 +77,20 @@ $wgVtourStandardLatLngOrder = true;
 $wgVtourDefaultTourDimensions = array( '800px', '500px' );
 
 /**
+ * Whether a warning message should be displayed to users whose browsers don't have
+ * JavaScript support.
+ * @var bool $wgVtourWarnNoJS
+ */
+$wgVtourWarnNoJS = true;
+
+/**
+ * Whether the descriptions and the TextPlace content should be displayed for users
+ * whose browsers don't have JavaScript support.
+ * @var bool $wgVtourDisplayElementsNoJS
+ */
+$wgVtourDisplayElementsNoJS = true;
+
+/**
  * Name of the ExternalMap class that will be used, or null to disable external maps.
  * @var string $wgVtourExternalMap
  */

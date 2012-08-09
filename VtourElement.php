@@ -142,6 +142,19 @@ abstract class VtourElement {
 	}
 
 	/**
+	 * Return the name of the element, if it exists. If it doesn't, the type
+	 * will be good enough.
+	 * @return string Human-readable short string naming the element
+	 */
+	public function getName() {
+		if ( isset( $this->result['name'] ) ) {
+			return $this->result['name'];
+		} else {
+			return $this->getGenericType();
+		}
+	}
+
+	/**
 	 * Extract the tags from a given string (using VtourUtils::getAllTags),
 	 * and throw an appropriate exception if an error occurs.
 	 * @param string $text Raw text
@@ -277,7 +290,7 @@ abstract class VtourElement {
 	 * @return int Index of the HTML element created.
 	 */
 	protected function parseWiki( $text ) {
-		return $this->vtourParser->addHTMLElement( $text );
+		return $this->vtourParser->addHTMLElement( $this, $text );
 	}
 
 	/**

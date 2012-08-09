@@ -33,6 +33,12 @@ $( document ).ready( function() {
 		$json = $vtourNode.find( '#vtour-json-' + tourId );
 		$html = $vtourNode.find( '#vtour-html-' + tourId );
 
+		// Hiding warning messages and content for JavaScript-impaired browsers
+		$vtourNode.find( '#vtour-nojs-' + tourId ).detach();
+		$html.hide().children().not( '.vtour-htmlelement' ).detach();
+		$vtourNode.find( '#vtour-frame-' + tourId ).show();
+
+		// Extracting the tour data
 		tourData = $.parseJSON( $json.html() );
 		$htmlElements = $html.children();
 

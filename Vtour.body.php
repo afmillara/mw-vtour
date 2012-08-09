@@ -268,6 +268,8 @@ class VtourPage {
 	 * @return string HTML output
 	 */
 	public function transformTag( $input, array $args, Parser $parser, PPFrame $frame ) {
+		global $wgVtourWarnNoJS, $wgVtourDisplayElementsNoJS;
+
 		$tour = new VtourParser( $input, $args, $parser, $frame );
 		try {
 			$tour->parse();
@@ -299,35 +301,83 @@ class VtourPage {
 		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
 		// tags everywhere with hilarious results
 		$tourJSON = FormatJson::encode( $tourData );
-	
-		$tourElementString = '';
-		foreach ( $tourHTMLElements as $index => $element ) {
-			$tourElementString .=
-				"<div id='vtour-html-$tourId-$index'><div>$element</div></div>";
+
+		// Warning message for users whose browsers don't have JavaScript support
+		$noJSHeader = '';
+		if ( $wgVtourWarnNoJS ) {
+			$noJSText = wfMessage( 'vtour-nojs' )->inContentLanguage()->parse();
+			if ( count( $tourHTMLElements ) !== 0 && $wgVtourDisplayElementsNoJS ) {
+				$noJSText .= wfMessage( 'vtour-nojs-htmlfollows' )
+					->inContentLanguage()->parse();
+			}
+			$noJSHeader = "<div id='vtour-nojs-$tourId'>$noJSText</div>";
 		}
 
-		return "<div id='vtour-tour-$tourId' class='vtour-tour'>
-		<div id='vtour-error-$tourId'>
-			$warningHTML
-		</div>
-		<div class='vtour-frame' style='width: $width; height: $height;'>
-			<div class='vtour-descriptionmapcolumn'>
-				<div id='vtour-secondary-$tourId' class='vtour-description'>
-				</div>
-				<div id='vtour-map-$tourId' class='vtour-map'>
-				</div>
-			</div>
-			<div id='vtour-main-$tourId' class='vtour-main'>
-			</div>
-			<div id='vtour-html-$tourId' style='display: none;'>
-				$tourElementString
-			</div>
-			<div>
-				<script id='vtour-json-$tourId' type='application/json'>
-					$tourJSON
-				</script>
-			</div>
-		</div>
+		$HTMLElementString = $this->getHTMLContent( $tourId, $tourHTMLElements,
+			$wgVtourDisplayElementsNoJS );
+
+		return
+		"<div id='vtour-tour-$tourId' class='vtour-tour'>"
+			. "<div id='vtour-error-$tourId'>"
+				. $warningHTML
+			. "</div>"
+			. "<div id='vtour-frame-$tourId' class='vtour-frame'"
+					. " style='width: $width; height: $height; display: none;'>"
+				. "<div class='vtour-descriptionmapcolumn'>"
+					. "<div id='vtour-secondary-$tourId' class='vtour-description'>"
+					. "</div>"
+					. "<div id='vtour-map-$tourId' class='vtour-map'>"
+					. "</div>"
+				. "</div>"
+				. "<div id='vtour-main-$tourId' class='vtour-main'>"
+				. "</div>"
+			. "</div>"
+			. $noJSHeader
+			. $HTMLElementString
+			. "<div>"
+				. "<script id='vtour-json-$tourId' type='application/json'>"
+					. $tourJSON
+				. "</script>"
+			. "</div>"
+		. "</div>";
+	}
+
+	/**
+	 * Join the HTML nodes contained in the tour and add some additional elements to
+	 * make it readable for users whose browsers don't support JavaScript.
+	 * @param string $tourId Id of the tour
+	 * @param array $tourHTMLElements Array of arrays ('parent' => Vtour element that
+	 * contains the HTML, 'html' => HTML content as a string
+	 * @param bool $displayElements Whether the resulting HTML should be visible and
+	 * human-readable
+	 * @return string HTML content
+	 */
+	protected function getHTMLContent( $tourId, $tourHTMLElements, $displayElements ) {
+		$lastElement = null;
+		$contentString = '';
+		$HTMLElementsDisplay = $displayElements ? '' : ' style=\'display: none;\'';
+		foreach ( $tourHTMLElements as $index => $element ) {
+			if ( $displayElements ) {
+				$elementParent = $element['parent'];
+				if ( $lastElement !== null ) {
+					$contentString .= wfMessage( 'vtour-nojs-elementseparator' )
+						->inContentLanguage()->parse();
+				}
+				if ( $elementParent !== $lastElement ) {
+					$title = $elementParent->getName();
+					$contentString .= wfMessage( 'vtour-nojs-placetitle', $title )
+						->inContentLanguage()->parse();
+				}
+				$lastElement = $elementParent;
+			}
+			$elementHTML = $element['html'];
+			$contentString .=
+				"<div id='vtour-html-$tourId-$index' class='vtour-htmlelement'>
+					<div>$elementHTML</div>
+				</div>";
+		}
+		return "<div id='vtour-html-$tourId'$HTMLElementsDisplay>
+			$contentString
 		</div>";
 	}
 

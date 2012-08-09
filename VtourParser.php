@@ -305,13 +305,16 @@ class VtourParser {
 	/**
 	 * Parse wikitext, add the generated HTML to the list of HTML elements and return
 	 * its index.
+	 * @param VtourElement $parent VtourElement that contains the HTML
 	 * @param string $text Wikitext to parse
 	 * @return int Index of the HTML string
 	 */
-	public function addHTMLElement( $text ) {
+	public function addHTMLElement( $parent, $text ) {
 		$index = count( $this->tourHTMLElements );
-		$this->tourHTMLElements[] =
-				$this->parser->recursiveTagParse( $text, $this->frame );
+		$this->tourHTMLElements[] = array(
+			'parent' => $parent,
+			'html' => $this->parser->recursiveTagParse( $text, $this->frame )
+		);
 		return $index;
 	}
 }
