@@ -97,7 +97,8 @@ class VtourAreaLink extends VtourLink {
 
 	public function __construct( $content, array $args, VtourParser $vtourParser ) {
 		$this->attributesTemplate += array(
-			'location' => array( 'parsePolygonCoordinates', true )
+			'location' => array( 'parsePolygonCoordinates', true ),
+			'visible' => 'parseBool'
 		);
 		parent::__construct( $content, $args, $vtourParser );
 		$this->result['type'] = 'area';

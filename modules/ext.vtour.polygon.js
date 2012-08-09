@@ -19,6 +19,7 @@
  *   additional arguments.
  * @class Polygon
  */
+// TODO: Implement Polygon in SVG, which is better suited for this kind of things
 var Polygon = Class.extend( {
 
 	/**
@@ -128,8 +129,11 @@ var Polygon = Class.extend( {
 			'left': boundingBox.x,
 			'top': boundingBox.y
 		} );
+
+		// If the canvas is drawn with alpha = 0, we won't be able to detect
+		// whether the mouse is inside the polygon.
+		context.globalAlpha = Math.max( globalAlpha, 0.01 );
 		context.fillStyle = color;
-		context.globalAlpha = globalAlpha;
 
 		context.beginPath();
 		context.moveTo( firstVertex[0] - boundingBox.x, firstVertex[1] - boundingBox.y );

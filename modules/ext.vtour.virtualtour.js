@@ -356,6 +356,9 @@ var VirtualTour = Class.extend( {
 					break;
 				case 'area':
 					link = new AreaLink( that, destination, location );
+					if ( jsonLink.visible !== null ) {
+						link.setVisible( jsonLink.visible );
+					}
 					break;
 				default:
 					throw new Error( 'Invalid link type: ' + jsonLink.type );

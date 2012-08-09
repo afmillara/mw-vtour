@@ -38,6 +38,12 @@ var CanvasAreaLink = Link.extend( {
 	$canvas: null,
 
 	/**
+	 * Whether the polygon can be seen when it is not being hovered.
+	 * @var {Boolean} visible
+	 */
+	visible: true,
+
+	/**
 	 * Create a new AreaLink
 	 * @constructor
 	 * @param {VirtualTour} tour VirtualTour to which this link belongs
@@ -48,6 +54,15 @@ var CanvasAreaLink = Link.extend( {
 		this._super( tour, destination );
 		this.location = location;
 		this.polygon = new Polygon();
+	},
+
+	/**
+	 * Change the polygon visibility.
+	 * @param {Boolean} visible true if the polygon will be displayed when
+	 * the mouse pointer is not over it
+	 */
+	setVisible: function( visible ) {
+		this.visible = visible;
 	},
 
 	/**
@@ -100,8 +115,13 @@ var CanvasAreaLink = Link.extend( {
 	 */
 	drawCanvas: function() {
 		var color, opacity;
-		opacity = this.$canvas.hasClass( 'vtour-arealink-hover' ) ?
-			this.hoverOpacity : this.noHoverOpacity;
+		if ( this.$canvas.hasClass( 'vtour-arealink-hover' ) ) {
+			opacity = this.hoverOpacity;
+		} else if ( this.visible ) {
+			opacity = this.noHoverOpacity;
+		} else {
+			opacity = 0;
+		}
 		this.polygon.drawCanvas( opacity );
 	}
 } );
