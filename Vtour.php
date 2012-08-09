@@ -160,6 +160,7 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-button-zoomout',
 		'vtour-button-fitimage',
 		'vtour-button-realsize',
+		'vtour-button-reset',
 		'vtour-button-up',
 		'vtour-button-down',
 		'vtour-loading',
