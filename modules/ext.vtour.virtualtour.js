@@ -260,7 +260,7 @@ var VirtualTour = Class.extend( {
 		//Añade los enlaces.
 		$.each( jsonTour.places, function( i, jsonPlace ) {
 			var place = places[i];
-			place.links = that.createLinks( places, jsonPlace );
+			that.addLinks( places, place, jsonPlace );
 			$.each( ['up', 'down'], function( j, link ) {
 				if ( jsonPlace[link] !== null ) {
 					place[link] = places[jsonPlace[link]];
@@ -332,14 +332,13 @@ var VirtualTour = Class.extend( {
 	},
 
 	/**
-	 * Create links for a given place.
-	 * @param {Array} List of all created places
+	 * Add links to an origin Element.
+	 * @param {Array} places List of all created places
+	 * @param {Element} place Element object to which the links will be added
 	 * @param {Object} jsonPlace Tour data
-	 * @return Array Array of links from the place
 	 */
-	createLinks: function( places, jsonPlace ) {
+	addLinks: function( places, place, jsonPlace ) {
 		var jsonLinksArray = jsonPlace.links;
-		var links = [];
 		var that = this;
 		$.each( jsonLinksArray, function( i, jsonLink ) {
 			var destination = places[jsonLink.destination];
@@ -370,9 +369,8 @@ var VirtualTour = Class.extend( {
 				center: jsonLink.center
 			};
 			link.setDestinationPosition( position );
-			links.push( link );
+			place.addLink( link );
 		} );
-		return links;
 	},
 
 	/**

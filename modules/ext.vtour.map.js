@@ -108,6 +108,10 @@ var Map = Element.extend( {
 			$.each( this.places, function( i, place ) {
 				that.view.addLink( place.getMapLink() );
 			} );
+			// TODO: Links from maps aren't currently supported.
+			$.each( this.links, function( i, link ) {
+				that.view.addLink( link );
+			} );
 		}
 		parent.append( this.html );
 		this.view.reset();

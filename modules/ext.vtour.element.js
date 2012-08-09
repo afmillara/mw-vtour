@@ -14,18 +14,33 @@
 var Element = Class.extend( {
 
 	/**
+	 * Array of Links from this Element to Places.
+	 * @var {Array} links
+	 */
+	links: null,
+
+	/**
 	 * Create an Element.
 	 * @constructor
 	 * @param {VirtualTour} tour VirtualTour to which this Element will belong
 	 * @param {String} name Name of the new Element
 	 */
 	init: function( tour, name ) {
+		this.links = [];
 		this.tour = tour;
 		this.elementName = name;
 	},
 
 	/**
-	 * Removes this Element from a parent node and performs cleanup.
+	 * Add a new link from this Element.
+	 * @param {Link} link Link to a Place
+	 */
+	addLink: function( link ) {
+		this.links.push( link );
+	},
+
+	/**
+	 * Remove this Element from a parent node and perform cleanup.
 	 * @param {$Node} $parent  parent node
 	 */
 	end: function( $parent ) {

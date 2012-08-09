@@ -105,7 +105,6 @@ var Place = Element.extend( {
 		this.visible = visible;
 		this.location = location;
 		this.map = map;
-		this.links = [];
 	},
 	
 	setTooltipsEnabled: function( tooltipsEnabled ) {
