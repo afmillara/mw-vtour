@@ -10,9 +10,9 @@
  */
 
 /**
- * Static class that contains all the hooks used by the Vtour extension.
+ * Hooks to parse Vtour tours and store, return and display those tours.
  */
-class VtourHooks {
+class VtourParserHooks {
 
 	/**
 	 * Vtour page instance for the page that is currently being parsed.
@@ -27,7 +27,7 @@ class VtourHooks {
 	 * @return bool Return true in order to continue hook processing
 	 */
 	public static function setupParserHook( Parser $parser ) {
-		$parser->setHook( 'vtour', 'VtourHooks::handleTag' );
+		$parser->setHook( 'vtour', 'VtourParserHooks::handleTag' );
 		self::$vtourPage = new VtourPage();
 		return true;
 	}
@@ -46,27 +46,6 @@ class VtourHooks {
 	}
 
 	/**
-	 * Make the parser load the stylesheet for Vtour links
-	 * (ParserCleanState hook).
-	 * @param Parser $parser Parser object
-	 * @return bool Return true in order to continue hook processing
-	 */
-	public static function addLinkStyle( Parser $parser ) {
-		$parserOutput = $parser->getOutput();
-		// Compatibility with 1.17
-		if ( method_exists( $parserOutput, 'addModuleStyles' ) ) {
-			// addModuleStyles is preferred because (at the moment,
-			// 1.19) it loads the CSS from HTML, which is faster than
-			// using JS. Otherwise, the user might see the HTML before
-			// the styles are applied
-			$parserOutput->addModuleStyles( 'ext.vtour.links' );
-		} else {
-			$parserOutput->addModules( 'ext.vtour.links' );
-		}
-		return true;
-	}
-
-	/**
 	 * Make certain configuration variables visible from the client side.
 	 * @param array &$vars Associative array: variable name => value
 	 * @return bool Return true in order to continue hook processing
@@ -80,49 +59,12 @@ class VtourHooks {
 		$vars['wgVtourGoogleExternalMapTimeout'] = $wgVtourGoogleExternalMapTimeout; 
 		return true;
 	}
+}
 
-	/**
-	 * If the page name starts with the prefix for Vtour links, redirect
-	 * to the special page that deals with them (InitializeArticlesMaybeRedirect hook).
-	 * @param Title $title Title object for the page
-	 * @param $request
-	 * @param &$ignoreRedirect
-	 * @param string &$target Target for the redirection
-	 * @return bool True when hook processing should continue, false to stop and redirect
-	 */
-	public static function redirectAliasToSpecial( $title, $request,
-			&$ignoreRedirect, &$target ) {
-		$subpage = VtourUtils::extractParamsFromPrefixed( $title );
-		if ( $subpage !== null ) {
-			$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
-			$target = $specialPageTitle->getFullURL();
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * Prevent MediaWiki users from accessing articles that start with the
-	 * prefix for Vtour links (getUserPermissionsErrors hook).
-	 * @param Title $title Page title
-	 * @param $user
-	 * @param string $action Action that the user is trying to perform
-	 * @param string &$result In case of error, message name for it
-	 * @return bool true to continue, false to stop and show a error page
-	 */
-	public static function disableLinkAliasPages( $title, $user, $action, &$result ) {
-		if ( $action === 'read' ) {
-			// redirectAliasToSpecial will handle it
-			return true;
-		}
-		if ( VtourUtils::extractParamsFromPrefixed( $title ) !== null ) {
-			$result = 'vtour-reservedpage';
-			return false;
-		} else {
-			return true;
-		}
-	}
+/**
+ * Hooks that transform links to virtual tours and create the necessary infrastructure.
+ */
+class VtourLinkHooks {
 
 	/**
 	 * Transform Vtour links so they point to the correct page (no need to visit
@@ -215,6 +157,76 @@ class VtourHooks {
 		$ret = $linker->link( $articleTitle, $text, $customAttribs, $query, $options );
 		return false;
 	}
+
+	/**
+	 * If the page name starts with the prefix for Vtour links, redirect
+	 * to the special page that deals with them (InitializeArticlesMaybeRedirect hook).
+	 * @param Title $title Title object for the page
+	 * @param $request
+	 * @param &$ignoreRedirect
+	 * @param string &$target Target for the redirection
+	 * @return bool True when hook processing should continue, false to stop and redirect
+	 */
+	public static function redirectAliasToSpecial( $title, $request,
+			&$ignoreRedirect, &$target ) {
+		$subpage = VtourUtils::extractParamsFromPrefixed( $title );
+		if ( $subpage !== null ) {
+			$specialPageTitle = SpecialPage::getTitleFor( 'Vtour', $subpage );
+			$target = $specialPageTitle->getFullURL();
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Prevent MediaWiki users from accessing articles that start with the
+	 * prefix for Vtour links (getUserPermissionsErrors hook).
+	 * @param Title $title Page title
+	 * @param $user
+	 * @param string $action Action that the user is trying to perform
+	 * @param string &$result In case of error, message name for it
+	 * @return bool true to continue, false to stop and show a error page
+	 */
+	public static function disableLinkAliasPages( $title, $user, $action, &$result ) {
+		if ( $action === 'read' ) {
+			// redirectAliasToSpecial will handle it
+			return true;
+		}
+		if ( VtourUtils::extractParamsFromPrefixed( $title ) !== null ) {
+			$result = 'vtour-reservedpage';
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Make the parser load the stylesheet for Vtour links
+	 * (ParserCleanState hook).
+	 * @param Parser $parser Parser object
+	 * @return bool Return true in order to continue hook processing
+	 */
+	public static function addLinkStyle( Parser $parser ) {
+		$parserOutput = $parser->getOutput();
+		// Compatibility with 1.17
+		if ( method_exists( $parserOutput, 'addModuleStyles' ) ) {
+			// addModuleStyles is preferred because (at the moment,
+			// 1.19) it loads the CSS from HTML, which is faster than
+			// using JS. Otherwise, the user might see the HTML before
+			// the styles are applied
+			$parserOutput->addModuleStyles( 'ext.vtour.links' );
+		} else {
+			$parserOutput->addModules( 'ext.vtour.links' );
+		}
+		return true;
+	}
+}
+
+/**
+ * Hooks for unit tests.
+ */
+class VtourTestHooks {
 	
 	/**
 	 * Register PHP unit tests for Vtour (UnitTestsList hook).

@@ -118,7 +118,9 @@ $wgExtensionMessagesFiles['Vtour'] = $wgVtourDir . 'Vtour.i18n.php';
 $wgExtensionMessagesFiles['VtourAlias'] = $wgVtourDir . 'Vtour.alias.php';
 
 $wgAutoloadClasses['VtourUtils'] = $wgVtourDir . 'VtourUtils.php';
-$wgAutoloadClasses['VtourHooks'] = $wgVtourDir . 'Vtour.body.php';
+$wgAutoloadClasses['VtourParserHooks'] = $wgVtourDir . 'Vtour.body.php';
+$wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
+$wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['SpecialVtour'] = $wgVtourDir . 'SpecialVtour.php';
 $wgAutoloadClasses['VtourParser'] = $wgVtourDir . 'VtourParser.php';
 $wgAutoloadClasses['VtourElement'] = $wgVtourDir . 'VtourElement.php';
@@ -197,13 +199,13 @@ $wgResourceModules['ext.vtour.lib'] = array(
 
 $wgSpecialPages['Vtour'] = 'SpecialVtour';
 
-$wgHooks['ParserFirstCallInit'][] = 'VtourHooks::setupParserHook';
-$wgHooks['ParserClearState'][] = 'VtourHooks::addLinkStyle';
-$wgHooks['LinkBegin'][] = 'VtourHooks::handleLink';
-$wgHooks['getUserPermissionsErrors'][] = 'VtourHooks::disableLinkAliasPages';
-$wgHooks['InitializeArticleMaybeRedirect'][] = 'VtourHooks::redirectAliasToSpecial';
-$wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourHooks::exportConfigVars';
+$wgHooks['ParserFirstCallInit'][] = 'VtourParserHooks::setupParserHook';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourParserHooks::exportConfigVars';
+$wgHooks['ParserClearState'][] = 'VtourLinkHooks::addLinkStyle';
+$wgHooks['LinkBegin'][] = 'VtourLinkHooks::handleLink';
+$wgHooks['getUserPermissionsErrors'][] = 'VtourLinkHooks::disableLinkAliasPages';
+$wgHooks['InitializeArticleMaybeRedirect'][] = 'VtourLinkHooks::redirectAliasToSpecial';
 
-$wgHooks['UnitTestsList'][] = 'VtourHooks::registerPHPTests';
-$wgHooks['ResourceLoaderTestModules'][] = 'VtourHooks::registerJSTests';
+$wgHooks['UnitTestsList'][] = 'VtourTestHooks::registerPHPTests';
+$wgHooks['ResourceLoaderTestModules'][] = 'VtourTestHooks::registerJSTests';
 
