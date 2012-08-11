@@ -91,6 +91,14 @@ $wgVtourWarnNoJS = true;
 $wgVtourDisplayElementsNoJS = true;
 
 /**
+ * Whether to store virtual tours in a table in the database and display a list
+ * in Special:AllVtours. While it is disabled, no changes will be made to the
+ * virtualtour table.
+ * @var bool $wgVtourKeepTourList
+ */
+$wgVtourKeepTourList = true;
+
+/**
  * Name of the ExternalMap class that will be used, or null to disable external maps.
  * @var string $wgVtourExternalMap
  */

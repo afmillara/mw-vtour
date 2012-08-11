@@ -39,6 +39,14 @@ class SpecialAllVtours extends QueryPage {
 	 * @param string Special page parameters
 	 */
 	public function execute( $par ) {
+		global $wgVtourKeepTourList, $wgOut;
+		if ( !$wgVtourKeepTourList ) {
+			$this->setHeaders();
+			$wgOut->addWikiText( wfMessage( 'vtour-allvtours-disabled' )
+				->parse() );
+			return;
+		}
+
 		$request = $this->getRequest();
 
 		$rawPagePrefix = $request->getVal( 'pagePrefix', $par );

@@ -66,10 +66,13 @@ class VtourParserHooks {
 	 * @param int $id Article id
 	 */
 	public static function deleteDBTours( $article, $user, $reason, $id ) {
-		$dbw = wfGetDB( DB_MASTER );
-		$dbw->delete( 'virtualtour', array(
-			'vtour_pageid' => $id
-		), __METHOD__ );
+		global $wgVtourKeepTourList;
+		if ( $wgVtourKeepTourList ) {
+			$dbw = wfGetDB( DB_MASTER );
+			$dbw->delete( 'virtualtour', array(
+				'vtour_pageid' => $id
+			), __METHOD__ );
+		}
 		return true;
 	}
 
@@ -376,6 +379,11 @@ class VtourPage {
 	 * Save the tours to the database.
 	 */
 	public function endPage( $pageId ) {
+		global $wgVtourKeepTourList;
+		if ( !$wgVtourKeepTourList ) {
+			return;
+		}
+
 		if ( !$this->title || $pageId !== $this->title->getArticleId() ) {
 			return;
 		}

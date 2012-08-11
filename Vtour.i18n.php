@@ -37,6 +37,7 @@ $messages['en'] = array(
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 
 	'vtour-allvtours' => 'All Vtours',
+	'vtour-allvtours-disabled' => 'There is no virtual tour list available, so this page has been disabled.',
 	'vtour-allvtours-header' => 'This page lists all the Vtour virtual tours in this wiki and the pages that contain them.',
 	'vtour-allvtours-prefixlegend' => 'Search by prefix',
 	'vtour-allvtours-pageprefix' => 'Page prefix: ',
@@ -135,6 +136,7 @@ $messages['es'] = array(
 	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
 
 	'vtour-allvtours' => 'Todos los Vtours',
+	'vtour-allvtours-disabled' => 'No hay una lista de visitas virtuales disponible, por lo que esta página está desactivada.',
 	'vtour-allvtours-header' => 'Esta página enumera todas las visitas virtuales de Vtour de este wiki y las páginas que las contienen.',
 	'vtour-allvtours-prefixlegend' => 'Búsqueda por prefijo',
 	'vtour-allvtours-pageprefix' => 'Prefijo de la página: ',

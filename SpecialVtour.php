@@ -19,11 +19,18 @@
  */
 class SpecialVtour extends SpecialPage {
 
+	/**
+	 * Create a new instance of Special:Vtour.
+	 */
 	function __construct() {
 		// No restrictions, not listed
 		parent::__construct( 'vtour-link', '', false ); 
 	}
 
+	/**
+	 * Generate output.
+	 * @param string $par Special page arguments
+	 */
 	function execute( $par ) {
 		global $wgOut;
 		if ( $par ) {
