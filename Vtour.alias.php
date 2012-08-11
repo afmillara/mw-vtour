@@ -17,7 +17,7 @@ $specialPageAliases = array();
  */
 $specialPageAliases['en'] = array(
 	'vtour-link' => array( 'Vtour' ),
-	'vtour-all' => array( 'All Vtours', 'AllVtours' )
+	'vtour-allvtours' => array( 'All Vtours', 'AllVtours' )
 );
 
 /**
@@ -26,6 +26,6 @@ $specialPageAliases['en'] = array(
  */
 $specialPageAliases['es'] = array(
 	'vtour-link' => array( 'Vtour' ),
-	'vtour-all' => array( 'Todos los Vtours', 'TodosLosVtours' )
+	'vtour-allvtours' => array( 'Todos los Vtours', 'TodosLosVtours' )
 );
 

@@ -16,6 +16,8 @@ $messages = array();
  * @author Álvaro Fernández Millara
  */
 $messages['en'] = array(
+	'vtour' => 'Vtour',
+
 	'vtour-description' => 'A virtual tour system for MediaWiki.',
 
 	'vtour-decimalseparator' => '.',
@@ -34,8 +36,13 @@ $messages['en'] = array(
 * \'\'zoom\'\' is, optionally, the initial zoom level.',
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 
-	'vtour-all' => 'All Vtours',
-	'vtour-allvtourslink' => '$1 ($2)',
+	'vtour-allvtours' => 'All Vtours',
+	'vtour-allvtours-header' => 'This page lists all the Vtour virtual tours in this wiki and the pages that contain them.',
+	'vtour-allvtours-prefixlegend' => 'Search by prefix',
+	'vtour-allvtours-pageprefix' => 'Page prefix: ',
+	'vtour-allvtours-tourprefix' => 'Tour prefix: ',
+	'vtour-allvtours-prefixsubmit' => 'Search',	
+	'vtour-allvtours-link' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">This is a <strong>virtual tour</strong> interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
 	'vtour-nojs-htmlfollows' => 'The text contained inside the tour follows:',
@@ -108,6 +115,7 @@ $messages['en'] = array(
  * @author Álvaro Fernández Millara
  */
 $messages['es'] = array(
+	'vtour' => 'Vtour',
 	'vtour-description' => 'Un sistema de visitas virtuales para MediaWiki.',
 
 	'vtour-decimalseparator' => '.',
@@ -126,8 +134,13 @@ $messages['es'] = array(
 * \'\'zoom\'\' es, opcionalmente, el nivel de zoom inicial.',
 	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
 
-	'vtour-all' => 'Todos los Vtours',
-	'vtour-allvtourslink' => '$1 ($2)',
+	'vtour-allvtours' => 'Todos los Vtours',
+	'vtour-allvtours-header' => 'Esta página enumera todas las visitas virtuales de Vtour de este wiki y las páginas que las contienen.',
+	'vtour-allvtours-prefixlegend' => 'Búsqueda por prefijo',
+	'vtour-allvtours-pageprefix' => 'Prefijo de la página: ',
+	'vtour-allvtours-tourprefix' => 'Prefijo de la visita: ',
+	'vtour-allvtours-prefixsubmit' => 'Buscar',	
+	'vtour-allvtours-link' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">Esto es una <strong>visita virtual</strong>, un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',
 	'vtour-nojs-htmlfollows' => 'El texto contenido en la visita es el siguiente:',
