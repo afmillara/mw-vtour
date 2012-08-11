@@ -122,6 +122,7 @@ $wgAutoloadClasses['VtourParserHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['SpecialVtour'] = $wgVtourDir . 'SpecialVtour.php';
+$wgAutoloadClasses['SpecialAllVtours'] = $wgVtourDir . 'SpecialAllVtours.php';
 $wgAutoloadClasses['VtourParser'] = $wgVtourDir . 'VtourParser.php';
 $wgAutoloadClasses['VtourElement'] = $wgVtourDir . 'VtourElement.php';
 $wgAutoloadClasses['VtourRoot'] = $wgVtourDir . 'VtourRoot.php';
@@ -199,8 +200,15 @@ $wgResourceModules['ext.vtour.lib'] = array(
 
 $wgSpecialPages['Vtour'] = 'SpecialVtour';
 
+$wgSpecialPages['AllVtours'] = 'SpecialAllVtours';
+$wgSpecialPageGroups['AllVtours'] = 'pages';
+
 $wgHooks['ParserFirstCallInit'][] = 'VtourParserHooks::setupParserHook';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourParserHooks::exportConfigVars';
+$wgHooks['LoadExtensionSchemaUpdates'][] = 'VtourParserHooks::addTourTable';
+$wgHooks['ArticleSaveComplete'][] = 'VtourParserHooks::endVtourPage';
+$wgHooks['ArticleDeleteComplete'][] = 'VtourParserHooks::deleteDBTours';
+
 $wgHooks['ParserClearState'][] = 'VtourLinkHooks::addLinkStyle';
 $wgHooks['LinkBegin'][] = 'VtourLinkHooks::handleLink';
 $wgHooks['getUserPermissionsErrors'][] = 'VtourLinkHooks::disableLinkAliasPages';

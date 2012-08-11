@@ -16,6 +16,16 @@ $specialPageAliases = array();
  * @author Álvaro Fernández Millara
  */
 $specialPageAliases['en'] = array(
-	'Vtour' => array( 'Vtour' )
+	'Vtour' => array( 'Vtour' ),
+	'AllVtours' => array( 'All Vtours', 'AllVtours' )
+);
+
+/**
+ * Spanish.
+ * @author Álvaro Fernández Millara
+ */
+$specialPageAliases['es'] = array(
+	'Vtour' => array( 'Vtour' ),
+	'AllVtours' => array( 'Todos los Vtours', 'TodosLosVtours' )
 );
 

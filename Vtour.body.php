@@ -18,7 +18,7 @@ class VtourParserHooks {
 	 * Vtour page instance for the page that is currently being parsed.
 	 * @var VtourPage $vtourPage
 	 */
-	protected static $vtourPage;
+	protected static $vtourPage = null;
 
 	/**
 	 * Add the tag extension when the parser is initialized
@@ -28,7 +28,7 @@ class VtourParserHooks {
 	 */
 	public static function setupParserHook( Parser $parser ) {
 		$parser->setHook( 'vtour', 'VtourParserHooks::handleTag' );
-		self::$vtourPage = new VtourPage();
+		self::$vtourPage = new VtourPage( $parser->getTitle() );
 		return true;
 	}
 
@@ -46,7 +46,36 @@ class VtourParserHooks {
 	}
 
 	/**
-	 * Make certain configuration variables visible from the client side.
+	 * End the current Vtour page (ArticleSaveComplete).
+	 * @return bool Return true in order to continue hook processing
+	 */
+	public static function endVtourPage( $article ) {
+		// TODO: Make this update the table after rollback or undelete.
+		if ( self::$vtourPage !== null ) {
+			self::$vtourPage->endPage( $article->getId() );
+		}
+		return true;
+	}
+
+	/**
+	 * Delete all the virtualtour entries for an article after it is deleted
+	 * (ArticleDeleteComplete).
+	 * @param Article $article Article
+	 * @param User $user User that deleted the article
+	 * @param string $reason Reason
+	 * @param int $id Article id
+	 */
+	public static function deleteDBTours( $article, $user, $reason, $id ) {
+		$dbw = wfGetDB( DB_MASTER );
+		$dbw->delete( 'virtualtour', array(
+			'vtour_pageid' => $id
+		), __METHOD__ );
+		return true;
+	}
+
+	/**
+	 * Make certain configuration variables visible from the client side
+	 * (ResourceLoaderGetConfigVars).
 	 * @param array &$vars Associative array: variable name => value
 	 * @return bool Return true in order to continue hook processing
 	 */
@@ -57,6 +86,17 @@ class VtourParserHooks {
 		$vars['wgVtourExternalMap'] = $wgVtourExternalMap;
 		$vars['wgVtourGoogleExternalMapAPIUrl'] = $wgVtourGoogleExternalMapAPIUrl; 
 		$vars['wgVtourGoogleExternalMapTimeout'] = $wgVtourGoogleExternalMapTimeout; 
+		return true;
+	}
+
+	/**
+	 * Add the virtualtour table to the database.
+	 * @param DatabaseUpdater $updater Updater
+	 */
+	public static function addTourTable( DatabaseUpdater $updater ) {
+		global $wgVtourDir;
+		$updater->addExtensionUpdate( array( 'addTable', 'virtualtour',
+			$wgVtourDir . 'virtualtour.sql', true ) );
 		return true;
 	}
 }
@@ -80,7 +120,6 @@ class VtourLinkHooks {
 	 */
 	public static function handleLink( $skin, $target, &$text, &$customAttribs, &$query,
 			&$options, &$ret ) {
-		global $wgOut;
 		$paramText = null;
 
 		// Extract the link components
@@ -112,6 +151,7 @@ class VtourLinkHooks {
 		}
 
 		// The title is generated here
+		global $wgOut;
 		$pageTitle = $wgOut->getTitle();
 		if ( $linkParts['article'] !== null ) {
 			$articleTitle = Title::newFromText( $linkParts['article'] );
@@ -264,12 +304,26 @@ class VtourTestHooks {
  * here.
  */
 class VtourPage {
+	
+	/**
+	 * Title of the page being processed.
+	 * @var Title $title
+	 */
+	protected $title;
 
 	/**
 	 * Associative array of tours (id -> tour).
 	 * @var array ids
 	 */
 	protected $tours = array();
+
+	/**
+	 * Create a new VtourPage.
+	 * @param Title $title Title of the page
+	 */
+	public function __construct( $title ) {
+		$this->title = $title;
+	}
 
 	/**
 	 * Transform a Vtour tag to HTML and JSON data.
@@ -280,8 +334,6 @@ class VtourPage {
 	 * @return string HTML output
 	 */
 	public function transformTag( $input, array $args, Parser $parser, PPFrame $frame ) {
-		global $wgVtourWarnNoJS, $wgVtourDisplayElementsNoJS;
-
 		$tour = new VtourParser( $input, $args, $parser, $frame );
 		try {
 			$tour->parse();
@@ -289,10 +341,6 @@ class VtourPage {
 			$error = htmlspecialchars( $e->getMessage() );
 			return $this->generateErrorString( $error );
 		}
-
-		// Changing the parser output like this might not be a good idea.
-		// Is there a better way?
-		$parser->getOutput()->addModules( 'ext.vtour' );
 
 		$tourData = $tour->getTourData();
 		$tourHTMLElements = $tour->getTourHTMLElements();
@@ -302,10 +350,9 @@ class VtourPage {
 		if ( $tourId === null ) {
 			$tourId = $this->generateUniqueId();
 		} elseif ( isset( $this->tours[$tourId] ) ) {
-			$warningHTML .= $this->warnDuplicateTourId( $tourId );
+			$warningHTML = $this->warnDuplicateTourId( $tourId );
 			$tourId = $this->generateUniqueId();
 		}
-		$this->tours[$tourId] = $tourData;
 
 		list( $width, $height ) = $this->calculateDimensions( $tourData );
 
@@ -313,7 +360,95 @@ class VtourPage {
 		// not contain line breaks. Otherwise, the MediaWiki parser would add HTML
 		// tags everywhere with hilarious results
 		$tourJSON = FormatJson::encode( $tourData );
+		$tourData['hash'] = sha1( $tourJSON );
 
+		$this->tours[$tourId] = $tourData;
+
+		// Changing the parser output like this might not be a good idea.
+		// Is there a better way?
+		$parser->getOutput()->addModules( 'ext.vtour' );
+
+		return $this->generateOutput( $tourId, $tourJSON, $tourHTMLElements,
+			$width, $height, $warningHTML );
+	}
+
+	/**
+	 * Save the tours to the database.
+	 */
+	public function endPage( $pageId ) {
+		if ( !$this->title || $pageId !== $this->title->getArticleId() ) {
+			return;
+		}
+
+		$dbr = wfGetDB( DB_SLAVE );
+		$oldTours = $dbr->select( 'virtualtour', 'vtour_tourid',
+			array( 'vtour_pageid' => $pageId ), __METHOD__ );
+
+		$oldTourIds = array();
+		foreach ( $oldTours as $row ) {
+			$oldTourIds[] = $row->vtour_tourid;
+		}
+		
+		$newTourIds = array_keys( $this->tours );
+
+		$updateIds = array_intersect( $newTourIds, $oldTourIds );
+		$insertIds = array_diff( $newTourIds, $oldTourIds );
+		$deleteIds = array_diff( $oldTourIds, $newTourIds );
+
+		$dbw = wfGetDB( DB_MASTER );
+
+		foreach ( $updateIds as $tourId ) {
+			$dbw->update( 'virtualtour',
+				$this->getTourDBInfoArray( $tourId ),
+				array(
+					'vtour_pageid' => $pageId,
+					'vtour_tourid' => $tourId
+				), __METHOD__, array( 'IGNORE' ) );
+		}
+
+		$rowsToInsert = [];
+		foreach ( $insertIds as $tourId ) {
+			$rowToInsert = $this->getTourDBInfoArray( $tourId );
+			$rowToInsert['vtour_pageid'] = $pageId;
+			$rowToInsert['vtour_tourid'] = $tourId;
+			$rowsToInsert[] = $rowToInsert;
+		}
+		$dbw->insert( 'virtualtour', $rowsToInsert, __METHOD__, array( 'IGNORE' ) );
+		
+		if ( count( $deleteIds ) ) {
+			$dbw->delete( 'virtualtour', array(
+				'vtour_pageid' => $pageId,
+				'vtour_tourid' => $deleteIds
+			), __METHOD__ );
+		}
+	}
+
+	/**
+	 * Generate all non-key fields of a vitualtour table row.
+	 * @param string $tourId Id of the tour
+	 * @return array Row
+	 */
+	protected function getTourDBInfoArray( $tourId ) {
+		$tour = $this->tours[$tourId];
+		return array(
+			'vtour_hash' => $tour['hash'],
+			'vtour_longitude' => null,
+			'vtour_latitude' => null	
+		);
+	}
+
+	/**
+	 * Generate the virtual tour HTML.
+	 * @param string $tourId Id of the tour
+	 * @param string $tourJSON Tour data in JSON format
+	 * @param string $tourHTMLElements HTML elements contained in the tour
+	 * @param string $width Width of the virtual tour element
+	 * @param string $height Height of the virtual tour element
+	 * @param string $warningHTML Warning message that will be included
+	 */
+	protected function generateOutput( $tourId, $tourJSON, $tourHTMLElements,
+			$width, $height, $warningHTML ) {
+		global $wgVtourWarnNoJS, $wgVtourDisplayElementsNoJS;
 		// Warning message for users whose browsers don't have JavaScript support
 		$noJSHeader = '';
 		if ( $wgVtourWarnNoJS ) {

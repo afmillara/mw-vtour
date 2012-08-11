@@ -17,6 +17,7 @@ $messages = array();
  */
 $messages['en'] = array(
 	'vtour' => 'Vtour',
+
 	'vtour-description' => 'A virtual tour system for MediaWiki.',
 
 	'vtour-decimalseparator' => '.',
@@ -33,6 +34,9 @@ $messages['en'] = array(
 * \'\'center\'\' is, optionally, the coordinates of the point that will be in the center of the view when the tour starts, and
 * \'\'zoom\'\' is, optionally, the initial zoom level.',
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
+
+	'allvtours' => 'All Vtours',
+	'vtour-allvtourslink' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">This is a <strong>virtual tour</strong> interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
 	'vtour-nojs-htmlfollows' => 'The text contained inside the tour follows:',
@@ -121,6 +125,9 @@ $messages['es'] = array(
 * \'\'centro\'\' es, opcionalmente, las coordenadas del punto que estará en el centro de la zona visible cuando empiece la visita, y
 * \'\'zoom\'\' es, opcionalmente, el nivel de zoom inicial.',
 	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
+
+	'allvtours' => 'Todos los Vtours',
+	'vtour-allvtourslink' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">Esto es una <strong>visita virtual</strong>, un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',
 	'vtour-nojs-htmlfollows' => 'El texto contenido en la visita es el siguiente:',
