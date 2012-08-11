@@ -68,14 +68,14 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 10;
+	z-index: 2;
 }
 
 .vtour-buttonlayer {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 11;
+	z-index: 3;
 }
 
 .vtour-viewcontainer {
@@ -91,7 +91,6 @@
 
 .vtour-background {
 	display: block;
-	z-index: 1;
 }
 
 .vtour-movable {
@@ -248,7 +247,7 @@
 
 .vtour-fading {
 	position: absolute;
-	z-index: 50;
+	z-index: 5;
 }
 
 .vtour-fading * {
