@@ -3,7 +3,7 @@
 class SpecialAllVtours extends QueryPage {
 
 	public function __construct() {
-		parent::__construct( 'AllVtours' );
+		parent::__construct( 'vtour-all' );
 	}
 
 	function sortDescending() {

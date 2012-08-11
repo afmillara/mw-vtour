@@ -16,8 +16,6 @@ $messages = array();
  * @author Álvaro Fernández Millara
  */
 $messages['en'] = array(
-	'vtour' => 'Vtour',
-
 	'vtour-description' => 'A virtual tour system for MediaWiki.',
 
 	'vtour-decimalseparator' => '.',
@@ -25,6 +23,7 @@ $messages['en'] = array(
 
 	'vtour-reservedpage' => 'This page is reserved for Vtour links.',
 
+	'vtour-link' => 'Vtour',
 	'vtour-linkspecialpage-header' => 'This special page can be used to create links to \'\'\'Vtour\'\'\' virtual tours. The syntax is as follows:',
 	'vtour-linkspecialpage-badformat' => 'The page name is not valid. Maybe it was supposed to be a link to a virtual tour. If that is the case, the correct syntax for \'\'\'Vtour\'\'\' virtual tour links is as follows:',
 	'vtour-linkspecialpage-linkinfo' => '\'\'$1/article/tour[:place][?center[:zoom]]\'\', where:
@@ -35,7 +34,7 @@ $messages['en'] = array(
 * \'\'zoom\'\' is, optionally, the initial zoom level.',
 	'vtour-linkspecialpage-aliasinfo' => 'The alias "$1" can also be used: \'\'$1Article/Tour:Place\'\'.',
 
-	'allvtours' => 'All Vtours',
+	'vtour-all' => 'All Vtours',
 	'vtour-allvtourslink' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">This is a <strong>virtual tour</strong> interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
@@ -109,13 +108,14 @@ $messages['en'] = array(
  * @author Álvaro Fernández Millara
  */
 $messages['es'] = array(
-	'vtour' => 'Vtour',
 	'vtour-description' => 'Un sistema de visitas virtuales para MediaWiki.',
 
 	'vtour-decimalseparator' => '.',
 	'vtour-linkalias' => '@@',
 
 	'vtour-reservedpage' => 'Esta página está reservada para enlaces de Vtour.',
+
+	'vtour-link' => 'Vtour',
 	'vtour-linkspecialpage-header' => 'Esta página especial puede utilizarse para crear enlaces a visitas virtuales de \'\'\'Vtour\'\'\'. La sintaxis es como sigue:',
 	'vtour-linkspecialpage-badformat' => 'El nombre de la página no es válido. En caso de que se haya llegado a esta página tratando de crear un enlace a una visita virtual de \'\'\'Vtour\'\'\', la sintaxis correcta es la siguiente:',
 	'vtour-linkspecialpage-linkinfo' => '\'\'$1/artículo/visita[:lugar][?centro[:zoom]]\'\', donde:
@@ -126,7 +126,7 @@ $messages['es'] = array(
 * \'\'zoom\'\' es, opcionalmente, el nivel de zoom inicial.',
 	'vtour-linkspecialpage-aliasinfo' => 'También puede usarse el alias "$1": \'\'$1Artículo/Visita:Lugar\'\'.',
 
-	'allvtours' => 'Todos los Vtours',
+	'vtour-all' => 'Todos los Vtours',
 	'vtour-allvtourslink' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">Esto es una <strong>visita virtual</strong>, un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',

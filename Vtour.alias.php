@@ -16,8 +16,8 @@ $specialPageAliases = array();
  * @author Álvaro Fernández Millara
  */
 $specialPageAliases['en'] = array(
-	'Vtour' => array( 'Vtour' ),
-	'AllVtours' => array( 'All Vtours', 'AllVtours' )
+	'vtour-link' => array( 'Vtour' ),
+	'vtour-all' => array( 'All Vtours', 'AllVtours' )
 );
 
 /**
@@ -25,7 +25,7 @@ $specialPageAliases['en'] = array(
  * @author Álvaro Fernández Millara
  */
 $specialPageAliases['es'] = array(
-	'Vtour' => array( 'Vtour' ),
-	'AllVtours' => array( 'Todos los Vtours', 'TodosLosVtours' )
+	'vtour-link' => array( 'Vtour' ),
+	'vtour-all' => array( 'Todos los Vtours', 'TodosLosVtours' )
 );
 

@@ -21,7 +21,7 @@ class SpecialVtour extends SpecialPage {
 
 	function __construct() {
 		// No restrictions, not listed
-		parent::__construct( 'Vtour', '', false ); 
+		parent::__construct( 'vtour-link', '', false ); 
 	}
 
 	function execute( $par ) {

@@ -198,10 +198,10 @@ $wgResourceModules['ext.vtour.lib'] = array(
 	'remoteExtPath' => 'Vtour/modules/lib'
 );
 
-$wgSpecialPages['Vtour'] = 'SpecialVtour';
+$wgSpecialPages['vtour-link'] = 'SpecialVtour';
 
-$wgSpecialPages['AllVtours'] = 'SpecialAllVtours';
-$wgSpecialPageGroups['AllVtours'] = 'pages';
+$wgSpecialPages['vtour-all'] = 'SpecialAllVtours';
+$wgSpecialPageGroups['vtour-all'] = 'pages';
 
 $wgHooks['ParserFirstCallInit'][] = 'VtourParserHooks::setupParserHook';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourParserHooks::exportConfigVars';
