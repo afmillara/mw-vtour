@@ -114,6 +114,7 @@ class VtourPage {
 		foreach ( $oldTours as $row ) {
 			$oldTourIds[] = $row->vtour_tourid;
 		}
+		$oldTours->free();
 		
 		$newTourIds = array();
 		foreach( $this->tours as $tourId => $tour ) {
@@ -169,7 +170,9 @@ class VtourPage {
 				'vtour_pageid' => $pageId,
 				'vtour_hash' => $tourHash
 			), __METHOD__ );
-		return $result->numRows() !== 0;
+		$exists = $result->numRows() !== 0;
+		$result->free();
+		return $exists;
 	}
 
 	/**
@@ -303,7 +306,7 @@ class VtourPage {
 	 */ 
 	protected function generateUniqueId() {
 		$nTours = count( $this->tours );
-		return "_$nTours";
+		return "tour_$nTours";
 	}
 
 	/**

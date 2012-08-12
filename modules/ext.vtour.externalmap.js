@@ -17,11 +17,13 @@ var ExternalMap = Class.extend( {
 	 * Create a new ExternalMap.
 	 * @param {$HTML} $mapContainer jQuery element wrapping a DOM node that will
 	 * contain the map
-	 * @param {function()} onLoad Function to call when the ExternalMap can be used.
-	 * Asynchronous loading might be needed
-	 * @param {function()} onError Function to call if the ExternalMap cannot be used
+	 * @param {function( ExternalMap )} onLoad Function to call when the ExternalMap
+	 * can be used. Asynchronous loading might be needed
+	 * @param {function( ExternalMap )} onError Function to call if the ExternalMap
+	 * cannot be used
+	 * @param {Boolean} showControls Whether UI controls should be shown
 	 */
-	init: function( $mapContainer, onLoad, onError ) {
+	init: function( $mapContainer, onLoad, onError, showControls ) {
 		throw new Error( 'Not implemented: init' );
 	},
 
@@ -56,12 +58,13 @@ var ExternalMap = Class.extend( {
 	/**
 	 * Adds a marker to a given location on the map.
 	 * @param {String} text Title of the marker
+	 * @param {String} description Description of the marker (can be null)
 	 * @param {Array} location Pair of geographic coordinates (lon, lat)
 	 * @param {function} callback Function that will be called when the
 	 * marker icon is clicked
 	 * @return Object Marker object
 	 */
-	addMarker: function( text, location, callback ) {
+	addMarker: function( title, description, location, callback ) {
 		throw new Error( 'Not implemented: addMarker' );
 	},
 

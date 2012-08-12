@@ -99,6 +99,21 @@ $wgVtourDisplayElementsNoJS = true;
 $wgVtourKeepTourList = true;
 
 /**
+ * Whether to enable Special:VtourMap. Special:VtourMap displays a map showing all
+ * the tours with geographical information, which would be very expensive in a large
+ * wiki. If $wgVtourKeepTourList is false, SpecialVtourMap will be disabled regardless
+ * of this setting.
+ * @var bool $wgVtourDisplayTourMap
+ */
+$wgVtourDisplayTourMap = true;
+
+/**
+ * Dimensions (width, height) of the Vtour map in Special:VtourMap, if it is enabled.
+ * @var array $wgVtourTourMapDimensions
+ */
+$wgVtourTourMapDimensions = array( '800px', '500px' );
+
+/**
  * Name of the ExternalMap class that will be used, or null to disable external maps.
  * @var string $wgVtourExternalMap
  */
@@ -131,6 +146,7 @@ $wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['SpecialVtour'] = $wgVtourDir . 'SpecialVtour.php';
 $wgAutoloadClasses['SpecialAllVtours'] = $wgVtourDir . 'SpecialAllVtours.php';
+$wgAutoloadClasses['SpecialVtourMap'] = $wgVtourDir . 'SpecialVtourMap.php';
 $wgAutoloadClasses['VtourPage'] = $wgVtourDir . 'VtourPage.php';
 $wgAutoloadClasses['VtourParser'] = $wgVtourDir . 'VtourParser.php';
 $wgAutoloadClasses['VtourElement'] = $wgVtourDir . 'VtourElement.php';
@@ -141,6 +157,9 @@ $wgAutoloadClasses['VtourLink'] = $wgVtourDir . 'VtourLink.php';
 
 $wgResourceModules['ext.vtour'] = array(
 	'scripts' => array(
+		'lib/ext.vtour.lib.inheritance.js',
+		'lib/jquery.mousewheel.js',
+		'lib/jquery.rotate.js',
 		'ext.vtour.utils.js',
 		'ext.vtour.polygon.js',
 		'ext.vtour.anglemarker.js',
@@ -186,9 +205,20 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-errordesc-externalmaperror',
 		'vtour-thismap'
 	),
-	'dependencies' => array( 'ext.vtour.lib' ),
 	'localBasePath' => $wgVtourDir . 'modules/',
 	'remoteExtPath' => 'Vtour/modules'
+);
+
+$wgResourceModules['ext.vtour.specialvtourmap'] = array(
+	'scripts' => array(
+		'lib/ext.vtour.lib.inheritance.js',
+		'ext.vtour.utils.js',
+		'ext.vtour.externalmap.js',
+		'ext.vtour.googleexternalmap.js',
+		'ext.vtour.specialvtourmap.js'
+	),
+	'localBasePath' => $wgVtourDir . 'modules/',
+	'remoteExtPath' => 'Vtour/modules/'
 );
 
 $wgResourceModules['ext.vtour.links'] = array(
@@ -197,20 +227,14 @@ $wgResourceModules['ext.vtour.links'] = array(
 	'remoteExtPath' => 'Vtour/modules'
 );
 
-$wgResourceModules['ext.vtour.lib'] = array(
-	'scripts' => array(
-		'ext.vtour.lib.inheritance.js',
-		'jquery.mousewheel.js',
-		'jquery.rotate.js'
-	),
-	'localBasePath' => $wgVtourDir . 'modules/lib/',
-	'remoteExtPath' => 'Vtour/modules/lib'
-);
 
 $wgSpecialPages['vtour-link'] = 'SpecialVtour';
 
 $wgSpecialPages['vtour-allvtours'] = 'SpecialAllVtours';
 $wgSpecialPageGroups['vtour-allvtours'] = 'pages';
+
+$wgSpecialPages['vtour-vtourmap'] = 'SpecialVtourMap';
+$wgSpecialPageGroups['vtour-vtourmap'] = 'pages';
 
 $wgHooks['ParserFirstCallInit'][] = 'VtourTourHooks::setupParserHook';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourTourHooks::exportConfigVars';

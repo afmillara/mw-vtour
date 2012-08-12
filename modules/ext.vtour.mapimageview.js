@@ -299,7 +299,7 @@ var MapImageView = GraphicView.extend( {
 		var externalMap = this.externalMap;
 		if ( this.marker === null ) {
 			title = mw.message( 'vtour-thismap' ).toString();
-			this.marker = externalMap.addMarker( title, this.center, function() {
+			this.marker = externalMap.addMarker( title, null, this.center, function() {
 				that.reset();
 			} );
 		}

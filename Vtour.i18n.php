@@ -45,6 +45,11 @@ $messages['en'] = array(
 	'vtour-allvtours-prefixsubmit' => 'Search',	
 	'vtour-allvtours-link' => '$1 ($2)',
 
+	'vtour-vtourmap' => 'Vtour map',
+	'vtour-vtourmap-disabled' => 'This feature is not available in this wiki.',
+	'vtour-vtourmap-header' => 'This map displays all the virtual tours with geographical information in this wiki. A browser with JavaScript support is needed to see it. A KML file can be downloaded from [[{{#special:VtourMap}}/kml]].',
+	'vtour-vtourmap-name' => '$1 ($2)',
+
 	'vtour-nojs' => '<div class="errorbox">This is a <strong>virtual tour</strong> interactive element that needs JavaScript support in order to be displayed. If you are seeing this, it probably means that your browser doesn\'t support JavaScript, that JavaScript is disabled or that the virtual tour hasn\'t loaded yet.</div>',
 	'vtour-nojs-htmlfollows' => 'The text contained inside the tour follows:',
 	'vtour-nojs-elementseparator' => '<hr>',
@@ -143,6 +148,11 @@ $messages['es'] = array(
 	'vtour-allvtours-tourprefix' => 'Prefijo de la visita: ',
 	'vtour-allvtours-prefixsubmit' => 'Buscar',	
 	'vtour-allvtours-link' => '$1 ($2)',
+
+	'vtour-vtourmap' => 'Mapa de Vtours',
+	'vtour-vtourmap-disabled' => 'Esta funcionalidad no está disponible en este wiki.',
+	'vtour-vtourmap-header' => 'Este mapa muestra todas las visitas virtuales con información geográfica presentes en este wiki. Para verlo es necesario un navegador que admita JavaScript. Puede descargarse el fichero KML correspondiente en [[{{#special:VtourMap}}/kml]].',
+	'vtour-vtourmap-name' => '$1 ($2)',
 
 	'vtour-nojs' => '<div class="errorbox">Esto es una <strong>visita virtual</strong>, un elemento interactivo que necesita un navegador que admita JavaScript para poder funcionar. Si está viendo esto, es probable que su navegador no admita JavaScript, que JavaScript esté desactivado o que la visita virtual no esté cargada aún.</div>',
 	'vtour-nojs-htmlfollows' => 'El texto contenido en la visita es el siguiente:',

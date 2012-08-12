@@ -14,6 +14,12 @@
 var GoogleExternalMap = ExternalMap.extend( {
 
 	/**
+	 * Whether UI controls should be shown.
+	 * @var {Boolean} showUIControls
+	 */
+	showUIControls: null,
+
+	/**
 	 * Empty overlay used internally to access parts of Google Maps API that
 	 * otherwise unreachable.
 	 * @var {Google.Maps.OverlayView} dummyOverlay
@@ -38,13 +44,16 @@ var GoogleExternalMap = ExternalMap.extend( {
 	 */
 	maxZoomHere: 22,
 
-	init: function( $mapContainer, onLoad, onError ) {
+	init: function( $mapContainer, onLoad, onError, showUIControls ) {
 		var that = this;
 		this.$mapContainer = $mapContainer;
+		this.showUIControls = !!showUIControls;
 		GoogleExternalMap.loadGoogleMaps( function() {
 			that.prepareContainer();
-			onLoad();
-		}, onError );
+			onLoad( that );
+		}, function() {
+			onError( that );
+		} );
 	},
 
 	setBounds: function( bounds, callback ) {
@@ -97,15 +106,29 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return [1, this.maxZoomHere];
 	},
 
-	addMarker: function( title, location, callback ) {
+	addMarker: function( title, description, location, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
+		var map = this.map;
 		var marker = new gmaps.Marker( {
 			position: new gmaps.LatLng( location[1], location[0] ),
 			title: title
 		} );
-		if ( callback ) {
-			gmaps.event.addListener( marker, 'click', callback );
+		var infoWindow = null;
+
+		if ( description !== null ) {
+			infoWindow = new gmaps.InfoWindow();
+			infoWindow.setContent( description );
 		}
+
+		if ( callback || infoWindow ) {
+			gmaps.event.addListener( marker, 'click', function() {
+				if ( infoWindow ) {
+					infoWindow.open( map, this );
+				}
+				( callback || $.noop )();
+			} );
+		}
+
 		marker.setMap( this.map );
 		return marker;
 	},
@@ -174,12 +197,12 @@ var GoogleExternalMap = ExternalMap.extend( {
 		var gmaps = GoogleExternalMap.gmaps;
 		var options = {
 			center: new gmaps.LatLng( 0, 0 ),
-			zoom: 0,
+			zoom: 1,
 			mapTypeId: gmaps.MapTypeId.SATELLITE,
-			disableDefaultUI: true,
-			draggable: false,
-			scrollwheel: false,
-			disableDoubleClickZoom: true
+			disableDefaultUI: !this.showUIControls,
+			draggable: this.showUIControls,
+			scrollwheel: this.showUIControls,
+			disableDoubleClickZoom: this.showUIControls
 		};
 		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
 		this.map = new gmaps.Map( this.$mapContainer[0], options );

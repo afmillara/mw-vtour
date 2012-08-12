@@ -17,7 +17,8 @@ $specialPageAliases = array();
  */
 $specialPageAliases['en'] = array(
 	'vtour-link' => array( 'Vtour' ),
-	'vtour-allvtours' => array( 'All Vtours', 'AllVtours' )
+	'vtour-allvtours' => array( 'All Vtours', 'AllVtours' ),
+	'vtour-vtourmap' => array( 'Vtour map', 'VtourMap' )
 );
 
 /**
@@ -26,6 +27,7 @@ $specialPageAliases['en'] = array(
  */
 $specialPageAliases['es'] = array(
 	'vtour-link' => array( 'Vtour' ),
-	'vtour-allvtours' => array( 'Todos los Vtours', 'TodosLosVtours' )
+	'vtour-allvtours' => array( 'Todos los Vtours', 'TodosLosVtours' ),
+	'vtour-vtourmap' => array( 'Mapa de Vtours', 'MapaDeVtours' )
 );
 
