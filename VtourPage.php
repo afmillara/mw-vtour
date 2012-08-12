@@ -81,7 +81,12 @@ class VtourPage {
 		list( $width, $height ) = $this->calculateDimensions( $tourData );
 
 		$tourData['hash'] = $tourHash;
-		$tourData['page'] = $frame->getTitle()->getArticleId();
+		// Compatibility, sort of.
+		if ( method_exists( $frame, 'getTitle' ) ) {
+			$tourData['page'] = $frame->getTitle()->getArticleId();
+		} else {
+			$tourData['page'] = $this->title ? $this->title->getArticleId() : null;
+		}
 
 		$this->tours[$tourId] = $tourData;
 

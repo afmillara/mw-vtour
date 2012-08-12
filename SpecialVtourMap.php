@@ -72,6 +72,11 @@ class SpecialVtourMap extends SpecialPage {
 		$wgOut->disable();
 
 		$request = $this->getRequest();
+		if ( !$request ) {
+			global $wgRequest;
+			$request = $wgRequest;
+		}
+
 		$response = $request->response();
 
 		$response->header( "Content-type: $type; charset=UTF-8" );

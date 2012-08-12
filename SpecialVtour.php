@@ -55,7 +55,7 @@ class SpecialVtour extends SpecialPage {
 			$this->setHeaders();
 			$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-header' )->text() ); 
 			$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-linkinfo',
-				$this->getTitle() )->text() );
+				$this->getTitle()->getFullText() )->text() );
 			$alias = VtourUtils::getLinkAlias();
 			if ( $alias !== null ) {
 				$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-aliasinfo',
