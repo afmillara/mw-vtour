@@ -131,6 +131,7 @@ $wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['SpecialVtour'] = $wgVtourDir . 'SpecialVtour.php';
 $wgAutoloadClasses['SpecialAllVtours'] = $wgVtourDir . 'SpecialAllVtours.php';
+$wgAutoloadClasses['VtourPage'] = $wgVtourDir . 'VtourPage.php';
 $wgAutoloadClasses['VtourParser'] = $wgVtourDir . 'VtourParser.php';
 $wgAutoloadClasses['VtourElement'] = $wgVtourDir . 'VtourElement.php';
 $wgAutoloadClasses['VtourRoot'] = $wgVtourDir . 'VtourRoot.php';
