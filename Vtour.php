@@ -211,11 +211,11 @@ $wgSpecialPages['vtour-link'] = 'SpecialVtour';
 $wgSpecialPages['vtour-allvtours'] = 'SpecialAllVtours';
 $wgSpecialPageGroups['vtour-allvtours'] = 'pages';
 
-$wgHooks['ParserFirstCallInit'][] = 'VtourParserHooks::setupParserHook';
-$wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourParserHooks::exportConfigVars';
-$wgHooks['LoadExtensionSchemaUpdates'][] = 'VtourParserHooks::addTourTable';
-$wgHooks['ArticleSaveComplete'][] = 'VtourParserHooks::endVtourPage';
-$wgHooks['ArticleDeleteComplete'][] = 'VtourParserHooks::deleteDBTours';
+$wgHooks['ParserFirstCallInit'][] = 'VtourTourHooks::setupParserHook';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'VtourTourHooks::exportConfigVars';
+$wgHooks['LoadExtensionSchemaUpdates'][] = 'VtourTourHooks::addTourTable';
+$wgHooks['ArticleSaveComplete'][] = 'VtourTourHooks::endVtourPage';
+$wgHooks['ArticleDeleteComplete'][] = 'VtourTourHooks::deleteDBTours';
 
 $wgHooks['ParserClearState'][] = 'VtourLinkHooks::addLinkStyle';
 $wgHooks['LinkBegin'][] = 'VtourLinkHooks::handleLink';

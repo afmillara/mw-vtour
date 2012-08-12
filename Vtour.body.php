@@ -12,7 +12,7 @@
 /**
  * Hooks to parse Vtour tours and store, return and display those tours.
  */
-class VtourParserHooks {
+class VtourTourHooks {
 
 	/**
 	 * Vtour page instance for the page that is currently being parsed.
@@ -27,7 +27,7 @@ class VtourParserHooks {
 	 * @return bool Return true in order to continue hook processing
 	 */
 	public static function setupParserHook( Parser $parser ) {
-		$parser->setHook( 'vtour', 'VtourParserHooks::handleTag' );
+		$parser->setHook( 'vtour', 'VtourTourHooks::handleTag' );
 		self::$vtourPage = new VtourPage( $parser->getTitle() );
 		return true;
 	}
@@ -471,30 +471,27 @@ class VtourPage {
 		$HTMLElementString = $this->getHTMLContent( $tourId, $tourHTMLElements,
 			$wgVtourDisplayElementsNoJS );
 
-		return
-		"<div id='vtour-tour-$tourId' class='vtour-tour'>"
-			. "<div id='vtour-error-$tourId'>"
-				. $warningHTML
-			. "</div>"
-			. "<div id='vtour-frame-$tourId' class='vtour-frame'"
-					. " style='width: $width; height: $height; display: none;'>"
-				. "<div class='vtour-descriptionmapcolumn'>"
-					. "<div id='vtour-secondary-$tourId' class='vtour-description'>"
-					. "</div>"
-					. "<div id='vtour-map-$tourId' class='vtour-map'>"
-					. "</div>"
-				. "</div>"
-				. "<div id='vtour-main-$tourId' class='vtour-main'>"
-				. "</div>"
-			. "</div>"
+		return Html::openElement( 'div', array( 'id' => "vtour-tour-$tourId",
+				'class' => 'vtour-tour' ) )
+			. Html::rawElement( 'div', array( 'id' => "vtour-error-$tourId" ),
+				$warningHTML )
+			. Html::openElement( 'div', array( 'id' => "vtour-frame-$tourId", 
+				'style' => "width: $width; height: $height; display: none;",
+				'class' => 'vtour-frame' ) )
+			. Html::openElement( 'div', array( 'class' => 'vtour-descriptionmapcolumn' ) )
+			. Html::element( 'div', array( 'id' => "vtour-secondary-$tourId",
+				'class' => 'vtour-description' ) )
+			. Html::element( 'div', array( 'id' => "vtour-map-$tourId", 'class' => 'vtour-map' ) )
+			. Html::closeElement( 'div' )
+			. Html::element( 'div', array( 'id' => "vtour-main-$tourId", 'class' => 'vtour-main' ) )
+			. Html::closeElement( 'div' )
 			. $noJSHeader
 			. $HTMLElementString
-			. "<div>"
-				. "<script id='vtour-json-$tourId' type='application/json'>"
-					. $tourJSON
-				. "</script>"
-			. "</div>"
-		. "</div>";
+			. Html::openElement( 'div' )
+			. Html::rawElement( 'script', array( 'id' => "vtour-json-$tourId",
+				'type' => 'application/json' ), $tourJSON )
+			. Html::closeElement( 'div' )
+			. Html::closeElement( 'div' );
 	}
 
 	/**
@@ -510,7 +507,7 @@ class VtourPage {
 	protected function getHTMLContent( $tourId, $tourHTMLElements, $displayElements ) {
 		$lastElement = null;
 		$contentString = '';
-		$HTMLElementsDisplay = $displayElements ? '' : ' style=\'display: none;\'';
+		$HTMLElementsDisplay = $displayElements ? array() : array( 'style' => 'display: none;' );
 		foreach ( $tourHTMLElements as $index => $element ) {
 			if ( $displayElements ) {
 				$elementParent = $element['parent'];
@@ -527,13 +524,13 @@ class VtourPage {
 			}
 			$elementHTML = $element['html'];
 			$contentString .=
-				"<div id='vtour-html-$tourId-$index' class='vtour-htmlelement'>
-					<div>$elementHTML</div>
-				</div>";
+				Html::openElement( 'div', array( 'id' => "vtour-html-$tourId-$index",
+					'class' => 'vtour-htmlelement' ) )
+				. Html::rawElement( 'div', array(), $elementHTML ) 
+				. Html::closeElement( 'div' );
 		}
-		return "<div id='vtour-html-$tourId'$HTMLElementsDisplay>
-			$contentString
-		</div>";
+		return Html::rawElement( 'div', array_merge( array( 'id' => "vtour-html-$tourId" ),
+			$HTMLElementsDisplay ), $contentString );
 	}
 
 	/**

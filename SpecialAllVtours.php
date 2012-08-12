@@ -94,37 +94,36 @@ class SpecialAllVtours extends QueryPage {
 	function getPageHeader() {
 		$header = wfMessage( 'vtour-allvtours-header' )->parse();
 		
-		if ( !$this->isCached() ) {
-			global $wgScript;
-			$allVtoursTitle = $this->getTitle()->getPrefixedText();
-			$pagePrefix = '';
-			if ( $this->pagePrefixTitle !== null ) {
-				$pagePrefix = $this->pagePrefixTitle->getFullText();
-			}
-			$tourPrefix = $this->tourPrefix;
-
-			$prefixLegend = wfMessage( 'vtour-allvtours-prefixlegend' )->text();
-			$pagePrefixLabel = wfMessage( 'vtour-allvtours-pageprefix' )->text();
-			$tourPrefixLabel = wfMessage( 'vtour-allvtours-tourprefix' )->text();
-			$prefixSubmit = wfMessage( 'vtour-allvtours-prefixsubmit' )->text();
-
-			$header .= 
-			Xml::openElement( 'form', array( 'method' => 'get', 'action' => $wgScript ) )
-				. Xml::openElement( 'fieldset' )
-					. Xml::element( 'legend', null, $prefixLegend )
-					. Html::hidden( 'title', $allVtoursTitle )
-					. Xml::element( 'label', array( 'for' => 'vtour-pageprefix' ),
-						$pagePrefixLabel )
-					. Xml::input( 'pagePrefix', '20', $pagePrefix,
-						array( 'id' => 'vtour-pageprefix' ) )
-					. Xml::element( 'label', array( 'for' => 'vtour-tourprefix' ),
-						$tourPrefixLabel )
-					. Xml::input( 'tourPrefix', '20', $tourPrefix,
-						array( 'id', 'vtour-tourprefix' ) )
-					. Xml::submitButton( $prefixSubmit )
-				. Xml::closeElement( 'fieldset' )
-			. Xml::closeElement( 'form' );
+		if ( $this->isCached() ) {
+			return $header;
 		}
+
+		$prefixLegend = wfMessage( 'vtour-allvtours-prefixlegend' )->text();
+		$pagePrefixLabel = wfMessage( 'vtour-allvtours-pageprefix' )->text();
+		$tourPrefixLabel = wfMessage( 'vtour-allvtours-tourprefix' )->text();
+		$prefixSubmit = wfMessage( 'vtour-allvtours-prefixsubmit' )->text();
+
+		global $wgScript;
+		$allVtoursTitle = $this->getTitle()->getPrefixedText();
+		$pagePrefix = '';
+		if ( $this->pagePrefixTitle !== null ) {
+			$pagePrefix = $this->pagePrefixTitle->getFullText();
+		}
+		$tourPrefix = $this->tourPrefix;
+
+		$header .= 
+			Html::openElement( 'form', array( 'method' => 'get', 'action' => $wgScript ) )
+			. Html::openElement( 'fieldset' )
+			. Html::element( 'legend', null, $prefixLegend )
+			. Html::hidden( 'title', $allVtoursTitle )
+			. Html::element( 'label', array( 'for' => 'vtour-pageprefix' ), $pagePrefixLabel )
+			. Xml::input( 'pagePrefix', '20', $pagePrefix, array( 'id' => 'vtour-pageprefix' ) )
+			. Html::element( 'label', array( 'for' => 'vtour-tourprefix' ), $tourPrefixLabel )
+			. Xml::input( 'tourPrefix', '20', $tourPrefix, array( 'id', 'vtour-tourprefix' ) )
+			. Xml::submitButton( $prefixSubmit )
+			. Html::closeElement( 'fieldset' )
+			. Html::closeElement( 'form' );
+
 		return $header;
 	}
 
