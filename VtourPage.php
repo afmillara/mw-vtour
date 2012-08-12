@@ -179,10 +179,11 @@ class VtourPage {
 	 */
 	protected function getTourDBInfoArray( $tourId ) {
 		$tour = $this->tours[$tourId];
+		$location = $tour['location'];
 		return array(
 			'vtour_hash' => $tour['hash'],
-			'vtour_longitude' => null,
-			'vtour_latitude' => null	
+			'vtour_coord0' => $location !== null ? $location[0] : null,
+			'vtour_coord1' => $location !== null ? $location[1] : null
 		);
 	}
 

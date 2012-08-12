@@ -29,6 +29,8 @@ class VtourRoot extends VtourElement {
 	protected $attributesTemplate = array(
 		'id' => 'parseId',
 		'start' => null,
+		'visible' => 'parseBool',
+		'location' => 'parseCoordinatePair',
 		'width' => 'parseHTMLLength',
 		'height' => 'parseHTMLLength'
 	);
@@ -77,6 +79,29 @@ class VtourRoot extends VtourElement {
 				$this->throwBadFormat( 'vtour-errordesc-noplaces' );
 			}
 		}
+
+		$visible =& $this->result['visible'];
+		$location =& $this->result['location'];
+		// true or null -> true
+		if ( $visible !== false && $location === null ) {
+			$accumulator = array( 0, 0 );
+			$mapsWithLocation = 0;
+			foreach ( $this->maps as $map ) {
+				$center = $map->getCenter();
+				if ( $center !== null ) {
+					$accumulator[0] += $center[0];
+					$accumulator[1] += $center[1];
+					$mapsWithLocation++;
+				}
+			}
+			if ( $mapsWithLocation > 0 ) {
+				$location = array(
+					$accumulator[0] / $mapsWithLocation,
+					$accumulator[1] / $mapsWithLocation
+				);
+			}
+		}
+		$visible = $visible !== false && $location !== null;
 
 		$this->finishPlaces();
 		$this->finishMaps();

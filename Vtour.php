@@ -126,7 +126,7 @@ $wgExtensionMessagesFiles['Vtour'] = $wgVtourDir . 'Vtour.i18n.php';
 $wgExtensionMessagesFiles['VtourAlias'] = $wgVtourDir . 'Vtour.alias.php';
 
 $wgAutoloadClasses['VtourUtils'] = $wgVtourDir . 'VtourUtils.php';
-$wgAutoloadClasses['VtourParserHooks'] = $wgVtourDir . 'Vtour.body.php';
+$wgAutoloadClasses['VtourTourHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['SpecialVtour'] = $wgVtourDir . 'SpecialVtour.php';

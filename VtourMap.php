@@ -97,6 +97,22 @@ class VtourMap extends VtourElement {
 	}
 
 	/**
+	 * If this map has a geographic location, return its center.
+	 * @return array Array of coordinates, or null if there is no location information
+	 */
+	public function getCenter() {
+		$location = $this->result['location'];
+		if ( $location !== null ) {
+			return array(
+				( $location[0][0] + $location[1][0] ) / 2,
+				( $location[0][1] + $location[1][1] ) / 2
+			);
+		} else {
+			return null;
+		}	
+	}
+
+	/**
 	 * Set a starting place for this map, if no starting place exists yet.
 	 * @param VtourPlace $start Starting place
 	 * @return bool Whether the place has been set as the start
