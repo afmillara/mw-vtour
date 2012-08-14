@@ -196,7 +196,7 @@ class VtourLinkHooks {
 		// Generate the GET parameters from parts of the link
 		$query = VtourUtils::linkPartsToParams( $linkParts );
 
-		// Create the link (compatibility with 1.17)
+		// Create the link (BC with 1.17)
 		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();
 		$ret = $linker->link( $articleTitle, $text, $customAttribs, $query, $options );
 		return false;
@@ -253,7 +253,7 @@ class VtourLinkHooks {
 	 */
 	public static function addLinkStyle( Parser $parser ) {
 		$parserOutput = $parser->getOutput();
-		// Compatibility with 1.17
+		// BC with 1.17
 		if ( method_exists( $parserOutput, 'addModuleStyles' ) ) {
 			// addModuleStyles is preferred because (at the moment,
 			// 1.19) it loads the CSS from HTML, which is faster than

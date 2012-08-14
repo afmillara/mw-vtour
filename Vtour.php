@@ -140,7 +140,6 @@ $wgVtourDir = dirname( __FILE__ ) . '/';
 $wgExtensionMessagesFiles['Vtour'] = $wgVtourDir . 'Vtour.i18n.php';
 $wgExtensionMessagesFiles['VtourAlias'] = $wgVtourDir . 'Vtour.alias.php';
 
-$wgAutoloadClasses['VtourUtils'] = $wgVtourDir . 'VtourUtils.php';
 $wgAutoloadClasses['VtourTourHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourLinkHooks'] = $wgVtourDir . 'Vtour.body.php';
 $wgAutoloadClasses['VtourTestHooks'] = $wgVtourDir . 'Vtour.body.php';
@@ -154,6 +153,8 @@ $wgAutoloadClasses['VtourRoot'] = $wgVtourDir . 'VtourRoot.php';
 $wgAutoloadClasses['VtourMap'] = $wgVtourDir . 'VtourMap.php';
 $wgAutoloadClasses['VtourPlace'] = $wgVtourDir . 'VtourPlace.php';
 $wgAutoloadClasses['VtourLink'] = $wgVtourDir . 'VtourLink.php';
+$wgAutoloadClasses['VtourUtils'] = $wgVtourDir . 'VtourUtils.php';
+$wgAutoloadClasses['VtourBCQueryPage'] = $wgVtourDir . 'VtourBCQueryPage.php';
 
 $wgResourceModules['ext.vtour'] = array(
 	'scripts' => array(

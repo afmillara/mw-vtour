@@ -81,10 +81,13 @@ class VtourPage {
 		list( $width, $height ) = $this->calculateDimensions( $tourData );
 
 		$tourData['hash'] = $tourHash;
-		// Compatibility, sort of.
-		if ( method_exists( $frame, 'getTitle' ) ) {
+		// BC with 1.17, sort of.
+		if ( method_exists( $frame, 'getTitle' ) && $frame->getTitle() ) {
 			$tourData['page'] = $frame->getTitle()->getArticleId();
 		} else {
+			// Can't get the origin of the tour that is currently being parsed.
+			// Duplicate tours (from templates and from pages that use them) will
+			// appear in the list.
 			$tourData['page'] = $this->title ? $this->title->getArticleId() : null;
 		}
 

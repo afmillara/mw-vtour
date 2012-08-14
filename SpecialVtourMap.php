@@ -45,7 +45,7 @@ class SpecialVtourMap extends SpecialPage {
 	protected function executeDisabled() {
 		global $wgOut;
 		$this->setHeaders();
-		$wgOut->addWikiText( wfMessage( 'vtour-vtourmap-disabled' )->parse() );
+		$wgOut->addHTML( wfMessage( 'vtour-vtourmap-disabled' )->parse() );
 	}
 
 	/**

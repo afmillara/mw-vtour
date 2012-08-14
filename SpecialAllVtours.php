@@ -10,9 +10,9 @@
  */
 
 /**
- * Special page that lists all vtours.
+ * Special page that lists all Vtours.
  */
-class SpecialAllVtours extends QueryPage {
+class SpecialAllVtours extends VtourBCQueryPage {
 
 	/**
 	 * Title object that contains the page prefix.
@@ -161,8 +161,10 @@ class SpecialAllVtours extends QueryPage {
 		$title = Title::makeTitle( $result->page_namespace, $result->page_title );
 		$titleWithFragment = Title::makeTitle( $result->page_namespace,
 			$result->page_title, 'vtour-tour-' . $result->vtour_tourid );
-		$tourLink = Linker::linkKnown( $titleWithFragment, $result->vtour_tourid );
-		$articleLink = Linker::linkKnown( $title );
+		
+		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();	
+		$tourLink = $linker->linkKnown( $titleWithFragment, $result->vtour_tourid );
+		$articleLink = $linker->linkKnown( $title );
 		return wfMessage( 'vtour-allvtours-link', $tourLink, $articleLink )->text();
 	}
 }
