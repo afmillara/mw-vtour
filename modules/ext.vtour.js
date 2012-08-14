@@ -14,9 +14,7 @@ $( document ).ready( function() {
 	var tourData, $htmlElements;
 	var $vtourLinks;
 	var position = null;
-
-	// mw.util.$content can be null somehow in 1.17.0
-	var $content = mw.util.$content || $( document );
+	var $content = mw.util.$content;
 
 	// Collection of nodes whose ids start with 'vtour-tour-'
 	$content.find( 'div[id^="vtour-tour-"]' ).each( function() {

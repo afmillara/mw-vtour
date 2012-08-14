@@ -206,6 +206,7 @@ $wgResourceModules['ext.vtour'] = array(
 		'vtour-errordesc-externalmaperror',
 		'vtour-thismap'
 	),
+	'dependencies' => 'mediawiki.util',
 	'localBasePath' => $wgVtourDir . 'modules/',
 	'remoteExtPath' => 'Vtour/modules'
 );
