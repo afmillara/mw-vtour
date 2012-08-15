@@ -1,260 +1,260 @@
 /**
- * View that displays a panorama.
- *
- * Vtour - a virtual tour system for MediaWiki
- * Copyright (C) 2012 Álvaro Fernández Millara
- * 
- * @file
- */
+* View that displays a panorama.
+*
+* Vtour - a virtual tour system for MediaWiki
+* Copyright (C) 2012 Álvaro Fernández Millara
+* 
+* @file
+*/
 
 /**
- * GraphicView that contains a spherical panorama.
- * @class PanoView
- */ 
+* GraphicView that contains a spherical panorama.
+* @class PanoView
+*/ 
 var PanoView = GraphicView.extend( {
 
-	/**
-	 * Maximum possible field of view.
-	 * @var {Array} MAX_FOV
-	 */
-	MAX_FOV: [Math.PI*2, Math.PI],
+/**
+ * Maximum possible field of view.
+ * @var {Array} MAX_FOV
+ */
+MAX_FOV: [Math.PI*2, Math.PI],
 
-	$image: null,
-	image: null,
-	$canvas: null,
-	canvas: null,
-	ctx: null,
+$image: null,
+image: null,
+$canvas: null,
+canvas: null,
+ctx: null,
 
-	zoomGranularity: 50,
-	moveSensitivity: 0.01,
+zoomGranularity: 50,
+moveSensitivity: 0.01,
 
-	maxZoom: 200,
-	minZoom: 100,
+maxZoom: 200,
+minZoom: 100,
 
-	/**
-	 * Relation between the maximum zoom and the image quality.
-	 * @var {Number} maxZoomMultiplier
-	 */
-	maxZoomMultiplier: 3,
+/**
+ * Relation between the maximum zoom and the image quality.
+ * @var {Number} maxZoomMultiplier
+ */
+maxZoomMultiplier: 3,
 
-	/**
-	 * Internal zoom/external zoom ratio.
-	 * @var {Number} baseZoom
-	 */
-	baseZoom: 200,
+/**
+ * Internal zoom/external zoom ratio.
+ * @var {Number} baseZoom
+ */
+baseZoom: 200,
 
-	/**
-	 * Current angle of the panorama viewer.
-	 * @var {Array} orientation
-	 */
-	orientation: [0, 0],
-	zoom: 200,
+/**
+ * Current angle of the panorama viewer.
+ * @var {Array} orientation
+ */
+orientation: [0, 0],
+zoom: 200,
 
-	/**
-	 * Canvas that contains the panoramic image.
-	 * @var {$Canvas} imageCanvas
-	 */
-	imageCanvas: null,
+/**
+ * Canvas that contains the panoramic image.
+ * @var {$Canvas} imageCanvas
+ */
+imageCanvas: null,
 
-	/**
-	 * Panoramic image data.
-	 * @var {CanvasPixelArray} imageData
-	 */
-	imageData: null,
+/**
+ * Panoramic image data.
+ * @var {CanvasPixelArray} imageData
+ */
+imageData: null,
 
-	/**
-	 * Buffer where the generated images will be painted.
-	 * @var {ImageData} destBuffer
-	 */ 
-	destBuffer: null,
+/**
+ * Buffer where the generated images will be painted.
+ * @var {ImageData} destBuffer
+ */ 
+destBuffer: null,
 
-	/**
-	 * Destination buffer data.
-	 * @var {CanvasPixelArray} destBufferData
-	 */
-	destBufferData: null,
+/**
+ * Destination buffer data.
+ * @var {CanvasPixelArray} destBufferData
+ */
+destBufferData: null,
 
-	/**
-	 * Field of view.
-	 * @var {Array} FOV
-	 */
-	FOV: null,
+/**
+ * Field of view.
+ * @var {Array} FOV
+ */
+FOV: null,
 
-	widthMul: null,
-	heightMul: null,
-	hsFOV: 0,
-	vsFOV: 0,
+widthMul: null,
+heightMul: null,
+hsFOV: 0,
+vsFOV: 0,
 
-	getPixel: null,
+getPixel: null,
 
-	/**
-	 * Create a new PanoView.
-	 * @constructor
-	 * @param {String} imageSrc URL of the image that will be shown in this view
-	 */
-	init: function( imageSrc ){
-		this._super();
-		this.imageSrc = imageSrc;
-		this.$canvas = $( '<canvas></canvas>' ).css( {
-			'height': '100%',
-			'width': '100%'
-		} );
-		this.canvas = this.$canvas[0];
-		this.ctx = this.canvas.getContext( '2d' );
-	},
+/**
+ * Create a new PanoView.
+ * @constructor
+ * @param {String} imageSrc URL of the image that will be shown in this view
+ */
+init: function( imageSrc ){
+	this._super();
+	this.imageSrc = imageSrc;
+	this.$canvas = $( '<canvas></canvas>' ).css( {
+		'height': '100%',
+		'width': '100%'
+	} );
+	this.canvas = this.$canvas[0];
+	this.ctx = this.canvas.getContext( '2d' );
+},
 
-	generateBackground: function() {
-		var that = this;
-		this.$image = $( '<img></img>' );
-		this.loadImage( this.$image, this.imageSrc, function() {
-			that.image = that.$image[0];
-			that.update();
-		} );
-		return this.$canvas.addClass( 'vtour-background' );
-	},
+generateBackground: function() {
+	var that = this;
+	this.$image = $( '<img></img>' );
+	this.loadImage( this.$image, this.imageSrc, function() {
+		that.image = that.$image[0];
+		that.update();
+	} );
+	return this.$canvas.addClass( 'vtour-background' );
+},
 
-	/**
-	 * Set the zoom level by specifying the external (1 => default) zoom
-	 * value.
-	 * @param {Number} zoom Zoom level
-	 */
-	changeExternalZoom: function( zoom ) {
-		this.changeZoom( zoom * this.baseZoom, true );
-	},
+/**
+ * Set the zoom level by specifying the external (1 => default) zoom
+ * value.
+ * @param {Number} zoom Zoom level
+ */
+changeExternalZoom: function( zoom ) {
+	this.changeZoom( zoom * this.baseZoom, true );
+},
 
-	reset: function() {
-		this.changeZoom( this.baseZoom );
-		this.move( [0, 0], true );
-		this._super();
-	},
+reset: function() {
+	this.changeZoom( this.baseZoom );
+	this.move( [0, 0], true );
+	this._super();
+},
 
-	update: function() {
-		var $movableLayer = this.$movableLayer;
-		var wRatio, hRatio;
-		if ( this.isReady() ) {
-			if ( this.imageData === null ) {
-				this.prepare();
+update: function() {
+	var $movableLayer = this.$movableLayer;
+	var wRatio, hRatio;
+	if ( this.isReady() ) {
+		if ( this.imageData === null ) {
+			this.prepare();
+		}
+		// isReady is checked again because prepare may cause an error.
+		if ( this.isReady() && this.destBuffer === null
+				|| this.canvas.width != $movableLayer.width()
+				|| this.canvas.height != $movableLayer.height() ) {
+			this.canvas.width = $movableLayer.width();
+			this.canvas.height = $movableLayer.height();
+
+			this.updateBuffer();	
+
+			wRatio = this.FOV[0] < this.MAX_FOV[0]?
+				Math.abs(2*Math.tan(this.FOV[0]/2)): Number.POSITIVE_INFINITY;
+			hRatio = this.FOV[1] < this.MAX_FOV[1]?
+				Math.abs(2*Math.tan(this.FOV[1]/2)): Number.POSITIVE_INFINITY;
+			var hardMinZoom = Math.max(this.canvas.width/wRatio, this.canvas.height/hRatio);
+			if (this.minZoom < hardMinZoom){
+				this.minZoom = hardMinZoom;
 			}
-			// isReady is checked again because prepare may cause an error.
-			if ( this.isReady() && this.destBuffer === null
-					|| this.canvas.width != $movableLayer.width()
-					|| this.canvas.height != $movableLayer.height() ) {
-				this.canvas.width = $movableLayer.width();
-				this.canvas.height = $movableLayer.height();
-
-				this.updateBuffer();	
-
-				wRatio = this.FOV[0] < this.MAX_FOV[0]?
-					Math.abs(2*Math.tan(this.FOV[0]/2)): Number.POSITIVE_INFINITY;
-				hRatio = this.FOV[1] < this.MAX_FOV[1]?
-					Math.abs(2*Math.tan(this.FOV[1]/2)): Number.POSITIVE_INFINITY;
-				var hardMinZoom = Math.max(this.canvas.width/wRatio, this.canvas.height/hRatio);
-				if (this.minZoom < hardMinZoom){
-					this.minZoom = hardMinZoom;
-				}
-				this.updateZoom();
-			}
+			this.updateZoom();
 		}
-		this._super();
-		if ( this.isReady() ) {
-			this.show();
-		}
-	},
-
-	/**
-	 * Update the destination buffer.
-	 */
-	updateBuffer: function() {
-		this.destBuffer = this.ctx.getImageData( 0, 0,
-			this.canvas.width, this.canvas.height );
-		this.destBufferData = this.destBuffer.data;
-		for (var i = 0; i < 4 * this.canvas.width * this.canvas.height; i++ ){
-			this.destBufferData[i] = 255;
-		}
-	},
-
-	/**
-	 * Create the image buffer and precalculate the field of view.
-	 */
-	prepare: function() {
-		var possibleMaxZoom;
-
-		this.$movableLayer.addClass( 'vtour-movable' );
-
-		this.imageCanvas = $( '<canvas></canvas>' )[0];
-		this.imageCanvas.width = this.image.width;
-		this.imageCanvas.height = this.image.height;
-
-		var imageCtx = this.imageCanvas.getContext( '2d' );
-		imageCtx.drawImage( this.image, 0, 0,
-				this.image.width, this.image.height );
-
-		try {
-			this.imageData = imageCtx.getImageData( 0, 0,
-				this.image.width, this.image.height ).data;
-		} catch ( error ) {
-			// Probably a security error.
-			this.showError( mw.message( 'vtour-errordesc-canvaserror',
-				imageNameFromPath( this.imageSrc ) ) );
-			return;
-		}
-
-		this.FOV = [this.MAX_FOV[0], this.MAX_FOV[1]];
-		var ratio = this.image.width / this.image.height / 2;
-		if (ratio > 1){
-			this.FOV[1] /= ratio;
-		} else if ( ratio < 1 ) {
-			this.FOV[0] *= ratio;
-		}
-
-		// Longitude -> pixel X
-		this.widthMul = this.image.width / this.FOV[0];
-
-		// Latitude -> pixel Y
-		this.heightMul = ( this.image.height - 1 ) / this.FOV[1];
-
-		this.hsFOV = this.FOV[0] / 2;
-		this.vsFOV = this.FOV[1] / 2;
-
-		possibleMaxZoom = Math.max(
-			this.image.width / this.FOV[0],
-			this.image.height / this.FOV[1]
-		) * this.maxZoomMultiplier;
-		this.maxZoom = Math.max( possibleMaxZoom, this.baseZoom );
-	},
-
-	updateZoom: function() {
-		if ( !this.isReady() || !this.FOV ) {
-			return;
-		}
-		this._super();
-		var wRatio = this.FOV[0] < this.MAX_FOV[0] ?
-				Math.abs( 2 * Math.tan( this.FOV[0] / 2 ) ) : Number.POSITIVE_INFINITY;
-		var hRatio = this.FOV[1] < this.MAX_FOV[1] ?
-				Math.abs( 2 * Math.tan( this.FOV[1] / 2 ) ) : Number.POSITIVE_INFINITY;
-
-		if ( wRatio * this.zoom < this.canvas.width
-				|| hRatio * this.zoom < this.canvas.height ) {
-			this.zoom = Math.max( this.canvas.width / wRatio, this.canvas.height / hRatio);
-		}
-		this.updateLinks();
+	}
+	this._super();
+	if ( this.isReady() ) {
 		this.show();
-	},
+	}
+},
 
-	/**
-	 * Scroll the view to reveal a different area of its contents. panoOrientationChanged
-	 * is triggered whenever the longitude value is modified.
-	 * @param {Number[]} movement	movement ([x, y])
-	 * @param {Boolean} isAbsolute if true, the first argument is the new
-	 * center of the view. Otherwise, it is substracted from the current position
-	 */
-	move: function( movement, isAbsolute ) {
-		var orientation = this.orientation;
-		var relativeMovement, absoluteMovement;
-		var MAX_FOV = this.MAX_FOV;
-		if ( !this.isReady() ) {
-			return;
-		}
+/**
+ * Update the destination buffer.
+ */
+updateBuffer: function() {
+	this.destBuffer = this.ctx.getImageData( 0, 0,
+		this.canvas.width, this.canvas.height );
+	this.destBufferData = this.destBuffer.data;
+	for (var i = 0; i < 4 * this.canvas.width * this.canvas.height; i++ ){
+		this.destBufferData[i] = 255;
+	}
+},
+
+/**
+ * Create the image buffer and precalculate the field of view.
+ */
+prepare: function() {
+	var possibleMaxZoom;
+
+	this.$movableLayer.addClass( 'vtour-movable' );
+
+	this.imageCanvas = $( '<canvas></canvas>' )[0];
+	this.imageCanvas.width = this.image.width;
+	this.imageCanvas.height = this.image.height;
+
+	var imageCtx = this.imageCanvas.getContext( '2d' );
+	imageCtx.drawImage( this.image, 0, 0,
+			this.image.width, this.image.height );
+
+	try {
+		this.imageData = imageCtx.getImageData( 0, 0,
+			this.image.width, this.image.height ).data;
+	} catch ( error ) {
+		// Probably a security error.
+		this.showError( mw.message( 'vtour-errordesc-canvaserror',
+			imageNameFromPath( this.imageSrc ) ) );
+		return;
+	}
+
+	this.FOV = [this.MAX_FOV[0], this.MAX_FOV[1]];
+	var ratio = this.image.width / this.image.height / 2;
+	if (ratio > 1){
+		this.FOV[1] /= ratio;
+	} else if ( ratio < 1 ) {
+		this.FOV[0] *= ratio;
+	}
+
+	// Longitude -> pixel X
+	this.widthMul = this.image.width / this.FOV[0];
+
+	// Latitude -> pixel Y
+	this.heightMul = ( this.image.height - 1 ) / this.FOV[1];
+
+	this.hsFOV = this.FOV[0] / 2;
+	this.vsFOV = this.FOV[1] / 2;
+
+	possibleMaxZoom = Math.max(
+		this.image.width / this.FOV[0],
+		this.image.height / this.FOV[1]
+	) * this.maxZoomMultiplier;
+	this.maxZoom = Math.max( possibleMaxZoom, this.baseZoom );
+},
+
+updateZoom: function() {
+	if ( !this.isReady() || !this.FOV ) {
+		return;
+	}
+	this._super();
+	var wRatio = this.FOV[0] < this.MAX_FOV[0] ?
+			Math.abs( 2 * Math.tan( this.FOV[0] / 2 ) ) : Number.POSITIVE_INFINITY;
+	var hRatio = this.FOV[1] < this.MAX_FOV[1] ?
+			Math.abs( 2 * Math.tan( this.FOV[1] / 2 ) ) : Number.POSITIVE_INFINITY;
+
+	if ( wRatio * this.zoom < this.canvas.width
+			|| hRatio * this.zoom < this.canvas.height ) {
+		this.zoom = Math.max( this.canvas.width / wRatio, this.canvas.height / hRatio);
+	}
+	this.updateLinks();
+	this.show();
+},
+
+/**
+ * Scroll the view to reveal a different area of its contents. panoOrientationChanged
+ * is triggered whenever the longitude value is modified.
+ * @param {Number[]} movement	movement ([x, y])
+ * @param {Boolean} isAbsolute if true, the first argument is the new
+ * center of the view. Otherwise, it is substracted from the current position
+ */
+move: function( movement, isAbsolute ) {
+	var orientation = this.orientation;
+	var relativeMovement, absoluteMovement;
+	var MAX_FOV = this.MAX_FOV;
+	if ( !this.isReady() ) {
+		return;
+	}
 
 		if ( isAbsolute ) {
 			// FIXME: Internally, longitude is -180 E to 180 W, and latitude
@@ -431,11 +431,14 @@ var PanoView = GraphicView.extend( {
 			diff.push( linkPoint[index] - basePos[index] );
 		}
 
-		if ( baseLat === PI/2 ){ // yPy ~= 0
-			if ( baseLon === 0 ){ // xPx ~= 0
+		// [ diff[0] = xPx * x + xPy * y
+		// [ diff[1] = yPx * x + yPy * y
+		// [ diff[2] = zPy * y
+		if ( zPy.toFixed( 3 ) == 0 ) {
+			if ( xPx.toFixed( 3 ) == 0 ) {
 				y = diff[0] / xPy;
 				x = diff[1] / yPx;
-			} else if ( baseLon === PI / 2 ) { // yPx ~= 0
+			} else if ( yPx.toFixed( 3 ) == 0 ) {
 				y = diff[1] / yPy;
 				x = diff[0] / xPx;
 			} else {
@@ -444,7 +447,7 @@ var PanoView = GraphicView.extend( {
 			}
 		} else {
 			y = diff[2] / zPy;
-			if ( baseLon === 0 ){ // xPx ~= 0
+			if ( xPx.toFixed( 3 ) == 0 ) {
 				x = diff[1] / yPx;
 			} else {
 				x = ( diff[0] - xPy * y ) / xPx;
@@ -452,6 +455,7 @@ var PanoView = GraphicView.extend( {
 		}
 		x += dX;
 		y += dY;
+
 		if ( slProp >= 0 ) {
 			return [x, y];
 		} else {
