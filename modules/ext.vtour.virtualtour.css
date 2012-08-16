@@ -294,3 +294,8 @@
 	background: url(img/loading.gif) 0 0 no-repeat;
 }
 
+.vtour-specialvtourmap {
+	height: 500px;
+	width: 800px;
+}
+

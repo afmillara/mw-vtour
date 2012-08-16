@@ -14,7 +14,7 @@ $( document ).ready( function() {
 	var pageName = mw.config.get( 'wgPageName' ).split( '/', 1 )[0];
 	var jsonPath = mw.config.get( 'wgArticlePath' ).replace( '$1', pageName + '/json' );
 
-	$vtourMap = $content.find( '#vtour-vtourmap' );
+	$vtourMap = $content.find( '.vtour-specialvtourmap' );
 	new ExternalMapImplementation( $vtourMap, function( map ) {
 		$.getJSON( jsonPath, function( tourData ) {
 			var ii, markerData, coordinates, link;

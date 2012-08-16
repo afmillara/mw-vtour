@@ -57,8 +57,7 @@ class SpecialVtourMap extends SpecialPage {
 
 		$this->setHeaders();
 		$wgOut->addHTML( wfMessage( 'vtour-vtourmap-header' )->parse() );
-		$wgOut->addHTML( Html::element( 'div', array( 'id' => 'vtour-vtourmap',
-			'style' => "width: $mapDimensions[0]; height: $mapDimensions[1]" ) ) );
+		$wgOut->addHTML( Html::element( 'div', array( 'class' => 'vtour-specialvtourmap' ) ) );
 		$wgOut->addModules( 'ext.vtour.specialvtourmap' );
 	}
 

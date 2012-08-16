@@ -31,6 +31,7 @@ var loadImage = function( $img, src, onLoad, onError ) {
 	} );
 	// one() is used instead of error() because sometimes handlers
 	//  fired for the wrong image
+	
 	$img.attr( 'src', src );
 	return $img;
 };

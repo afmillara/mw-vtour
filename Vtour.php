@@ -108,12 +108,6 @@ $wgVtourKeepTourList = true;
 $wgVtourDisplayTourMap = true;
 
 /**
- * Dimensions (width, height) of the Vtour map in Special:VtourMap, if it is enabled.
- * @var array $wgVtourTourMapDimensions
- */
-$wgVtourTourMapDimensions = array( '800px', '500px' );
-
-/**
  * Name of the ExternalMap class that will be used, or null to disable external maps.
  * @var string $wgVtourExternalMap
  */
@@ -219,6 +213,7 @@ $wgResourceModules['ext.vtour.specialvtourmap'] = array(
 		'ext.vtour.googleexternalmap.js',
 		'ext.vtour.specialvtourmap.js'
 	),
+	'styles' => 'ext.vtour.virtualtour.css',
 	'localBasePath' => $wgVtourDir . 'modules/',
 	'remoteExtPath' => 'Vtour/modules/'
 );
