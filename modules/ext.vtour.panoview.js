@@ -165,9 +165,13 @@ update: function() {
  * Update the destination buffer.
  */
 updateBuffer: function() {
-	this.destBuffer = this.ctx.getImageData( 0, 0,
-		this.canvas.width, this.canvas.height );
-	this.destBufferData = this.destBuffer.data;
+	if ( this.canvas.width && this.canvas.height ) {
+		this.destBuffer = this.ctx.getImageData( 0, 0,
+			this.canvas.width, this.canvas.height );
+		this.destBufferData = this.destBuffer.data;
+	} else {
+		this.destBufferData = [];
+	}
 	for (var i = 0; i < 4 * this.canvas.width * this.canvas.height; i++ ){
 		this.destBufferData[i] = 255;
 	}
@@ -383,7 +387,9 @@ move: function( movement, isAbsolute ) {
 				destinationPixel += 4;
 			}
 		}
-		this.ctx.putImageData( this.destBuffer, 0, 0 );
+		if ( this.destBuffer !== null ) {
+			this.ctx.putImageData( this.destBuffer, 0, 0 );
+		}
 	},
 
 	translateSinglePoint: function( point ) {
