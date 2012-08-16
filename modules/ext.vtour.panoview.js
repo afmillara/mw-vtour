@@ -274,7 +274,7 @@ move: function( movement, isAbsolute ) {
 				relativeMovement = movement[i] * this.baseZoom / this.zoom;
 				absoluteMovement = orientation[i] - relativeMovement;
 			}
-			orientation[i] = absoluteMovement;
+			orientation[i] = normalizeAngle( absoluteMovement + Math.PI ) - Math.PI;
 			/*if (FOV[i] < MAX_FOV[i]){
 				var maxAngle = Math.atan2([canvas.height, canvas.width][i]/2,f);
 				if (aPos[i] + maxAngle > FOV[i]/2){
@@ -289,7 +289,7 @@ move: function( movement, isAbsolute ) {
 		} else if ( orientation[1] < -MAX_FOV[1] / 2 ) {
 			orientation[1] = -MAX_FOV[1] / 2;
 		}
-		this.updateLinks();
+		this.updateLinks();	
 		$( this ).trigger( 'panoOrientationChanged.vtour' );
 		this.show();
 	},
