@@ -229,7 +229,6 @@ $wgResourceModules['ext.vtour.links'] = array(
 	'remoteExtPath' => 'Vtour/modules'
 );
 
-
 $wgSpecialPages['vtour-link'] = 'SpecialVtour';
 
 $wgSpecialPages['vtour-allvtours'] = 'SpecialAllVtours';

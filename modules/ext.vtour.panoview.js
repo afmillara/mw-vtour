@@ -319,8 +319,8 @@ move: function( movement, isAbsolute ) {
 		var canvasWidth = this.canvas.width;
 		var canvasHeight = this.canvas.height;
 
-		var dX = this.canvas.width/2;
-		var dY = this.canvas.height/2;
+		var dX = ( this.canvas.width - 1 ) / 2;
+		var dY = (this.canvas.height - 1 ) / 2;
 
 		var destBufferData = this.destBufferData;
 		var imageData = this.imageData;
@@ -347,16 +347,30 @@ move: function( movement, isAbsolute ) {
 		var yPy = -sin( baseLat ) * sin( baseLon );
 		var zPy = cos( baseLat );
 
+		var latCache = [];
+		var lonCache = [];
+
+		var canvasHalf = canvasWidth / 2;
+		var canvasRev = canvasWidth - 1;
+
 		for ( y = 0; y < canvasHeight; y++ ) {
 			sZ = baseZ + zPy * ( y - dY );
 			for ( x = 0; x < canvasWidth; x++ ) {
-				sX = baseX + xPx * ( x - dX ) + xPy * ( y - dY );
-				sY = baseY + yPx * ( x - dX ) + yPy * ( y - dY );
+				if ( x >= canvasHalf ) {
+					lat = latCache[canvasRev - x];
+					lon = 2 * baseLon - lonCache[canvasRev - x];
+				} else {
+					sX = baseX + xPx * ( x - dX ) + xPy * ( y - dY );
+					sY = baseY + yPx * ( x - dX ) + yPy * ( y - dY );
 
-				lat = atan( sZ / sqrt( sX * sX + sY * sY ) );
-				lon = atan2( sX, sY ) + PI / 2;
-				if ( lon > PI ) {
-					lon = -( PI * 2 - lon );
+					lat = atan( sZ / sqrt( sX * sX + sY * sY ) );
+					lon = atan2( sX, sY ) + PI / 2;
+					if ( lon > PI ) {
+						lon = -( PI * 2 - lon );
+					}
+
+					latCache[x] = lat;
+					lonCache[x] = lon;
 				}
 
 				pixelX = round( widthMul * ( lon + hsFOV ) );
