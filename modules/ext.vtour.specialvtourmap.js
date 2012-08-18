@@ -21,9 +21,9 @@ $( document ).ready( function() {
 			for ( ii = 0; ii < tourData.length; ii++ ) {
 				markerData = tourData[ii];
 				coordinates = translateGeographicCoordinates( markerData.coords );
-				link = $( '<a></a>' ).attr( 'href', markerData.url )
-					.append( markerData.name );
-				map.addMarker( markerData.name, link[0], coordinates );
+				map.addMarker( markerData.name, null, coordinates, function() {
+					window.location.href = markerData.url;
+				} );
 			}
 		} );
 	}, $.noop, true );
