@@ -57,7 +57,7 @@ abstract class VtourElement {
 	 * expected values: methodName => messageName. Used in error messages.
 	 * @var array $parseFunctionDescriptions
 	 */
-	protected static $parseFunctionDescriptions = array(
+	protected $parseFunctionDescriptions = array(
 		'parseId' => 'vtour-attributetype-id',
 		'parseName' => 'vtour-attributetype-name',
 		'parseImageTitle' => 'vtour-attributetype-imagetitle',
@@ -236,7 +236,7 @@ abstract class VtourElement {
 			}
 			if ( $attrValue === null 
 					&& ( $mandatory || $this->vtourParser->getParseStrict() ) ) {
-				$errorDescription = self::$parseFunctionDescriptions[$parseFunction];
+				$errorDescription = $this->parseFunctionDescriptions[$parseFunction];
 				$typeMessage = wfMessage( $errorDescription );
 				$this->throwBadFormat( 'vtour-errordesc-invalid', $attrName,
 					$strValue, $typeMessage->inContentLanguage()->text() );
