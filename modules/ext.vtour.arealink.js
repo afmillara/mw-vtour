@@ -93,12 +93,13 @@ var CanvasAreaLink = Link.extend( {
 	getHTML: function() {
 		if ( this.$canvas === null ) {
 			this.$canvas = this.generate();
+			this.updatePosition();
 		}
 		return this.$canvas;
 	},
 
 	updatePosition: function() {
-		var htmlPos = this.posCallback( this.location );
+		var htmlPos = this.posCallback ? this.posCallback( this.location ) : null;
 		this.$canvas.toggle( htmlPos !== null );
 		if ( htmlPos !== null ) {
 			this.polygon.setVertices( htmlPos );
@@ -146,7 +147,7 @@ var FallbackAreaLink = PointLink.extend( {
 	},
 
 	updatePosition: function() {
-		var htmlPos = this.posCallback( this.location );
+		var htmlPos = this.posCallback ? this.posCallback( this.location ) : null;
 		this.$nodeIcon.toggle( htmlPos !== null );
 		if ( htmlPos !== null ) {
 			setPosition( this.$nodeIcon, calculateMeanPoint( htmlPos ) );

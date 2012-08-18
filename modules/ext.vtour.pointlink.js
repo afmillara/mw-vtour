@@ -49,18 +49,20 @@ var PointLink = Link.extend( {
 		} ).bind( 'mouseleave', function() {
 			that.noHover();
 		} );
+
 		return $nodeIcon;
 	},
 
 	getHTML: function() {
 		if ( this.$nodeIcon === null ) {
 			this.$nodeIcon = this.generate();
+			this.updatePosition();
 		}
 		return this.$nodeIcon;
 	},
 	
 	updatePosition: function() {
-		var htmlPos = this.posCallback( this.location );
+		var htmlPos = this.posCallback ? this.posCallback( this.location ) : null;
 		this.$nodeIcon.toggle( htmlPos !== null );
 		if ( htmlPos !== null ) {
 			setPosition( this.$nodeIcon, htmlPos );

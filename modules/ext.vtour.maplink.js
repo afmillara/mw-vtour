@@ -129,6 +129,8 @@ var MapLink = PointLink.extend( {
 			} );
 			ret.push( this.angleMarker.getHTML() );
 		}
+		this.updatePosition();
+
 		return ret;
 	}
 } );
