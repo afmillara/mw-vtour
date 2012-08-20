@@ -148,7 +148,7 @@ class VtourPage {
 				), __METHOD__, array( 'IGNORE' ) );
 		}
 
-		$rowsToInsert = [];
+		$rowsToInsert = array();
 		foreach ( $insertIds as $tourId ) {
 			$rowToInsert = $this->getTourDBInfoArray( $tourId );
 			$rowToInsert['vtour_pageid'] = $pageId;

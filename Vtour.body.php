@@ -98,9 +98,8 @@ class VtourTourHooks {
 	 * @param DatabaseUpdater $updater Updater
 	 */
 	public static function addTourTable( DatabaseUpdater $updater ) {
-		global $wgVtourDir;
 		$updater->addExtensionUpdate( array( 'addTable', 'virtualtour',
-			$wgVtourDir . 'virtualtour.sql', true ) );
+			dirname( __FILE__ ) . '/virtualtour.sql', true ) );
 		return true;
 	}
 }
