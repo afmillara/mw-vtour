@@ -60,8 +60,8 @@ var BaseAngleMarker = Class.extend( {
 
 	/**
 	 * Create a new AngleMarker.
+	 * @param {Boolean} variableAngle Whether the angle may be changed
 	 * @constructor
-	 * @fn init(aaaaa)
 	 */
 	init: function( variableAngle ) {
 		this.variableAngle = variableAngle;
@@ -71,7 +71,7 @@ var BaseAngleMarker = Class.extend( {
 
 	/**
 	 * Return the marker as a DOM node.
-	 * @return $HTML Element, wrapped in a jQuery collection
+	 * @return {$HTML} Element, wrapped in a jQuery collection
 	 */
 	getHTML: function() {
 		return this.$marker;

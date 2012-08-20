@@ -13,6 +13,15 @@
  */
 var DEG2RAD = Math.PI/180;
 
+/**
+ * Load an image.
+ * @param {$Img} $img jQuery collection wrapping an image node
+ * @param {String} src Image path
+ * @param {function()} onLoad Function that will be called when the image
+ * is loaded
+ * @param {function()} onError Function that will be called if the image
+ * cannot be loaded
+ */
 var loadImage = function( $img, src, onLoad, onError ) {
 	$img.one( 'load', function() {
 		// Store the native size of the image
