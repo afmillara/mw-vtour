@@ -11,18 +11,24 @@
  * GraphicView that contains an image.
  * @class ImageView
  */
+//* class ImageView extends GraphicView {
 var ImageView = GraphicView.extend( {
 
+	//* protected $Image $image;
 	$image: null,
 
+	//* protected Number typicalMinZoom;
 	typicalMinZoom: 0.1,
+
+	//* protected Number maxZoomMultiplier;
 	maxZoomMultiplier: 2,
 
 	/**
 	 * Create a new ImageView.
-	 * @constructor
 	 * @param {String} imageSrc URL of the image that will be shown in this view
+	 * @constructor
 	 */
+	//* public void init( String imageSrc );
 	init: function( imageSrc ) {
 		this._super();
 		this.imageSrc = imageSrc;
@@ -32,6 +38,7 @@ var ImageView = GraphicView.extend( {
 	 * Generate the contents of the ImageView.
 	 * @return {$Image} image Content of the ImageView
 	 */
+	//* protected $Image generate();
 	generateBackground: function() {
 		var that = this;
 		this.$image = $( '<img></img>' );
@@ -41,11 +48,13 @@ var ImageView = GraphicView.extend( {
 		return this.$image.addClass( 'vtour-background' );
 	},
 
+	//* public void reset();
 	reset: function() {
 		this.changeZoom( 1, true );
 		this._super();
 	},
 
+	//* public void update();
 	update: function() {
 		if ( this.isReady() ) {
 			var realSizeZoom = this.getRealSizeZoom();
@@ -56,6 +65,7 @@ var ImageView = GraphicView.extend( {
 		this._super();
 	},
 
+	//* protected void createDefaultButtons();
 	createDefaultButtons: function() {
 		var that = this;
 		this._super();
@@ -67,6 +77,7 @@ var ImageView = GraphicView.extend( {
 		}, 'vtour-button-realsize' );
 	},
 
+	//* protected void updateZoom();
 	updateZoom: function() {
 		var $movableLayer = this.$movableLayer;
 		var width, height;
@@ -91,6 +102,7 @@ var ImageView = GraphicView.extend( {
 		this.updateLinks();
 	},
 
+	//* public void move( Number[] movement, Boolean isAbsolute );
 	move: function( movement, isAbsolute ) {
 		var $image = this.$image;
 		if ( !this.isReady() ) {
@@ -111,6 +123,7 @@ var ImageView = GraphicView.extend( {
 	 * value.
 	 * @param {Number} zoom Zoom level
 	 */
+	//* public void changeExternalZoom( Number zoom );
 	changeExternalZoom: function( zoom ) {
 		this.changeZoom( zoom * this.getRealSizeZoom(), true );
 	},
@@ -120,6 +133,7 @@ var ImageView = GraphicView.extend( {
 	 * matches an external (1 => real size of the image) zoom level of 1.
 	 * @return Number Zoom level
 	 */
+	//* protected Number getRealSizeZoom();
 	getRealSizeZoom: function() {
 		var $image = this.$image;
 		var $movableLayer = this.$movableLayer;
@@ -131,8 +145,9 @@ var ImageView = GraphicView.extend( {
 
 	/**
 	 * Get the current value of the scroll in order to restore it later if needed.
-	 * @return Array Scroll ([horizontal, vertical])
+	 * @return Number[] Scroll ([horizontal, vertical])
 	 */
+	//* protected Number[] getScroll();
 	getScroll: function() {
 		var $movableLayer = this.$movableLayer;
 		// FIXME: Scrolling doesn't always work as it should. $movableLayer -> $image in some cases?
@@ -143,6 +158,7 @@ var ImageView = GraphicView.extend( {
 		return this.contentPointToLinkPoint( relativeCenter );
 	},
 
+	//* protected Number[] contentPointToLinkPoint( Number[] contentPoint );
 	contentPointToLinkPoint: function( contentPoint ) {
 		var $image = this.$image;
 		return [
@@ -151,6 +167,7 @@ var ImageView = GraphicView.extend( {
 		];
 	},
 
+	//* protected Number[] translateSinglePoint( Number[] point );
 	translateSinglePoint: function( point ) {
 		var $image = this.$image;
 		var result = [
@@ -162,4 +179,5 @@ var ImageView = GraphicView.extend( {
 		return result;
 	}
 } );
+//* }
 

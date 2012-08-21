@@ -11,12 +11,14 @@
  * Place that is part of a VirtualTour.
  * @class Place
  */
+//* class Place extends Element {
 var Place = Element.extend( {
 
 	/**
 	 * Initial position of the Place.
 	 * @var {Position} initialPosition
 	 */
+	//* protected Position initialPosition;
 	initialPosition: {
 		zoom: 1,
 		center: [0, 0]
@@ -26,42 +28,49 @@ var Place = Element.extend( {
 	 * Whether the angle in the map can be changed.
 	 * @var {Boolean} variableAngle
 	 */
+	//* protected Boolean variableAngle;
 	variableAngle: false,
 
 	/**
 	 * Current angle of the place, in radians.
 	 * @var {Number|null} angle
 	 */
+	//* protected Number angle;
 	angle: null,
 
 	/**
 	 * CSS class with the icon for this place.
 	 * @var {String} iconClass
 	 */
+	//* protected String iconClass;
 	iconClass: null,
 
 	/**
 	 * CSS class that will be applied to the parent element.
 	 * @var {String|null} spClass
 	 */
+	//* protected String spClass;
 	spClass: null,
 
 	/**
 	 * Link to this place in the map.
 	 * @var {MapLink} mapLink
 	 */
+	//* protected MapLink mapLink;
 	mapLink: null,
 
 	/**
 	 * Whether the Place is currently visible.
 	 * @var {Boolean} installed
 	 */
+	//* protected Boolean installed;
 	installed: false,
 
 	/**
 	 * New position (center and zoom) for this place that will replace the current one.
 	 * @var {Position|null} movePending
 	 */
+	//* protected Position movePending;
 	movePending: null,
 
 	/**
@@ -69,24 +78,28 @@ var Place = Element.extend( {
 	 * description of the place.
 	 * @var {$HTML} $infoNode
 	 */
+	//* protected $HTML $infoNode;
 	$infoNode: null,
 
 	/**
 	 * jQuery collection wrapping the DOM elements that contain the place.
 	 * @var {$HTML} $html
 	 */
+	//* protected $HTML $html;
 	$html: null,
 	
 	/**
 	 * Whether tooltips are enabled for this Place.
 	 * @var {Boolean} tooltipsEnabled
 	 */
+	//* protected Boolean tooltipsEnabled;
 	tooltipsEnabled: true,
 
 	/**
 	 * Duration of the fadein and fadeout.
 	 * @var {Number|String} transitionTime
 	 */
+	//* protected String transitionTime;
 	transitionTime: 'slow',
 
 	/**
@@ -97,7 +110,10 @@ var Place = Element.extend( {
 	 * @param {Boolean} visible Whether this place can be seen in a map
 	 * @param {Number[]} location location of the place in the map ([x, y])
 	 * @param {Map} map map that contains this place
+	 * @constructor
 	 */
+	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
+	//* 	Number[] location, Map map );
 	init: function( tour, name, description, visible, location, map ) {
 		this._super( tour, name );
 		this.initialPosition = clone( this.initialPosition );
@@ -107,10 +123,12 @@ var Place = Element.extend( {
 		this.map = map;
 	},
 	
+	//* public void setTooltipsEnabled( Boolean tooltipsEnabled );
 	setTooltipsEnabled: function( tooltipsEnabled ) {
 		this.tooltipsEnabled = tooltipsEnabled;
 	},
 
+	//* public Boolean getTooltipsEnabled();
 	getTooltipsEnabled: function() {
 		return this.tooltipsEnabled;	
 	},
@@ -120,6 +138,7 @@ var Place = Element.extend( {
 	 * @return $HTML jQuery collection containing a DOM node with the title,
 	 * description and related information for this Place
 	 */
+	//* public $HTML getInfo();
 	getInfo: function() {
 		var $descriptionNode;
 		if ( this.$infoNode === null ) {
@@ -136,9 +155,10 @@ var Place = Element.extend( {
 
 	/**
 	 * Set the initial position of this place.
-	 * @param {Object} position Object: {'zoom': zoom level or null, 
+	 * @param {Position} position Object: {'zoom': zoom level or null, 
 	 * 'center': position of the center of the view or null
 	 */
+	//* public void setInitialPosition( Position position );
 	setInitialPosition: function( position ) {
 		this.initialPosition = this.mergePositions
 			( position, this.initialPosition );
@@ -146,9 +166,10 @@ var Place = Element.extend( {
 
 	/**
 	 * Change the position shown in this place.
-	 * @param {Object} position Object: {'zoom': zoom level or null, 
+	 * @param {Position} position Object: {'zoom': zoom level or null, 
 	 * 'center': position of the center of the view or null
 	 */
+	//* public void setPosition( Position position );
 	setPosition: function( position ) {
 		position = this.mergePositions( position, this.initialPosition );
 		if ( this.installed ) {
@@ -162,10 +183,11 @@ var Place = Element.extend( {
 	 * Merge two position objects, generating a position where the parameters that
 	 * are present in the first one are taken from it and the rest are taken from
 	 * the second one.
-	 * @param {Object} newPosition First position
-	 * @param {Object} basePosition Second position
-	 * @return Object Merged positions
+	 * @param {Position} newPosition First position
+	 * @param {Position} basePosition Second position
+	 * @return Position Merged positions
 	 */
+	//* protected Position mergePositions( Position newPosition, Position basePosition );
 	mergePositions: function( newPosition, basePosition ) {
 		newPosition = clone( newPosition );
 		if ( newPosition.zoom === null ) {
@@ -181,6 +203,7 @@ var Place = Element.extend( {
 	 * Apply a position to the place now.
 	 * @param {Object} position Position to apply
 	 */
+	//* protected void applyPosition( Position position );
 	applyPosition: function( position ) {
 		if ( position.zoom !== null ) {
 			this.changeZoom( position.zoom );
@@ -194,13 +217,15 @@ var Place = Element.extend( {
 	 * Change the zoom level.
 	 * @param {Number} zoom Zoom level
 	 */
+	//* public void changeZoom( Number zoom );
 	changeZoom: function( zoom ) {
 	},
 
 	/**
 	 * Change the center of the view.
-	 * @param center Center of the view
+	 * @param {Number[]} center Center of the view
 	 */
+	//* public void move( Number[] center );
 	move: function( center ) {
 	},
 
@@ -211,6 +236,7 @@ var Place = Element.extend( {
 	 * passing the angle as an additional parameter.
 	 * @param {Number} Angle in degrees
 	 */
+	//* public void setAngle( Number angle );
 	setAngle: function( angle ){
 		this.angle = angle*DEG2RAD;
 	},
@@ -219,14 +245,18 @@ var Place = Element.extend( {
 	 * Return the HTML class for the icons that represent this place.
 	 * @return {String} icon class
 	 */
+	//* public String getIconClass();
 	getIconClass: function() {
 		return this.iconClass;
 	},
 
 	/**
 	 * Add this HTML code for this Place to a given node.
-	 * @param {$Element} $parent    HTML node to which this Place will be added
+	 * @param {$HTML} $parent HTML node to which this Place will be added
+	 * @param {Boolean} nofx If true, the Place will appear at once. Otherwise,
+	 * it will fade in smoothly.
 	 */
+	//* public void addTo( $HTML $parent, Boolean nofx );
 	addTo: function( $parent, nofx ) {
 		if ( this.spClass !== null ) {
 			$parent.addClass( this.spClass );
@@ -248,6 +278,7 @@ var Place = Element.extend( {
 		}
 	},
 
+	//* public void end( $HTML $parent );
 	end: function( $parent ) {
 		var that = this;
 		var $content = $parent.children();
@@ -268,6 +299,7 @@ var Place = Element.extend( {
 	 * Get a MapLink to this Place.
 	 * @return {MapLink} MapLink to this Place
 	 */
+	//* public MapLink getMapLink();
 	getMapLink: function() {
 		if ( this.mapLink === null ) {
 			this.mapLink = new MapLink( this.tour, this, this.location );
@@ -280,6 +312,9 @@ var Place = Element.extend( {
 	 * Clean after hiding this place.
 	 * @param {$HTML} $parent Parent element
 	 */
+	//* protected void cleanup( $HTML $parent );
 	cleanup: function( $parent ) {
 	}
 } );
+//* }
+

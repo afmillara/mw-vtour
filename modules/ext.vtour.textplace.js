@@ -11,15 +11,20 @@
  * Place that contains HTML generated from wiki markup.
  * @class TextPlace
  */
+//* class TextPlace extends Place {
 var TextPlace = Place.extend( {
 
+	//* protected String spClass;
 	spClass: 'vtour-textnode',
+
+	//* protected String iconClass;
 	iconClass: 'vtour-textplacemarker',
 
 	/**
 	 * Whether the TextPlace should fade in gradually.
 	 * @var {Boolean} useFx
 	 */
+	//* protected Boolean useFx;
 	useFx: true,
 
 	/**
@@ -30,13 +35,17 @@ var TextPlace = Place.extend( {
 	 * @param {Boolean} visible Whether this place can be seen in a map
 	 * @param {Number[]} location Location of the place in the map ([x, y])
 	 * @param {Map} map Map that contains this place
-	 * @param {$Element} content DOM node that contains the text that will be shown
+	 * @param {$HTML} content DOM node that contains the text that will be shown
+	 * @constructor
 	 */
+	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
+	//* 	Number[] location, Map map, $HTML content );
 	init: function( tour, name, description, visible, location, map, content ) {
 		this._super( tour, name, description, visible, location, map );
 		this.content = content;
 	},
 
+	//* public void move( Number[] movement );
 	move: function( movement ) {
 		var absoluteMovement = [];
 		var size = [ this.$html.width(), this.$html.height() ]; 
@@ -47,6 +56,7 @@ var TextPlace = Place.extend( {
 		scroll( this.$html.parent(), absoluteMovement, true );
 	},
 
+	//* public void addTo( $HTML parent );
 	addTo: function( parent ) {
 		if ( this.$html === null ) {
 			this.$html = $( '<div></div>' );
@@ -62,6 +72,7 @@ var TextPlace = Place.extend( {
 	 * @param {TextLink} link Link to register
 	 * @return Boolean Whether the link was registered
 	 */
+	//* public Boolean registerLinkIfInside( TextLink link );
 	registerLinkIfInside: function( link ) {
 		if ( $.contains( this.content[0], link.getHTML()[0] ) ) {
 			this.links.push( link );
@@ -71,10 +82,12 @@ var TextPlace = Place.extend( {
 		}
 	},
 
+	//* public void cleanup( $HTML $parent );
 	cleanup: function( $parent ) {
 		// Make the content stay attached to the document.
 		// Some scripts might break otherwise.
 		this.content.append( this.$html.children() );
 	}
 } );
+//* }
 

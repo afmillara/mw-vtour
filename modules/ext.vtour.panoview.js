@@ -11,87 +11,120 @@
 * GraphicView that contains a spherical panorama.
 * @class PanoView
 */ 
+//* class PanoView extends GraphicView {
 var PanoView = GraphicView.extend( {
 
 /**
  * Maximum possible field of view.
- * @var {Array} MAX_FOV
+ * @var {Number[]} MAX_FOV
  */
+//* protected Number[] MAX_FOV;
 MAX_FOV: [Math.PI*2, Math.PI],
 
+//* protected $Image $image;
 $image: null,
+
+//* protected HTMLImageElement image;
 image: null,
+
+//* protected $Canvas $canvas;
 $canvas: null,
+
+//* protected HTMLCanvasElement canvas;
 canvas: null,
+
+//* protected CanvasRenderingContext2D ctx;
 ctx: null,
 
+//* protected Number zoomGranularity;
 zoomGranularity: 50,
+
+//* protected Number moveSensitivity;
 moveSensitivity: 0.01,
 
+//* protected Number maxZoom;
 maxZoom: 200,
+
+//* protected Number minZoom;
 minZoom: 100,
 
 /**
  * Relation between the maximum zoom and the image quality.
  * @var {Number} maxZoomMultiplier
  */
+//* protected Number maxZoomMultiplier;
 maxZoomMultiplier: 3,
 
 /**
  * Internal zoom/external zoom ratio.
  * @var {Number} baseZoom
  */
+//* protected Number baseZoom;
 baseZoom: 200,
 
 /**
  * Current angle of the panorama viewer.
- * @var {Array} orientation
+ * @var {Number[]} orientation
  */
+//* protected Number[] orientation;
 orientation: [0, 0],
+
+//* protected Number zoom;
 zoom: 200,
 
 /**
  * Canvas that contains the panoramic image.
  * @var {$Canvas} imageCanvas
  */
+//* protected $Canvas imageCanvas;
 imageCanvas: null,
 
 /**
  * Panoramic image data.
  * @var {CanvasPixelArray} imageData
  */
+//* protected CanvasPixelArray imageData;
 imageData: null,
 
 /**
  * Buffer where the generated images will be painted.
  * @var {ImageData} destBuffer
  */ 
+//* protected ImageData destBuffer;
 destBuffer: null,
 
 /**
  * Destination buffer data.
  * @var {CanvasPixelArray} destBufferData
  */
+//* protected CanvasPixelArray destBufferData;
 destBufferData: null,
 
 /**
  * Field of view.
- * @var {Array} FOV
+ * @var {Number[]} FOV
  */
+//* protected Number[] FOV;
 FOV: null,
 
+//* protected Number widthMul;
 widthMul: null,
-heightMul: null,
-hsFOV: 0,
-vsFOV: 0,
 
-getPixel: null,
+//* protected Number heightMul;
+heightMul: null,
+
+//* protected Number hsFOV;
+hsFOV: 0,
+
+//* protected Number vsFOV;
+vsFOV: 0,
 
 /**
  * Create a new PanoView.
- * @constructor
  * @param {String} imageSrc URL of the image that will be shown in this view
+ * @constructor
  */
+//* public void init( String imageSrc );
 init: function( imageSrc ){
 	this._super();
 	this.imageSrc = imageSrc;
@@ -103,6 +136,7 @@ init: function( imageSrc ){
 	this.ctx = this.canvas.getContext( '2d' );
 },
 
+//* protected $HTML generateBackground();
 generateBackground: function() {
 	var that = this;
 	this.$image = $( '<img></img>' );
@@ -118,16 +152,19 @@ generateBackground: function() {
  * value.
  * @param {Number} zoom Zoom level
  */
+//* protected void changeExternalZoom( Number zoom );
 changeExternalZoom: function( zoom ) {
 	this.changeZoom( zoom * this.baseZoom, true );
 },
 
+//* public void reset();
 reset: function() {
 	this.changeZoom( this.baseZoom );
 	this.move( [0, 0], true );
 	this._super();
 },
 
+//* public void update();
 update: function() {
 	var $movableLayer = this.$movableLayer;
 	var wRatio, hRatio;
@@ -164,6 +201,7 @@ update: function() {
 /**
  * Update the destination buffer.
  */
+//* protected void updateBuffer();
 updateBuffer: function() {
 	if ( this.canvas.width && this.canvas.height ) {
 		this.destBuffer = this.ctx.getImageData( 0, 0,
@@ -180,6 +218,7 @@ updateBuffer: function() {
 /**
  * Create the image buffer and precalculate the field of view.
  */
+//* protected void prepare();
 prepare: function() {
 	var possibleMaxZoom;
 
@@ -227,6 +266,7 @@ prepare: function() {
 	this.maxZoom = Math.max( possibleMaxZoom, this.baseZoom );
 },
 
+//* protected void updateZoom();
 updateZoom: function() {
 	if ( !this.isReady() || !this.FOV ) {
 		return;
@@ -252,6 +292,7 @@ updateZoom: function() {
  * @param {Boolean} isAbsolute if true, the first argument is the new
  * center of the view. Otherwise, it is substracted from the current position
  */
+//* public void move( Number[] movement, Boolean isAbsolute );
 move: function( movement, isAbsolute ) {
 	var orientation = this.orientation;
 	var relativeMovement, absoluteMovement;
@@ -294,6 +335,7 @@ move: function( movement, isAbsolute ) {
 		this.show();
 	},
 
+	//* public void changeAngle( Number angle );
 	changeAngle: function( angle ) {
 		var center = mult(
 			translateGeographicCoordinates( [angle, this.orientation[1]] ), -1
@@ -304,6 +346,7 @@ move: function( movement, isAbsolute ) {
 	/**
 	 * Paint a frame on the canvas.
 	 */
+	//* public void show();
 	show: function() {
 		var round = Math.round;
 		var sin = Math.sin;
@@ -335,8 +378,8 @@ move: function( movement, isAbsolute ) {
 
 		var pixelX, pixelY;
 
-		var originPixel, destinationPixel;
-		destinationPixel = 0;
+		var originPixel;
+		var destinationPixel = 0;
 
 		var baseLon = this.orientation[0];
 		var baseLat = this.orientation[1];
@@ -392,6 +435,7 @@ move: function( movement, isAbsolute ) {
 		}
 	},
 
+	//* protected Number[] translateSinglePoint( Number[] point );
 	translateSinglePoint: function( point ) {
 		var x, y;
 
@@ -483,14 +527,17 @@ move: function( movement, isAbsolute ) {
 		}
 	}
 });
+//* }
 
 /**
  * GraphicView that contains a spherical panorama, for browser that don't support
  * the Canvas element.
  * @class FallbackPanoView
  */
+//* class FallbackPanoView extends ImageView {
 var FallbackPanoView = ImageView.extend( {
 
+	//* protected Number[] getFOV();
 	getFOV: function() {
 		// FIXME: Duplicated code.
 		var FOV = [Math.PI*2, Math.PI];
@@ -505,6 +552,7 @@ var FallbackPanoView = ImageView.extend( {
 		return FOV;
 	},
 
+	//* protected Number[] contentPointToLinkPoint( Number[] contentPoint );
 	contentPointToLinkPoint: function( contentPoint ) {
 		var FOV = this.getFOV();
 		var width = this.$image.width();
@@ -516,6 +564,7 @@ var FallbackPanoView = ImageView.extend( {
 		] ), -1 );
 	},
 
+	//* protected Number[] translateSinglePoint( Number[] point );
 	translateSinglePoint: function( point ) {
 		var width = this.$image.width();
 		var height = this.$image.height();
@@ -532,4 +581,5 @@ var FallbackPanoView = ImageView.extend( {
 		];
 	}
 } );
+//* }
 

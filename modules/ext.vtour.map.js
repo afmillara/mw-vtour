@@ -11,54 +11,62 @@
  * Map with one or more Places on it.
  * @class Map
  */
+//* class Map extends Element {
 var Map = Element.extend( {
 
 	/**
 	 * Upper neighbour of this map.
 	 * @var {Map} up
 	 */
+	//* protected Map up;
 	up: null,
 
 	/**
 	 * Lower neighbour of this map.
 	 * @var {Map} down
 	 */
+	//* protected Map down;
 	down: null,
 
 	/**
 	 * Starting place for this map.
 	 * @var {Place} defaultPlace
-	 */ 
+	 */
+	//* protected Place defaultPlace;
 	defaultPlace: null,
 
 	/**
 	 * ImageView used in this map.
 	 * @var {ImageView} view
 	 */
+	//* protected ImageView view;
 	view: null,
 
 	/**
 	 * Array of extra buttons added by the map.
-	 * @var {Array} extraButtons
+	 * @var {$HTML[]} extraButtons
 	 */
+	//* protected $HTML[] extraButtons;
 	extraButtons: null,
 
 	/**
 	 * HTML nodes for the map.
-	 * @var {Array} html
+	 * @var {$HTML[]} html
 	 */
+	//* protected $HTML[] html;
 	html: null,
 
 	/**
 	 * Create a new Map.
-	 * @constructor
 	 * @param {VirtualTour} tour VirtualTour to which this Map will belong
 	 * @param {String} name Name of the new Map
-	 * @param {$Image} $image Map background
-	 * @param {Array} Location Geographical coordinates ([[lat, lon]
+	 * @param {String} imageSrc Image path
+	 * @param {Number[][]} Location Geographical coordinates ([[lat, lon]
 	 * lower left corner of the image, [lat, lon] upper right corner]) of the
 	 * map (optional)
+	 * @constructor
 	 */
+	//* public void init( VirtualTour tour, String name, String imageSrc, Number[][] location );
 	init: function( tour, name, imageSrc, location ) {
 		this._super( tour, name );
 		this.imageSrc = imageSrc;
@@ -68,8 +76,9 @@ var Map = Element.extend( {
 
 	/**
 	 * Add this HTML code for this Map to a given node.
-	 * @param {$Element} $parent    HTML node to which this Map will be added
+	 * @param {$HTML} $parent HTML node to which this Map will be added
 	 */
+	//* public void addTo( $HTML parent );
 	addTo: function( parent ) {
 		var that = this;
 		var noExternalMapMessage;
@@ -121,6 +130,7 @@ var Map = Element.extend( {
 	 * Set the starting place.
 	 * @param {Place} place Starting place
 	 */
+	//* public void setDefault( Place place );
 	setDefault: function( place ) {
 		this.defaultPlace = place;
 	},
@@ -128,8 +138,9 @@ var Map = Element.extend( {
 	/**
 	 * Get a neighbour of the current map and place.
 	 * @param {String} way Either 'up' or 'down'
-	 * @return Place|null Neighbour place, or null if no neighbour exists
+	 * @return Place Neighbour place, or null if no neighbour exists
 	 */
+	//* protected Place getNeighbour( String way );
 	getNeighbour: function( way ) {
 		if ( this.tour.currentPlace[way] ) {
 			return this.tour.currentPlace[way];
@@ -143,6 +154,7 @@ var Map = Element.extend( {
 	/**
 	 * Update the location of the links in the map.
 	 */
+	//* public void update();
 	update: function() {
 		if ( !this.error ) {
 			this.updateExtraButtons();
@@ -150,6 +162,7 @@ var Map = Element.extend( {
 		}
 	},
 
+	//* protected void updateExtraButtons();
 	updateExtraButtons: function() {
 		var ways = [ 'up', 'down' ];
 		var index;
@@ -163,6 +176,7 @@ var Map = Element.extend( {
 	 * Adds a new Place to this Map.
 	 * @param {Place} place place that will be added
 	 */
+	//* public void addPlace( Place place );
 	addPlace: function( place ) {
 		this.places.push( place );
 	},
@@ -171,9 +185,11 @@ var Map = Element.extend( {
 	 * Get the ExternalMap implementation that will be used.
 	 * @return class External map implementation
 	 */
+	//* protected Class getExternalMapClass();
 	getExternalMapClass: function() {
 		var externalMapClassName = mw.config.get( 'wgVtourExternalMap' );
 		return ExternalMap.classes[externalMapClassName] || null;
 	}
 } );
+//* }
 

@@ -10,14 +10,17 @@
 /**
  * Link from a single point in a Map to a Place contained in it.
  */
+//* class MapLink extends PointLink {
 var MapLink = PointLink.extend( {
 
+	//* protected Number rotationAngle;
 	rotationAngle: 0,
 
 	/**
 	 * Angle marker of the map link, if an angle has been set.
 	 * @var {AngleMarker} angleMarker
 	 */
+	//* protected angleMarker angleMarker;
 	angleMarker: null,
 
 	/**
@@ -25,19 +28,23 @@ var MapLink = PointLink.extend( {
 	 * @param {VirtualTour} tour Tour to which the link belongs
 	 * @param {Place} destination Destination of the link
 	 * @param {Number[]} location Location of the link ([x, y]) on the map
+	 * @constructor
 	 */
+	//* public void init( VirtualTour tour, Place destination, Number[] location );
 	init: function( tour, destination, location ) {
 		this._super( tour, destination, location );
 	},
 
+	//* public void setRotationAngle( Number rotationAngle );
 	setRotationAngle: function( rotationAngle ) {
 		this.rotationAngle = rotationAngle;
 	},
 
 	/**
 	 * Get the HTML for the icon.
-	 * @return {$Element} icon HTML node for the icon
+	 * @return {$HTML} icon HTML node for the icon
 	 */
+	//* public $HTML getIconNode();
 	getIconNode: function() {
 		var markerLeft, markerTop;
 		var $icon = $('<div></div>').addClass(this.destination.getIconClass()).css( {
@@ -53,42 +60,24 @@ var MapLink = PointLink.extend( {
 			'left' : -markerLeft,
 			'top' : -markerTop
 		} );
-		if (this.destination.angle !== null){
-			var that = this;
-			/*
-			$icon.mouseenter(function(){
-				if (!that.isSelected()){
-					that.$angleIcon.fadeTo('fast', 0.5);
-				}
-			});
-			$icon.mouseleave(function(){
-				if (!that.isSelected()){
-					that.$angleIcon.fadeTo('slow', 0, function(){
-						if (!that.isSelected()){
-							that.$angleIcon.hide();
-						}
-					});
-				}
-			});
-			*/
-		}
 		return $( '<div></div>' ).css( {
 			'position': 'absolute',
 			'z-index': 1
 		} ).append( $icon, this.$currentPlaceMarker );
 	},
 
+	//* public Boolean isSelected();
 	isSelected: function(){
 		return this.tour.currentPlace === this.destination;
 	},
 
+	//* protected void updatePosition();
 	updatePosition : function() {
 		if ( this._super() ) {
 			this.$currentPlaceMarker.toggle( this.isSelected() );
 			if (this.angleMarker !== null){
 				this.angleMarker.toggle( this.isSelected() );
 				this.updateAngleMarker();
-				//this.$angleIcon.fadeTo(0, 1);
 			}
 			return true;
 		} else {
@@ -99,6 +88,7 @@ var MapLink = PointLink.extend( {
 		}
 	},
 
+	//* protected void updateAngleMarker();
 	updateAngleMarker: function() {
 		var htmlLocation = this.posCallback( this.location );
 		if ( htmlLocation !== null ) {
@@ -108,7 +98,8 @@ var MapLink = PointLink.extend( {
 		}
 	},
 
-	getHTML: function( element ) {
+	//* public $HTML getHTML();
+	getHTML: function() {
 		var that = this;
 		var AngleMarkerToUse;
 		var ret;
@@ -134,4 +125,5 @@ var MapLink = PointLink.extend( {
 		return ret;
 	}
 } );
+//* }
 

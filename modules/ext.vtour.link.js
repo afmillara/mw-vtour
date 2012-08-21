@@ -13,78 +13,87 @@
  *
  * @class Link
  */
+//* class Link {
 var Link = Class.extend({
 
 	/**
 	 * Whether the mouse pointer is currently over the link.
 	 * @var {Boolean} hovering
 	 */
+	//* protected Boolean hovering;
 	hovering: false,
 
 	/**
 	 * Timestamp of the last time the mouse crossed the link border.
 	 * @var {Number} lastTime
 	 */
+	//* protected Number lastTime;
 	lastTime: null,
 
 	/**
 	 * Absolute location ([x, y]) of the "tooltip" popup in the page.
-	 * @var {Array} popupLocation
+	 * @var {Number[]} popupLocation
 	 */
+	//* protected Number[] popupLocation;
 	popupLocation: null,
 
 	/**
 	 * Popup object currently being shown.
 	 * @var {Popup} popup
 	 */
+	//* protected Popup popup;
 	popup: null,
 
 	/**
 	 * Object containing values for initial "center" and "zoom" at the destination.
 	 * @var {Position} destinationPosition
 	 */
+	//* protected Position destinationPosition;
 	destinationPosition: null,
 
 	/**
 	 * Callback function that translates link coordinates (either a pair of numbers or
 	 * an array containing pairs of numbers) to coordinates relative to the parent element
-	 * @var {function(Array): Array} posCallback
+	 * @var {function(Number[]): Number[]} posCallback
 	 */
+	//* protected Number[] posCallback( Number[] );
 	posCallback: null,
 
 	/**
 	 * Whether a "tooltip" popup should be shown when the mouse pointer is over the link.
 	 * @var {Boolean} tooltipsEnabled
 	 */
+	//* protected Boolean tooltipsEnabled;
 	tooltipsEnabled: true,
 
 	/**
 	 * X and Y coordinates of the "tooltip" popup relative to the mouse pointer.
-	 * @var {Array} distanceToPointer
+	 * @var {Number[]} distanceToPointer
 	 */
+	//* protected Number[] distanceToPointer;
 	distanceToPointer: [12, 5],
 
 	/**
 	 * Time, in milliseconds since the hovering started, before the "tooltip" appears.
 	 * @var {Number} waitToShow
 	 */
+	//* protected Number waitToShow;
 	waitToShow: 300,
 
 	/**
 	 * Time, in milliseconds since the hovering ended, before the "tooltip" disappears.
 	 * @var {Number} waitToHide
 	 */
+	//* protected Number waitToHide;
 	waitToHide: 100,
-
-
-	// "Public" methods
 
 	/**
 	 * Create a new Link.
-	 * @constructor
 	 * @param {VirtualTour} tour Tour to which this link belongs
 	 * @param {Place} destination Place to which this links points
+	 * @constructor
 	 */
+	//* public void init( VirtualTour tour, Place destination );
 	init: function( tour, destination ) {
 		this.tour = tour;
 		this.destination = destination;
@@ -94,15 +103,17 @@ var Link = Class.extend({
 	 * Set the position at the destination where the link will take the user.
 	 * @param {Position} destinationPosition Initial position when following this link.
 	 */
+	//* public void setDestinationPosition( Position destinationPosition );
 	setDestinationPosition: function( destinationPosition ) {
 		this.destinationPosition = destinationPosition;
 	},
 
 	/**
 	 * Generate and return a DOM node that acts as a link.
-	 * @return {$Element|Array} jQuery collection containing a DOM node, or array of jQuery
+	 * @return {$HTML|$HTML[]} jQuery collection containing a DOM node, or array of jQuery
 	 * collections containing DOM nodes
 	 */
+	//* public $HTML getHTML();
 	getHTML: function() {
 		throw new Error( 'Not implemented: getHTML' );
 	},
@@ -111,6 +122,7 @@ var Link = Class.extend({
 	 * Enable or disable the "tooltip" popup.
 	 * @param {Boolean} tooltipsEnabled Whether tooltips should be enabled.
 	 */
+	//* public void toggleTooltips( Boolean tooltipsEnabled );
 	toggleTooltips: function( tooltipsEnabled ) {
 		this.tooltipsEnabled = tooltipsEnabled;
 	},
@@ -121,19 +133,16 @@ var Link = Class.extend({
 	 * @param {function([x, y]): [x, y]} callback    function to translate
 	 * link coordinates to coordinates for the HTML node
 	 */
+	//* public void setPosCallback( function callback );
 	setPosCallback: function( callback ) {
 		this.posCallback = callback;
 	},
 
-
-	// "Protected" methods
-
 	/**
 	 * Update the location of this element in the HTML node where it is installed.
-	 * @param {function([x, y]): [x, y]} posCallback    function to translate
-	 * link coordinates to coordinates for the HTML node
 	 * @return Boolean Whether the link is visible in its new location
 	 */
+	//* protected Boolean updatePosition();
 	updatePosition: function() {
 		throw new Error( 'Not implemented: updatePosition');
 	},
@@ -141,6 +150,7 @@ var Link = Class.extend({
 	/**
 	 * Follow this link.
 	 */
+	//* protected void follow();
 	follow: function() {
 		this.destroyPopup();
 		if ( this.destinationPosition !== null ) {
@@ -151,8 +161,9 @@ var Link = Class.extend({
 
 	/**
 	 * Show the popup, if enabled. Implementations must call this method when appropriate.
-	 * @param {Array} location Absolute coordinates of the mouse
+	 * @param {Number[]} location Absolute coordinates of the mouse
 	 */
+	//* protected void hover( Number[] location );
 	hover: function( location ) {
 		if ( !this.tooltipsEnabled ) {
 			return;
@@ -169,8 +180,9 @@ var Link = Class.extend({
 
 	/**
 	 * Hide the popup, if enabled. Implementations must call this method when appropriate.
-	 * @param {Array} location Absolute coordinates of the mouse
+	 * @param {Number[]} location Absolute coordinates of the mouse
 	 */
+	//* protected void noHover( Number[] location );
 	noHover: function() {
 		if ( !this.tooltipsEnabled ) {
 			return;
@@ -179,13 +191,11 @@ var Link = Class.extend({
 		this.checkHover();
 	},
 
-
-	// "Private" methods
-
 	/**
 	 * Check whether the "tooltip" popup should be shown or hidden
 	 * and start the timeout to do so.
 	 */
+	//* protected void checkHover();
 	checkHover: function() {
 		var that = this;
 		var popupIsActive = !!this.popup;
@@ -215,6 +225,7 @@ var Link = Class.extend({
 	/**
 	 * Show the "tooltip" popup if it isn't visible; hide it if it is.
 	 */
+	//* protected void changePopupState();
 	changePopupState: function() {
 		if ( this.popup ) {
 			this.destroyPopup();
@@ -226,6 +237,7 @@ var Link = Class.extend({
 	/**
 	 * Create the "tooltip" popup.
 	 */
+	//* protected void createPopup();
 	createPopup: function() {
 		var that = this;
 		var $popup;
@@ -238,6 +250,7 @@ var Link = Class.extend({
 	/**
 	 * Hide the "tooltip" popup.
 	 */
+	//* protected void destroyPopup();
 	destroyPopup: function() {
 		if ( this.popup ) {
 			this.popup.fadeOut();
@@ -246,4 +259,5 @@ var Link = Class.extend({
 		}
 	}
 });
+//* }
 
