@@ -88,7 +88,7 @@ $messages['en'] = array(
 	'vtour-attributetype-length' => 'a positive number of pixels or a percentage',
 	'vtour-attributetype-coordinatepair' => 'a pair of integers',
 	'vtour-attributetype-twocoordinatepairs' => 'two pairs of integers',
-	'vtour-attributetype-polygoncoordinates' => 'a list of pairs of integers',
+	'vtour-attributetype-polygoncoordinates' => 'a list of at least three pairs of integers',
 
 	'vtour-parseerror' => 'Vtour parse error in $1: $2',
 	'vtour-parseerror-inelement' => '$1 ($2)',
@@ -192,7 +192,7 @@ $messages['es'] = array(
 	'vtour-attributetype-length' => 'un número de píxeles o un porcentaje',
 	'vtour-attributetype-coordinatepair' => 'un par de números enteros',
 	'vtour-attributetype-twocoordinatepairs' => 'dos pares de números enteros',
-	'vtour-attributetype-polygoncoordinates' => 'una lista de pares de enteros',
+	'vtour-attributetype-polygoncoordinates' => 'una lista de al menos tres pares de enteros',
 
 	'vtour-parseerror' => 'Error de Vtour en $1: $2',
 	'vtour-parseerror-inelement' => '$1 ($2)',
