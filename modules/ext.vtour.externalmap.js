@@ -64,7 +64,8 @@ var ExternalMap = Class.extend( {
 	/**
 	 * Adds a marker to a given location on the map.
 	 * @param {String} text Title of the marker
-	 * @param {String} description Description of the marker (can be null)
+	 * @param {String} description Description of the marker (can be null),
+	 * possibly HTML
 	 * @param {Number[]} location Pair of geographic coordinates (lon, lat)
 	 * @param {function} callback Function that will be called when the
 	 * marker icon is clicked

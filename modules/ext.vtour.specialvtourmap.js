@@ -17,13 +17,14 @@ $( document ).ready( function() {
 	$vtourMap = $content.find( '.vtour-specialvtourmap' );
 	new ExternalMapImplementation( $vtourMap, function( map ) {
 		$.getJSON( jsonPath, function( tourData ) {
-			var ii, markerData, coordinates, link;
+			var ii, markerData, coordinates, $link, linkText;
 			for ( ii = 0; ii < tourData.length; ii++ ) {
 				markerData = tourData[ii];
 				coordinates = translateGeographicCoordinates( markerData.coords );
-				map.addMarker( markerData.name, null, coordinates, function() {
-					window.location.href = markerData.url;
-				} );
+				$link = $( '<a></a>' ).text( markerData.name )
+					.attr( 'href', markerData.url );
+				linkText = $( '<div></div>' ).append( $link ).html();
+				map.addMarker( markerData.name, linkText, coordinates );
 			}
 		} );
 	}, $.noop, true );
