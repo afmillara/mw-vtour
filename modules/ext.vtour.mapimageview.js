@@ -101,6 +101,14 @@ var MapImageView = GraphicView.extend( {
 	imageDisplayThreshold: 3,
 
 	/**
+	 * Array of geographical coordinates of the image (lower left corner,
+	 * upper right corner).
+	 * @var {Number[]} location
+	 */
+	//* protected Number[] location;
+	location: null,
+
+	/**
 	 * Create a new MapImageView.
 	 * @constructor
 	 * @param {String} imageSrc URL of the image that will be shown in this view
@@ -383,7 +391,7 @@ var MapImageView = GraphicView.extend( {
 		nativeHeight = $image.data( 'nativeHeight' );
 		vector = sum(
 			mult( this.mapX, point[0] / nativeWidth ),
-			mult( this.mapY, point[1] / nativeHeight )
+			mult( this.mapY, 1 - point[1] / nativeHeight )
 		);
 		mapPoint = sum( this.location[0], vector );
 		return this.externalMap.geoToPixel( mapPoint, false );
