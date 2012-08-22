@@ -170,13 +170,10 @@ var ImageView = GraphicView.extend( {
 	//* protected Number[] translateSinglePoint( Number[] point );
 	translateSinglePoint: function( point ) {
 		var $image = this.$image;
-		var result = [
+		return [
 			point[0] * $image.width() / $image.data( 'nativeWidth' ),
 			point[1] * $image.height() / $image.data( 'nativeHeight' )
 		];
-		result[0] = limitToRange( result[0], 0, $image.width() - 1 );
-		result[1] = limitToRange( result[1], 0, $image.height() - 1 );
-		return result;
 	}
 } );
 //* }

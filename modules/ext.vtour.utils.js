@@ -370,23 +370,6 @@ var translateGeographicCoordinates = function( coordinates ) {
 };
 
 /**
- * Given a numerical value, return the nearest number in the range [min, max].
- * @param {Number} value Value given
- * @param {Number} min Lower limit of the range
- * @param {Number} max Upper limit of the range
- * @return Number Value contained in the range
- */
-//* public static Number limitToRange( Number value, Number min, Number max );
-var limitToRange = function( value, min, max ) {
-	if ( value < min ) {
-		value = min;
-	} else if ( value > max ) {
-		value = max;
-	}
-	return value;
-};
-
-/**
  * Find whether the browser supports the HTML5 Canvas element.
  * @return Boolean true if the browser supports the Canvas element,
  * false otherwise
