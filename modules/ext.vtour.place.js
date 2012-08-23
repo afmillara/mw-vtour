@@ -113,7 +113,7 @@ var Place = Element.extend( {
 	 * @constructor
 	 */
 	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
-	//* 	Number[] location, Map map );
+	//*	Number[] location, Map map );
 	init: function( tour, name, description, visible, location, map ) {
 		this._super( tour, name );
 		this.initialPosition = clone( this.initialPosition );

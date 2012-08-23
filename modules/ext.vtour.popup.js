@@ -57,10 +57,10 @@ var Popup = Class.extend( {
 	maxInfoHeight: 200,
 
 	/**
- 	 * Create a new Popup.
- 	 * @param {Place} place Place whose name and description will be shown
- 	 * @constructor
- 	 */
+	 * Create a new Popup.
+	 * @param {Place} place Place whose name and description will be shown
+	 * @constructor
+	 */
 	//* public void init( Place place );
 	init: function( place ) {
 		this.place = place;

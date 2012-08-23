@@ -39,7 +39,7 @@ var TextPlace = Place.extend( {
 	 * @constructor
 	 */
 	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
-	//* 	Number[] location, Map map, $HTML content );
+	//*	Number[] location, Map map, $HTML content );
 	init: function( tour, name, description, visible, location, map, content ) {
 		this._super( tour, name, description, visible, location, map );
 		this.content = content;

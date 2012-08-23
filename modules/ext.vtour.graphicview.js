@@ -269,7 +269,7 @@ var GraphicView = Class.extend( {
 	 * @return $HTML A jQuery object which contains a button element
 	 */
 	//* public $HTML addButton( String imageClass, function callback, String tooltipMsgName,
-	//* 	Boolean enabled );
+	//*	Boolean enabled );
 	addButton: function( imageClass, callback, tooltipMsgName, enabled ) {
 		var tooltip = mw.message( tooltipMsgName ).toString();
 		var button = $( '<div></div>' )

@@ -511,11 +511,11 @@ var PanoView = GraphicView.extend( {
 		// [ diff[0] = xPx * x + xPy * y
 		// [ diff[1] = yPx * x + yPy * y
 		// [ diff[2] = zPy * y
-		if ( zPy.toFixed( 3 ) == 0 ) {
-			if ( xPx.toFixed( 3 ) == 0 ) {
+		if ( parseFloat( zPy.toFixed( 3 ) ) === 0 ) {
+			if ( parseFloat( xPx.toFixed( 3 ) ) === 0 ) {
 				y = diff[0] / xPy;
 				x = diff[1] / yPx;
-			} else if ( yPx.toFixed( 3 ) == 0 ) {
+			} else if ( parseFloat( yPx.toFixed( 3 ) ) === 0 ) {
 				y = diff[1] / yPy;
 				x = diff[0] / xPx;
 			} else {
@@ -524,7 +524,7 @@ var PanoView = GraphicView.extend( {
 			}
 		} else {
 			y = diff[2] / zPy;
-			if ( xPx.toFixed( 3 ) == 0 ) {
+			if ( parseFloat( xPx.toFixed( 3 ) === 0 ) ) {
 				x = diff[1] / yPx;
 			} else {
 				x = ( diff[0] - xPy * y ) / xPx;

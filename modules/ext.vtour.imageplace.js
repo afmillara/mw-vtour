@@ -48,7 +48,7 @@ var ImagePlace = Place.extend( {
 	 * @constructor
 	 */
 	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
-	//* 	Number[] location, Map map, String imageSrc );
+	//*	Number[] location, Map map, String imageSrc );
 	init: function( tour, name, description, visible, location, map, imageSrc ) {
 		this._super( tour, name, description, visible, location, map);
 		this.imageSrc = imageSrc;

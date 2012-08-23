@@ -72,7 +72,7 @@ var ExternalMap = Class.extend( {
 	 * @return Object Marker object
 	 */
 	//* public Object addMarker( String title, String description, Number[] location,
-	//* 	function callback );
+	//*	function callback );
 	addMarker: function( title, description, location, callback ) {
 		throw new Error( 'Not implemented: addMarker' );
 	},

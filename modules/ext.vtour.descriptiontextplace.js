@@ -14,7 +14,7 @@
 //* class DescriptionTextPlace extends TextPlace {
 var DescriptionTextPlace = TextPlace.extend( {
 
-	//* protected Boolean useFx; 	
+	//* protected Boolean useFx;
 	useFx: false,
 
 	/**

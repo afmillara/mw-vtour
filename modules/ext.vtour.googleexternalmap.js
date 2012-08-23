@@ -118,7 +118,7 @@ var GoogleExternalMap = ExternalMap.extend( {
 	},
 
 	//* public Object addMarker( String title, String description, Number[] location,
-	//* 	function callback );
+	//*	function callback );
 	addMarker: function( title, description, location, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var map = this.map;
