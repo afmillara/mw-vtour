@@ -524,7 +524,7 @@ var PanoView = GraphicView.extend( {
 			}
 		} else {
 			y = diff[2] / zPy;
-			if ( parseFloat( xPx.toFixed( 3 ) === 0 ) ) {
+			if ( parseFloat( xPx.toFixed( 3 ) ) === 0 ) {
 				x = diff[1] / yPx;
 			} else {
 				x = ( diff[0] - xPy * y ) / xPx;
