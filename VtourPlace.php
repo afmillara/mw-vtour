@@ -167,7 +167,8 @@ abstract class VtourPlace extends VtourElement {
 				$this->result['map'] = $implicitMapIndex;
 			} elseif ( $this->result['map'] !== $implicitMapIndex ) {
 				// The place references a different map
-				$implicitMapName = $this->implicitMap->getPartialResult()['name'];
+				$partialResult = $this->implicitMap->getPartialResult();
+				$implicitMapName = $partialResult['name'];
 				$this->throwBadFormat( 'vtour-errordesc-idmismatch',
 					$implicitMapName, $original );
 			}
@@ -175,7 +176,8 @@ abstract class VtourPlace extends VtourElement {
 
 		// if the map has no 'start' place, use this one.
 		if ( $this->result['map'] !== null ) {
-			$this->vtourParser->getMap( $this->result['map'] )->setStartIfNeeded( $index );
+			$map = $this->vtourParser->getMap( $this->result['map'] );
+			$map->setStartIfNeeded( $index );
 		}
 
 		$this->checkDependency( 'location', 'map' );

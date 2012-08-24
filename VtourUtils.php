@@ -407,11 +407,24 @@ class VtourUtils {
 	public static function getDecimalSeparator() {
 		global $wgVtourAllowNonStandardDecimalSeparator;
 		if ( $wgVtourAllowNonStandardDecimalSeparator ) {
-			$decimalSeparatorMessage = wfMessage( 'vtour-decimalseparator' );
-			return $decimalSeparatorMessage->inContentLanguage()->text();
+			return self::getContLangText( 'vtour-decimalseparator' );
 		} else {
 			return '.';
 		}
+	}
+
+	/**
+	 * Get the text from a message in the content language.
+	 * Equivalent to ->inContentLanguage()->text().
+	 * @param Message|string $message Message object or key
+	 * @return string Message text
+	 */
+	public static function getContLangText( $message ) {
+		if ( is_string( $message ) ) {
+			$message = wfMessage( $message );
+		}
+		$messageInContextLanguage = $message->inContentLanguage();
+		return $messageInContextLanguage->text();
 	}
 
 	/**
@@ -425,7 +438,7 @@ class VtourUtils {
 		if ( !$wgVtourAllowLinkAlias && !$force ) {
 			return null;
 		}
-		$alias = wfMessage( 'vtour-linkalias' )->inContentLanguage()->text();
+		$alias = self::getContLangText( 'vtour-linkalias' );
 		if ( strlen( $alias ) === 0 ) {
 			return null;
 		}

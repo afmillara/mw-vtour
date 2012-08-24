@@ -1,4 +1,8 @@
 <?php
+if ( !defined( 'MEDIAWIKI' ) ) {
+	die( 'This file is a MediaWiki extension. It is not a valid entry point' );
+}
+
 /**
  * Vtour - A virtual tour system for MediaWiki
  * Copyright (C) 2012 Álvaro Fernández Millara
@@ -10,10 +14,6 @@
  * @license GNU General Public License v2
  * @version 0.0.2
  */
-
-if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is a MediaWiki extension. It is not a valid entry point' );
-}
 
 // Register the extension
 

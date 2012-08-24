@@ -45,7 +45,8 @@ class SpecialVtourMap extends SpecialPage {
 	protected function executeDisabled() {
 		global $wgOut;
 		$this->setHeaders();
-		$wgOut->addHTML( wfMessage( 'vtour-vtourmap-disabled' )->parse() );
+		$message = wfMessage( 'vtour-vtourmap-disabled' );
+		$wgOut->addHTML( $message->parse() );
 	}
 
 	/**
@@ -56,7 +57,8 @@ class SpecialVtourMap extends SpecialPage {
 		$mapDimensions = $wgVtourTourMapDimensions;
 
 		$this->setHeaders();
-		$wgOut->addHTML( wfMessage( 'vtour-vtourmap-header' )->parse() );
+		$message = wfMessage( 'vtour-vtourmap-header' );
+		$wgOut->addHTML( $message->parse() );
 		$wgOut->addHTML( Html::element( 'div', array( 'class' => 'vtour-specialvtourmap' ) ) );
 		$wgOut->addModules( 'ext.vtour.specialvtourmap' );
 	}
@@ -153,8 +155,9 @@ class SpecialVtourMap extends SpecialPage {
 	 */
 	protected function getFullTourName( $tour ) {
 		$title = Title::makeTitle( $tour->page_namespace, $tour->page_title );
-		return wfMessage( 'vtour-vtourmap-name', $tour->vtour_tourid,
-			$title->getFullText() )->text();
+		$message = wfMessage( 'vtour-vtourmap-name', $tour->vtour_tourid,
+			$title->getFullText() );
+		return $message->text();
 	}
 
 	/**

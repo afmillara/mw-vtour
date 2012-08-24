@@ -92,19 +92,20 @@ class SpecialAllVtours extends VtourBCQueryPage {
 	 * @return string Page header
 	 */
 	function getPageHeader() {
-		$header = wfMessage( 'vtour-allvtours-header' )->parse();
+		$headerMessage = wfMessage( 'vtour-allvtours-header' );
+		$header = $headerMessage->parse();
 		
 		if ( $this->isCached() ) {
 			return $header;
 		}
 
-		$prefixLegend = wfMessage( 'vtour-allvtours-prefixlegend' )->text();
-		$pagePrefixLabel = wfMessage( 'vtour-allvtours-pageprefix' )->text();
-		$tourPrefixLabel = wfMessage( 'vtour-allvtours-tourprefix' )->text();
-		$prefixSubmit = wfMessage( 'vtour-allvtours-prefixsubmit' )->text();
+		$prefixLegendMsg = wfMessage( 'vtour-allvtours-prefixlegend' );
+		$pagePrefixLabelMsg = wfMessage( 'vtour-allvtours-pageprefix' );
+		$tourPrefixLabelMsg = wfMessage( 'vtour-allvtours-tourprefix' );
+		$prefixSubmitMsg = wfMessage( 'vtour-allvtours-prefixsubmit' );
 
 		global $wgScript;
-		$allVtoursTitle = $this->getTitle()->getPrefixedText();
+		$allVtoursTitle = $this->getTitle();
 		$pagePrefix = '';
 		if ( $this->pagePrefixTitle !== null ) {
 			$pagePrefix = $this->pagePrefixTitle->getFullText();
@@ -114,13 +115,15 @@ class SpecialAllVtours extends VtourBCQueryPage {
 		$header .= 
 			Html::openElement( 'form', array( 'method' => 'get', 'action' => $wgScript ) )
 			. Html::openElement( 'fieldset' )
-			. Html::element( 'legend', null, $prefixLegend )
-			. Html::hidden( 'title', $allVtoursTitle )
-			. Html::element( 'label', array( 'for' => 'vtour-pageprefix' ), $pagePrefixLabel )
+			. Html::element( 'legend', null, $prefixLegendMsg->text() )
+			. Html::hidden( 'title', $allVtoursTitle->getPrefixedText() )
+			. Html::element( 'label', array( 'for' => 'vtour-pageprefix' ),
+				$pagePrefixLabelMsg->text() )
 			. Xml::input( 'pagePrefix', '20', $pagePrefix, array( 'id' => 'vtour-pageprefix' ) )
-			. Html::element( 'label', array( 'for' => 'vtour-tourprefix' ), $tourPrefixLabel )
+			. Html::element( 'label', array( 'for' => 'vtour-tourprefix' ),
+				$tourPrefixLabelMsg->text() )
 			. Xml::input( 'tourPrefix', '20', $tourPrefix, array( 'id', 'vtour-tourprefix' ) )
-			. Xml::submitButton( $prefixSubmit )
+			. Xml::submitButton( $prefixSubmitMsg->text() )
 			. Html::closeElement( 'fieldset' )
 			. Html::closeElement( 'form' );
 
@@ -165,7 +168,9 @@ class SpecialAllVtours extends VtourBCQueryPage {
 		$linker = class_exists( 'DummyLinker' ) ? new DummyLinker() : new Linker();	
 		$tourLink = $linker->linkKnown( $titleWithFragment, $result->vtour_tourid );
 		$articleLink = $linker->linkKnown( $title );
-		return wfMessage( 'vtour-allvtours-link', $tourLink, $articleLink )->text();
+
+		$message = wfMessage( 'vtour-allvtours-link', $tourLink, $articleLink );
+		return $message->text();
 	}
 }
 

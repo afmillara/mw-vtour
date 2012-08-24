@@ -83,7 +83,8 @@ class VtourPage {
 		$tourData['hash'] = $tourHash;
 		// BC with 1.17, sort of.
 		if ( method_exists( $frame, 'getTitle' ) && $frame->getTitle() ) {
-			$tourData['page'] = $frame->getTitle()->getArticleId();
+			$frameTitle = $frame->getTitle();
+			$tourData['page'] = $frameTitle->getArticleId();
 		} else {
 			// Can't get the origin of the tour that is currently being parsed.
 			// Duplicate tours (from templates and from pages that use them) will
@@ -95,7 +96,8 @@ class VtourPage {
 
 		// Changing the parser output like this might not be a good idea.
 		// Is there a better way?
-		$parser->getOutput()->addModules( 'ext.vtour' );
+		$parserOutput = $parser->getOutput();
+		$parserOutput->addModules( 'ext.vtour' );
 
 		return $this->generateOutput( $tourId, $tourJSON, $tourHTMLElements,
 			$width, $height, $warningHTML );
@@ -213,10 +215,9 @@ class VtourPage {
 		// Warning message for users whose browsers don't have JavaScript support
 		$noJSHeader = '';
 		if ( $wgVtourWarnNoJS ) {
-			$noJSText = wfMessage( 'vtour-nojs' )->inContentLanguage()->text();
+			$noJSText = VtourUtils::getContLangText( 'vtour-nojs' );
 			if ( count( $tourHTMLElements ) !== 0 && $wgVtourDisplayElementsNoJS ) {
-				$noJSText .= wfMessage( 'vtour-nojs-htmlfollows' )
-					->inContentLanguage()->text();
+				$noJSText .= VtourUtils::getContLangText( 'vtour-nojs-htmlfollows' );
 			}
 			$noJSHeader = "<div id='vtour-nojs-$tourId'>$noJSText</div>";
 		}
@@ -265,13 +266,13 @@ class VtourPage {
 			if ( $displayElements ) {
 				$elementParent = $element['parent'];
 				if ( $lastElement !== null ) {
-					$contentString .= wfMessage( 'vtour-nojs-elementseparator' )
-						->inContentLanguage()->text();
+					$contentString .= VtourUtils::getContLangText(
+						'vtour-nojs-elementseparator' );
 				}
 				if ( $elementParent !== $lastElement ) {
 					$title = htmlspecialchars( $elementParent->getName() );
-					$contentString .= wfMessage( 'vtour-nojs-placetitle', $title )
-						->inContentLanguage()->text();
+					$contentString .= VtourUtils::getContLangText(
+						wfMessage( 'vtour-nojs-placetitle', $title ) );
 				}
 				$lastElement = $elementParent;
 			}
@@ -323,11 +324,11 @@ class VtourPage {
 	 * @return string Warning HTML
 	 */
 	protected function warnDuplicateTourId( $tourId ) {
-		$type = wfMessage( 'vtour' )->inContentLanguage()->text();
+		$type = VtourUtils::getContLangText( wfMessage( 'vtour' ) );
 		$contentMessage = wfMessage( 'vtour-errordesc-duplicate', $type, $tourId );
-		$content = $contentMessage->inContentLanguage()->text();
+		$content = VtourUtils::getContLangText( $contentMessage );
 		$warningMessage = wfMessage( 'vtour-warning', $content );
-		$warning = $warningMessage->inContentLanguage()->text();
+		$warning = VtourUtils::getContLangText( $warningMessage );
 		return $this->generateErrorString( $warning );
 	}
 
@@ -337,7 +338,7 @@ class VtourPage {
 	 * @return string Error HTML
 	 */
 	protected function generateErrorString( $error ) {
-		return wfMessage( 'vtour-erroroutside', $error )->inContentLanguage()->text();
+		return VtourUtils::getContLangText( wfMessage( 'vtour-erroroutside', $error ) );
 	}
 }
 
