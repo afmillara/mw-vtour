@@ -37,10 +37,11 @@ class SpecialVtour extends SpecialPage {
 			$linkParts = VtourUtils::parseTextLinkParams( $par );
 			if ( $linkParts['article'] === null || $linkParts['tour'] === null ) {
 				$this->setHeaders();
-				$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-badformat' )
-					->text() );
-				$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-linkinfo',
-					$this->getTitle() )->text() );
+				$badFormatMessage =  wfMessage( 'vtour-linkspecialpage-badformat' );
+				$linkInfoMessage = wfMessage( 'vtour-linkspecialpage-linkinfo',
+					$this->getTitle() );
+				$wgOut->addWikiText( $badFormatMessage->text() );
+				$wgOut->addWikiText( $linkInfoMessage->text() );
 			} else {
 				$title = Title::newFromText( $linkParts['article'] . '#vtour-tour-'
 					. $linkParts['tour'] );
@@ -53,13 +54,15 @@ class SpecialVtour extends SpecialPage {
 			}
 		} else {
 			$this->setHeaders();
-			$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-header' )->text() ); 
-			$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-linkinfo',
-				$this->getTitle()->getFullText() )->text() );
+			$headerMessage = wfMessage( 'vtour-linkspecialpage-header' );
+			$pageTitle = $this->getTitle();
+			$linkInfo = wfMessage( 'vtour-linkspecialpage-linkinfo', $pageTitle->getFullText() );
+			$wgOut->addWikiText( $headerMessage->text() ); 
+			$wgOut->addWikiText( $linkInfo->text() );
 			$alias = VtourUtils::getLinkAlias();
 			if ( $alias !== null ) {
-				$wgOut->addWikiText( wfMessage( 'vtour-linkspecialpage-aliasinfo',
-					$alias )->text() );
+				$aliasInfo = wfMessage( 'vtour-linkspecialpage-aliasinfo', $alias );
+				$wgOut->addWikiText( $aliasInfo->text() );
 			}
 		}
 	}

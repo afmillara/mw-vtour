@@ -216,8 +216,7 @@ class VtourRoot extends VtourElement {
 	}
 
 	public function getFullId() {
-		return $this->getGenericTypeMessage()
-				->inContentLanguage()->text();
+		return VtourUtils::getContLangText( $this->getGenericTypeMessage() );
 	}
 
 	public function getResult() {

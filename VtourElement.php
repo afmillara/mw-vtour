@@ -135,7 +135,7 @@ abstract class VtourElement {
 			} else {
 				$idMsg = wfMessage( 'vtour-typename', $type, $name );
 			}
-			return $idMsg->inContentLanguage()->text();
+			return VtourUtils::getContLangText( $idMsg );
 		} else {
 			return null;
 		}
@@ -183,7 +183,7 @@ abstract class VtourElement {
 	 * @return string Type string
 	 */
 	protected function getGenericType() {
-		return $this->getGenericTypeMessage()->inContentLanguage()->text();
+		return VtourUtils::getContLangText( $this->getGenericTypeMessage() );
 	}
 
 	/**
@@ -239,7 +239,7 @@ abstract class VtourElement {
 				$errorDescription = $this->parseFunctionDescriptions[$parseFunction];
 				$typeMessage = wfMessage( $errorDescription );
 				$this->throwBadFormat( 'vtour-errordesc-invalid', $attrName,
-					$strValue, $typeMessage->inContentLanguage()->text() );
+					$strValue, VtourUtils::getContLangText( $typeMessage ) );
 			} else {
 				return $attrValue;
 			}
@@ -270,7 +270,8 @@ abstract class VtourElement {
 		$file = $repoGroup->findFile( $title );
 		if ( !$file ) {
 			// The file doesn't exist. Assume local repo
-			$file = $repoGroup->getLocalRepo()->newFile( $title );
+			$repo = $repoGroup->getLocalRepo();
+			$file = $repo->newFile( $title );
 		}
 
 		if ( $file === null ) {
@@ -331,7 +332,7 @@ abstract class VtourElement {
 		$params = $exception->getParams();
 		$elementIdMessage = wfMessage( 'vtour-typenamefromchild', $childType,
 			$childIndex + 1, $this->getFullId() );
-		$elementIdText = $elementIdMessage->inContentLanguage()->text();
+		$elementIdText = VtourUtils::getContLangText( $elementIdMessage );
 		throw new VtourParseException( $tourId, $elementIdText, $errorKey, $params );
 	}
 
@@ -391,8 +392,7 @@ abstract class VtourElement {
 	protected function getMapIndex( $idOrName ) {
 		$ret = $this->vtourParser->getMapIndex( $idOrName );
 		if ( $ret === -1 ) {
-			$mapType = wfMessage( 'vtour-elementtype-map' )
-				->inContentLanguage()->text();
+			$mapType = VtourUtils::getContLangText( 'vtour-elementtype-map' );
 			$this->throwRefNotFound( $mapType, $idOrName );
 		} else {
 			return $ret;
@@ -407,8 +407,7 @@ abstract class VtourElement {
 	protected function getPlaceIndex( $idOrName ) {
 		$ret = $this->vtourParser->getPlaceIndex( $idOrName );
 		if ( $ret === -1 ) {
-			$placeType = wfMessage( 'vtour-elementtype-place' )
-				->inContentLanguage()->text();
+			$placeType = VtourUtils::getContLangText( 'vtour-elementtype-place' );
 			$this->throwRefNotFound( $placeType, $idOrName );	
 		} else {
 			return $ret;

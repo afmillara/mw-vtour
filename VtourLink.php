@@ -69,8 +69,7 @@ abstract class VtourLink extends VtourElement {
 		$destination = $this->getPlaceIndex( $destination );
 		if ( $destination === null ) {
 			// Empty reference
-			$placeType = wfMessage( 'vtour-elementtype-place' )
-				->inContentLanguage()->text();
+			$placeType = VtourUtils::getContLangText( 'vtour-elementtype-place' );
 			$this->throwRefNotFound( $placeType, $destination );
 		}
 	}

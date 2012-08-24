@@ -80,7 +80,8 @@ abstract class VtourBCQueryPage extends QueryPage {
 	 * @return string Page description
 	 */
 	function bcgetDescription() {
-		return wfMessage( $this->mName )->text();
+		$descriptionMessage = wfMessage( $this->mName );
+		return $descriptionMessage->text();
 	}
 
 	/**

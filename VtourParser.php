@@ -299,7 +299,8 @@ class VtourParser {
 	 */
 	public function registerImage( $title ) {
 		$dbKey = $title->getDBkey();
-		$this->parser->getOutput()->addImage( $dbKey );
+		$parserOutput = $this->parser->getOutput();
+		$parserOutput->addImage( $dbKey );
 	}
 
 	/**
@@ -344,7 +345,7 @@ class VtourParseException extends Exception {
 		} else {
 			$tourIdMsg = wfMessage( 'vtour-parseerror-noid' );
 		}
-		$tourIdStr = $tourIdMsg->inContentLanguage()->text();
+		$tourIdStr = VtourUtils::getContLangText( $tourIdMsg );
 
 		if ( $elementIdText !== null ) {
 			$fullIdMsg = wfMessage( 'vtour-parseerror-inelement', $tourIdStr,
@@ -353,11 +354,11 @@ class VtourParseException extends Exception {
 			$fullIdMsg = wfMessage( 'vtour-parseerror-notinelement', $tourIdStr );
 		}
 
-		$description = wfMessage( $errorKey, $params )->inContentLanguage()->text();
-		$errorMessage = wfMessage( 'vtour-parseerror', $fullIdMsg->inContentLanguage()->text(),
+		$description = VtourUtils::getContLangText( wfMessage( $errorKey, $params ) );
+		$errorMessage = wfMessage( 'vtour-parseerror', VtourUtils::getContLangText( $fullIdMsg ),
 			$description );
 
-		parent::__construct( $errorMessage->inContentLanguage()->text() );
+		parent::__construct( VtourUtils::getContLangText( $errorMessage ) );
 		$this->errorKey = $errorKey;
 	}
 
