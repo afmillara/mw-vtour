@@ -12,7 +12,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
  *
  * @author Álvaro Fernández Millara <afmillara@gmail.com>
  * @license GNU General Public License v2
- * @version 0.0.2
+ * @version 0.0.3
  */
 
 // Register the extension
@@ -21,7 +21,7 @@ $wgExtensionCredits['parserhook'][] = array(
 	'path' => __FILE__,
 	'name' => 'Vtour',
 	'descriptionmsg' => 'vtour-description',
-	'version' => '0.0.2',
+	'version' => '0.0.3',
 	'author' => 'Álvaro Fernández Millara',
 	'url' => 'http://www.mediawiki.org/wiki/Extension:Vtour'
 );
