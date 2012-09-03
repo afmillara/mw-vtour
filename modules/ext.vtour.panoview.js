@@ -112,8 +112,6 @@ var PanoView = GraphicView.extend( {
 	//* protected Number vsFOV;
 	vsFOV: 0,
 	
-	$canvasContainer: null,
-
 	/**
 	 * Create a new PanoView.
 	 * @param {String} imageSrc URL of the image that will be shown in this view
@@ -139,8 +137,7 @@ var PanoView = GraphicView.extend( {
 			that.image = that.$image[0];
 			that.update();
 		} );
-		this.$canvasContainer = $( '<div></div>' ).append( this.$canvas.addClass( 'vtour-background' ) );
-		return this.$canvasContainer;
+		return this.$canvas.addClass( 'vtour-background' );
 	},
 	
 	/**
