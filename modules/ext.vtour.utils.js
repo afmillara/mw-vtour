@@ -32,28 +32,61 @@ var DEG2RAD = Math.PI/180;
  * @return $Image Image node that was passed as a parameter
  */
 //* public static $Image loadImage( $Image $img, String src, function onLoad, function onError );
-var loadImage = function( $img, src, onLoad, onError ) {
-	$img.one( 'load', function() {
-		// Store the native size of the image
-		$img.data( 'nativeHeight', $img[0].height );
-		$img.data( 'nativeWidth', $img[0].width );
+var loadImage = ( function() {
+	var reallyLoad, loadEnded;
+	var loading = false;
+	var imageList = [];
 
-		// jQuery doesn't set the dimensions until the
-		// element is in the DOM, so they are set
-		// here explicitly
-		$img.height( $img[0].height );
-		$img.width( $img[0].width );
+	loadEnded = function() {
+		loading = false;
+		if ( imageList.length > 0 ) {
+			reallyLoad( imageList.shift() );
+		}
+	};
 
-		( onLoad || $.noop )( $img );	
-	} ).one( 'error', function() {
-		( onError || $.noop )();
-	} );
-	// one() is used instead of error() because sometimes handlers
-	//  fired for the wrong image
-	
-	$img.attr( 'src', src );
-	return $img;
-};
+	reallyLoad = function( imageInfo ) {
+		loading = true;
+
+		imageInfo.$img.one( 'load', function() {
+			// Store the native size of the image
+			imageInfo.$img.data( 'nativeHeight', imageInfo.$img[0].height );
+			imageInfo.$img.data( 'nativeWidth', imageInfo.$img[0].width );
+
+			// jQuery doesn't set the dimensions until the
+			// element is in the DOM, so they are set
+			// here explicitly
+			imageInfo.$img.height( imageInfo.$img[0].height );
+			imageInfo.$img.width( imageInfo.$img[0].width );
+
+			loadEnded();
+			( imageInfo.onLoad || $.noop )( imageInfo.$img );
+		} ).one( 'error', function() {
+			loadEnded();
+			( imageInfo.onError || $.noop )();
+		} );
+		// one() is used instead of error() because sometimes handlers
+		//  fired for the wrong image
+		
+		imageInfo.$img.attr( 'src', imageInfo.src );
+	};
+
+	return function( $img, src, onLoad, onError ) {
+		var imageInfo = {
+			$img: $img,
+			src: src,
+			onLoad: onLoad,
+			onError: onError
+		};
+
+		if ( loading ) {
+			imageList.push( imageInfo );
+		} else {
+			reallyLoad( imageInfo );
+		}
+
+		return $img;
+	};
+} )();
 
 /**
  * Resize one or more elements so they fit in a box of a provided size, while
