@@ -158,12 +158,15 @@ class VtourLinkHooks {
 		$pageTitle = $wgOut->getTitle();
 		if ( $linkParts['article'] !== null ) {
 			$articleTitle = Title::newFromText( $linkParts['article'] );
-		} else {
+		} elseif ( $pageTitle ) {
 			$articleTitle = $pageTitle;
+		} else {
+			// There is no page title in maintenance scripts: use a dummy title instead
+			$articleTitle = Title::newFromText( 'Vtour dummy link' );
 		}
 		if ( $linkParts['tour'] !== null ) {
 			$articleTitle = Title::makeTitle( $articleTitle->getNamespace(),
-			$articleTitle->getDBKey(), 'vtour-tour-' . $linkParts['tour'] );
+				$articleTitle->getDBKey(), 'vtour-tour-' . $linkParts['tour'] );
 		}
 		
 		// If the text doesn't match the target page (which means that a different
@@ -184,7 +187,7 @@ class VtourLinkHooks {
 		$classes = 'vtour-textlink';
 		if ( !$articleTitle->exists() ) {
 			$classes .= ' vtour-textlink-new';
-		} elseif ( $pageTitle->equals( $articleTitle ) ) {
+		} elseif ( $articleTitle->equals( $pageTitle ) ) {
 			$classes .= ' vtour-textlink-local';
 		}
 		$customAttribs = array(
