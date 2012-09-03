@@ -73,13 +73,6 @@ var PanoView = GraphicView.extend( {
 	zoom: 200,
 	
 	/**
-	 * Canvas that contains the panoramic image.
-	 * @var {$Canvas} imageCanvas
-	 */
-	//* protected $Canvas imageCanvas;
-	imageCanvas: null,
-	
-	/**
 	 * Panoramic image data.
 	 * @var {CanvasPixelArray} imageData
 	 */
@@ -119,6 +112,8 @@ var PanoView = GraphicView.extend( {
 	//* protected Number vsFOV;
 	vsFOV: 0,
 	
+	$canvasContainer: null,
+
 	/**
 	 * Create a new PanoView.
 	 * @param {String} imageSrc URL of the image that will be shown in this view
@@ -144,7 +139,8 @@ var PanoView = GraphicView.extend( {
 			that.image = that.$image[0];
 			that.update();
 		} );
-		return this.$canvas.addClass( 'vtour-background' );
+		this.$canvasContainer = $( '<div></div>' ).append( this.$canvas.addClass( 'vtour-background' ) );
+		return this.$canvasContainer;
 	},
 	
 	/**
@@ -222,14 +218,16 @@ var PanoView = GraphicView.extend( {
 	//* protected void prepare();
 	prepare: function() {
 		var possibleMaxZoom;
+		var imageCanvas;
+		var imageCtx;
 	
 		this.$movableLayer.addClass( 'vtour-movable' );
 	
-		this.imageCanvas = $( '<canvas></canvas>' )[0];
-		this.imageCanvas.width = this.image.width;
-		this.imageCanvas.height = this.image.height;
+		imageCanvas = $( '<canvas></canvas>' )[0];
+		imageCanvas.width = this.image.width;
+		imageCanvas.height = this.image.height;
 	
-		var imageCtx = this.imageCanvas.getContext( '2d' );
+		imageCtx = imageCanvas.getContext( '2d' );
 		imageCtx.drawImage( this.image, 0, 0,
 				this.image.width, this.image.height );
 	
