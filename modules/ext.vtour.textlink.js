@@ -33,7 +33,7 @@ var TextLink = Link.extend( {
 	getHTML: function() {
 		var that = this;
 		this.$link.click( function( event ) {
-			that.$link[0].scrollIntoView( 'vtour-tour-' + that.tour.id );
+			$( '#vtour-tour-' + that.tour.id )[0].scrollIntoView();
 			that.follow();
 			event.preventDefault();
 		} );
