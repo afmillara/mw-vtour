@@ -1,5 +1,8 @@
 /**
  * Google Maps external map.
+ * Uses Google Maps Javascript API v3 (closed source library - Is this actually 'linking'? If so,
+ * is that a problem?).
+ * Google's Terms of Use apply to users of this service: https://developers.google.com/maps/terms
  *
  * Vtour - a virtual tour system for MediaWiki
  * Copyright (C) 2012 Álvaro Fernández Millara

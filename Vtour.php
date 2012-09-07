@@ -101,14 +101,18 @@ $wgVtourKeepTourList = true;
 /**
  * Whether to enable Special:VtourMap. Special:VtourMap displays a map showing all
  * the tours with geographical information, which would be very expensive in a large
- * wiki. If $wgVtourKeepTourList is false, SpecialVtourMap will be disabled regardless
- * of this setting.
+ * wiki. If $wgVtourKeepTourList is false or $wgVtourExternalMap is null,
+ * SpecialVtourMap will be disabled regardless of this setting.
  * @var bool $wgVtourDisplayTourMap
  */
 $wgVtourDisplayTourMap = true;
 
 /**
  * Name of the ExternalMap class that will be used, or null to disable external maps.
+ * Specific terms of use may apply to external map services.
+ * Supported external map services:
+ * - Google Maps ('Google'):
+ * 	Google's Terms of Use apply to users of this service: https://developers.google.com/maps/terms
  * @var string $wgVtourExternalMap
  */
 $wgVtourExternalMap = 'Google';
