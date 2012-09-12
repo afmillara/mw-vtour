@@ -266,9 +266,9 @@ var MapImageView = GraphicView.extend( {
 		diagAngle = Math.atan2( this.$image.data( 'nativeHeight' ),
 			this.$image.data( 'nativeWidth' ) );
 		totalAngle = Math.atan2( dlat, dlon );
-		this.$image.rotate( {angle: this.rotationAngle / DEG2RAD} );
+		this.$image.rotate( this.rotationAngle / DEG2RAD );
 		this.rotationAngle = totalAngle - diagAngle;
-		this.$image.rotate( {angle: -this.rotationAngle / DEG2RAD} );
+		this.$image.rotate( -this.rotationAngle / DEG2RAD );
 
 		currentHeight = Math.sin( diagAngle ) * diagonal;
 		currentWidth = Math.cos( diagAngle ) * diagonal;

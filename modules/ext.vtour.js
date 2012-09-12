@@ -18,7 +18,7 @@ $( document ).ready( function() {
 
 	// Collection of nodes whose ids start with 'vtour-tour-'
 	$content.find( 'div[id^="vtour-tour-"]' ).each( function() {
-		$vtourNode = $( this );
+		var $vtourNode = $( this );
 		tourId = $vtourNode.attr( 'id' ).split( '-' )[2];
 
 		// Finding all the containers for tour elements

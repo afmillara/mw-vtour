@@ -4,10 +4,10 @@ Copyright (C) 2012 Álvaro Fernández Millara
 The following libraries are included with this software:
 * The 'Simple JavaScript Inheritance' framework (modules/lib/ext.vtour.lib.inheritance.js)
   Copyright (C) John Resig (http://ejohn.org/), under the MIT license
-* The jQuery Mousewheel plugin (modules/lib/jquery.mousewheel.js)
-  Copyright (C) 2011 Brandon Aaron (http://brandonaaron.net), under the MIT license
-* The jQuery Rotate plugin (modules/lib/jquery.rotate.js)
-  Copyright (C) 2011 Carlos Benitez (http://www.etnassoft.com), under the MIT and GPL licenses
+* The jQuery Mouse Wheel Extension (modules/lib/jquery.mousewheel.js)
+  Copyright (C) Brandon Aaron (http://brandonaaron.net), under the MIT license
+* The jqueryrotate plugin (modules/lib/jquery.rotate.js)
+  Copyright (C) Wilq32 (http://code.google.com/p/jqueryrotate/), under the MIT license
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
