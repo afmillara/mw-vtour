@@ -297,8 +297,8 @@ class VtourTestHooks {
 		$testModules['qunit']['ext.vtour.test'] = array(
 			'scripts' => 'ext.vtour.test.js',
 			'dependencies' => array( 'ext.vtour' ),
-			'localBasePath' => $wgVtourDir . 'tests/',
-			'remoteExtPath' => 'Vtour/tests'
+			'localBasePath' => $wgVtourDir . 'modules/tests/',
+			'remoteExtPath' => 'Vtour/modules/tests'
 		);
 		return true;
 	}

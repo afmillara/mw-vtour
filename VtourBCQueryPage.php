@@ -187,7 +187,7 @@ abstract class VtourBCQueryPage extends QueryPage {
 		$fields = $this->getOrderFields();
 		$fieldText = implode( ',', $fields );
 		return " ORDER BY $fieldText " .
-			($this->sortDescending() ? 'DESC' : '');
+			( $this->sortDescending() ? 'DESC' : '' );
 	}
 }
 
