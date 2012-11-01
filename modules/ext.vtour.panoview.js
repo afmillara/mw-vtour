@@ -336,7 +336,7 @@ var PanoView = GraphicView.extend( {
 
 		this.updateLinks();	
 		$( this ).trigger( 'panoOrientationChanged.vtour' );
-			this.show();
+		this.show();
 	},
 
 	//* public void changeAngle( Number angle );

@@ -75,6 +75,20 @@ var Map = Element.extend( {
 	},
 
 	/**
+	 * Force the map to be drawn again by moving a bit and then moving back
+	 * immediately.
+	 * This is a hackish partial fix for a bug in Chrome (~22)/Chromium that
+	 * makes vertical white lines appear on Google Maps when an angle icon is
+	 * rotated.
+	 * TODO: Find a better way to do this, if it exists.
+	 */
+	//* public void refresh();
+	refresh: function() {
+		this.view.move( [1, 0] );
+		this.view.move( [-1, 0] );
+	},
+
+	/**
 	 * Add this HTML code for this Map to a given node.
 	 * @param {$HTML} $parent HTML node to which this Map will be added
 	 */

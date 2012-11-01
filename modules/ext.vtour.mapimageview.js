@@ -136,7 +136,7 @@ var MapImageView = GraphicView.extend( {
 	generateBackground: function() {
 		var that = this;
 		var errorMessage;
-		var externalMapWrapper = $('<div></div>').addClass( 'vtour-externalmap' );
+		var externalMapWrapper = $( '<div></div>' ).addClass( 'vtour-externalmap' );
 		this.$image = $( '<img></img>' );
 		this.loadImage( this.$image, this.imageSrc, function() {
 			that.externalMap = new that.ExternalMapImplementation

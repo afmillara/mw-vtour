@@ -103,6 +103,13 @@ var CanvasPanoPlace = Place.extend( {
 			$( view ).bind( 'panoOrientationChanged.vtour', function() {
 				that.angle = view.orientation[0] + that.baseAngle;
 				$( that ).trigger( 'angleChanged.vtour' );
+				if ( that.map !== null ) {
+					// Hackish fix: Prevent white vertical lines from
+					// appearing on a Google Maps external map when an
+					// icon is rotated in Chrome/Chromium.
+					// TODO: Find a better way to do this, if it exists.
+					that.map.refresh();
+				}
 			} );
 		}
 		$( view ).bind( 'error.vtour', function( event, message ) {
