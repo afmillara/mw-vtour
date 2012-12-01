@@ -219,6 +219,7 @@ var GoogleExternalMap = ExternalMap.extend( {
 	//* protected void prepareContainer();
 	prepareContainer: function() {
 		var gmaps = GoogleExternalMap.gmaps;
+
 		var options = {
 			center: new gmaps.LatLng( 0, 0 ),
 			zoom: 1,
@@ -228,8 +229,13 @@ var GoogleExternalMap = ExternalMap.extend( {
 			scrollwheel: this.showUIControls,
 			disableDoubleClickZoom: this.showUIControls
 		};
-		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
+
 		this.map = new gmaps.Map( this.$mapContainer[0], options );
+
+		// That fancy 45º imagery breaks the map.
+		this.map.setTilt( 0 );
+
+		this.dummyOverlay = new GoogleExternalMap.MapOverlay( $( '<div></div>' ) );
 		this.dummyOverlay.setMap( this.map );
 	},
 
