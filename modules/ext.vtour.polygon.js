@@ -20,21 +20,18 @@
  * @class Polygon
  */
 // TODO: Implement Polygon in SVG, which is better suited for this kind of things
-//* class Polygon {
 var Polygon = Class.extend( {
 
 	/**
 	 * Canvas where the polygon is drawn.
 	 * @var {$Canvas} $canvas
 	 */
-	//* protected $Canvas $canvas;
 	$canvas: null,
 
 	/**
 	 * Array of vertices.
 	 * @var {Number[][]} vertices
 	 */
-	//* protected Number[][] vertices;
 	vertices: [[0, 0]],
 
 	/**
@@ -42,14 +39,12 @@ var Polygon = Class.extend( {
 	 * Some browser crash when large canvases are used.
 	 * @var {Number} maxCanvasSize
 	 */
-	//* protected Number maxCanvasSize;
 	maxCanvasSize: 1000,
 	
 	/**
 	 * Create a new Polygon.
 	 * @constructor
 	 */
-	//* public void init();
 	init: function() {
 		var that = this;
 		var $canvas = this.$canvas = $( '<canvas></canvas>' ).addClass( 'vtour-polygon' );
@@ -83,7 +78,6 @@ var Polygon = Class.extend( {
 	 * @param {String} eventInCanvas Name of the event that may be triggered in the canvas
 	 * @param {String} newEvent Name of the event that will be triggered
 	 */
-	//* protected void createEventForEventInCanvas( String eventInCanvas, String newEvent );
 	createEventForEventInCanvas: function(eventInCanvas, newEvent ) {
 		var that = this;
 		this.$canvas.bind( eventInCanvas, function( e ) {
@@ -99,7 +93,6 @@ var Polygon = Class.extend( {
 	 * Return the canvas.
 	 * @return $Canvas Canvas
 	 */
-	//* public $Canvas getHTML();
 	getHTML: function() {
 		return this.$canvas;
 	},
@@ -108,7 +101,6 @@ var Polygon = Class.extend( {
 	 * Set the vertices of the polygon.
 	 * @param {Number[][]} vertices Array of pairs of coordinates
 	 */
-	//* public void setVertices( Number[][] vertices );
 	setVertices: function( vertices ) {
 		this.vertices = vertices;
 	},
@@ -117,7 +109,6 @@ var Polygon = Class.extend( {
 	 * Draw the canvas at the specified location.
 	 * @param {Number} globalAlpha Canvas opacity
 	 */
-	//* public void drawCanvas( Number globalAlpha );
 	drawCanvas: function( globalAlpha ) {
 		var color = this.$canvas.css( 'color' );
 		var context = this.context;
@@ -159,7 +150,6 @@ var Polygon = Class.extend( {
 	 * @param {Number} mouseY Y coordinate of the point
 	 * @return Boolean true if the point is inside the polygon, false otherwise
 	 */
-	//* protected Boolean inCanvas( Number mouseX, Number mouseY );
 	inCanvas: function( mouseX, mouseY ) {
 		var offset = this.$canvas.offset();
 		var x = mouseX - offset.left;
@@ -173,10 +163,8 @@ var Polygon = Class.extend( {
 	 * @param {Number} y Y coordinate of the pixel
 	 * @return Uint8ClampedArray Content of the pixel ([r, g, b, a])
 	 */
-	//* protected Uint8ClampedArray getCanvasPixel( Number x, Number y );
 	getCanvasPixel: function( x, y ) {
 		return this.context.getImageData( x, y, 1, 1 ).data;
 	}
 } );
-//* }
 

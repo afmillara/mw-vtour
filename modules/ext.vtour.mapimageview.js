@@ -11,17 +11,14 @@
  * ImageView with an external map as a background.
  * @class MapImageView
  */
-//* class MapImageView extends GraphicView {
 var MapImageView = GraphicView.extend( {
 
-	//* protected $Image $image;
 	$image: null,
 
 	/**
 	 * ExternalMap implementation that will be used.
 	 * @var {Class} ExternalMapImplementation
 	 */
-	//* protected Class ExternalMapImplementation;
 	ExternalMapImplementation: null,
 
 	/**
@@ -30,27 +27,22 @@ var MapImageView = GraphicView.extend( {
 	 * lower left corner of the image and 3 o'clock.
 	 * @var {Number} rotationAngle
 	 */
-	//* protected Number rotationAngle;
 	rotationAngle: 0,
 
 	/**
 	 * Bounding box of the image on the map: [[swLon, swLat], [neLon, neLat]].
 	 * @var {Number[][]} bounds
 	 */
-	//* protected Number[][] bounds;
 	bounds: null,
 
 	/**
 	 * Whether the view has been moved since the last time the bounds were set.
 	 * @var {Boolean} mapMoved
 	 */
-	//* protected Boolean mapMoved;
 	mapMoved: false,
 
-	//* protected Number[] topLeft;
 	topLeft: null,
 
-	//* protected Number[] center;
 	center: null,
 
 	/**
@@ -58,7 +50,6 @@ var MapImageView = GraphicView.extend( {
 	 * corner of the image to the lower right corner.
 	 * @var {Number[]} mapX
 	 */
-	//* protected Number[] mapX;
 	mapX: null,
 
 	/**
@@ -66,22 +57,16 @@ var MapImageView = GraphicView.extend( {
 	 * corner of the image to the upper left corner.
 	 * @var {Number[]} mapY
 	 */
-	//* protected Number[] mapY;
 	mapY: null,
 
-	//* protected ExternalMap externalMap;
 	externalMap: null,
 
-	//* protected Object marker;
 	marker: null,
 
-	//* protected $HTML $imageBackground;
 	$imageBackground: null,
 
-	//* protected Number zoomGranularity;
 	zoomGranularity: 1,
 
-	//* protected Number initialZoom;
 	initialZoom: null,
 	
 	/**
@@ -89,7 +74,6 @@ var MapImageView = GraphicView.extend( {
 	 * links will be displayed.
 	 * @var {Number} pointDisplayThreshold
 	 */
-	//* protected Number pointDisplayThreshold;
 	pointDisplayThreshold: 2,
 
 	/**
@@ -97,7 +81,6 @@ var MapImageView = GraphicView.extend( {
 	 * the background image will be displayed.
 	 * @var {Number} imageDisplayThreshold
 	 */
-	//* protected Number imageDisplayThreshold;
 	imageDisplayThreshold: 3,
 
 	/**
@@ -105,7 +88,6 @@ var MapImageView = GraphicView.extend( {
 	 * upper right corner).
 	 * @var {Number[]} location
 	 */
-	//* protected Number[] location;
 	location: null,
 
 	/**
@@ -117,7 +99,6 @@ var MapImageView = GraphicView.extend( {
 	 * @param {Class} ExternalMapImplementation External map implementation that will
 	 * be used
 	 */
-	//* public void init( String imageSrc, Number[] location, Class ExternalMapImplementation );
 	init: function( imageSrc, location, ExternalMapImplementation ) {
 		this._super();
 		this.imageSrc = imageSrc;
@@ -132,7 +113,6 @@ var MapImageView = GraphicView.extend( {
 	 * Generate the contents of the ImageView.
 	 * @return {$Image} image content of the ImageView
 	 */
-	//* protected $Image generateBackground();
 	generateBackground: function() {
 		var that = this;
 		var errorMessage;
@@ -174,7 +154,6 @@ var MapImageView = GraphicView.extend( {
 		}
 	},
 
-	//* public void move( Number[] delta, Boolean isAbsolute );
 	move: function( delta, isAbsolute ) {
 		if ( !this.isReady() ) {
 			return;
@@ -188,12 +167,10 @@ var MapImageView = GraphicView.extend( {
 		this.updateImageBackground();
 	},
 
-	//* public Boolean isReady();
 	isReady: function() {
 		return this._super() && this.externalMap.isReady();
 	},
 
-	//* protected void updateZoom();
 	updateZoom: function() {
 		var canAddHTML = this.ExternalMapImplementation.canAddHTML;
 		var sw, nw;
@@ -216,7 +193,6 @@ var MapImageView = GraphicView.extend( {
 		this._super();
 	},
 
-	//* protected void createDefaultButtons();
 	createDefaultButtons: function() {
 		var that = this;
 		this._super();
@@ -225,7 +201,6 @@ var MapImageView = GraphicView.extend( {
 		}, 'vtour-button-reset' );
 	},
 
-	//* public void reset();
 	reset: function() {
 		var that = this;
 		if ( !this.isReady() ) {
@@ -245,7 +220,6 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Calculate the rotation angle and position of the image.
 	 */
-	//* protected void prepareImage();
 	prepareImage: function() {
 		var dlat, dlon;
 		var diagonal;
@@ -312,7 +286,6 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Update the location of the image that has been overimposed on the map.
 	 */
-	//* protected void updateImageBackground();
 	updateImageBackground: function() {
 		var canAddHTML = this.ExternalMapImplementation.canAddHTML;
 		var centerPoint;
@@ -331,7 +304,6 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Add a marker to the map in the center of the image.
 	 */
-	//* protected void addTourMarker();
 	addTourMarker: function() {
 		var that = this;
 		var title;
@@ -347,7 +319,6 @@ var MapImageView = GraphicView.extend( {
 	/**
 	 * Remove the marker from the map.
 	 */
-	//* protected void removeTourMarker();
 	removeTourMarker: function() {
 		if ( this.marker !== null ) {
 			this.externalMap.removeMarker( this.marker );
@@ -355,14 +326,12 @@ var MapImageView = GraphicView.extend( {
 		}
 	},
 
-	//* protected void updateZoomInterval();
 	updateZoomInterval: function() {
 		var interval = this.externalMap.getZoomInterval();
 		this.minZoom = interval[0];
 		this.maxZoom = interval[1];
 	},
 
-	//* protected void updateLinks();
 	updateLinks: function() {
 		var that = this;
 		if ( !this.isReady() ) {
@@ -374,7 +343,6 @@ var MapImageView = GraphicView.extend( {
 		this._super();
 	},
 
-	//* protected Number[] translateSinglePoint( Number[] point );
 	translateSinglePoint: function( point ) {
 		var $image;
 		var nativeWidth, nativeHeight;
@@ -396,5 +364,4 @@ var MapImageView = GraphicView.extend( {
 		return this.externalMap.geoToPixel( mapPoint, false );
 	}
 } );
-//* }
 

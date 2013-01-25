@@ -11,49 +11,42 @@
  * "Tooltip" popup describing a Place.
  * @class Popup
  */
-//* class Popup {
 var Popup = Class.extend( {
 
 	/**
 	 * Place that is described in this popup.
 	 * @var {Place} place
 	 */
-	//* protected Place place;
 	place: null,
 
 	/**
 	 * Whether the Popup can be seen.
 	 * @var {Boolean} visible
 	 */
-	//* protected Boolean visible;
 	visible: false,
 
 	/**
 	 * How long (milliseconds or "slow" or "fast") the fading out animation will run.
 	 * @var {Number|String} fadeoutTime
 	 */
-	//* protected String fadeoutTime;
 	fadeoutTime: 'fast',
 
 	/**
 	 * HTML for the popup.
 	 * @var {$HTML} $popup
 	 */
-	//* protected $HTML $popup;
 	$popup: null,
 
 	/**
 	 * Maximum width of the information box (in pixels).
 	 * @var {Number} maxInfoWidth
 	 */
-	//* protected Number maxInfoWidth;
 	maxInfoWidth: 1000,
 
 	/**
 	 * Maximum height of the information box (in pixels).
 	 * @var {Number} maxInfoHeight
 	 */
-	//* protected Number maxInfoHeight;
 	maxInfoHeight: 200,
 
 	/**
@@ -61,7 +54,6 @@ var Popup = Class.extend( {
 	 * @param {Place} place Place whose name and description will be shown
 	 * @constructor
 	 */
-	//* public void init( Place place );
 	init: function( place ) {
 		this.place = place;
 	},
@@ -70,7 +62,6 @@ var Popup = Class.extend( {
 	 * Show the popup.
 	 * @param {Number[]} location Lower left corner of the popup ([x, y])
 	 */
-	//* public void show( Number[] location );
 	show: function( location ) {
 		var that = this;
 		var $popup = this.$popup = $( '<div></div>' ).addClass( 'vtour-popup' );
@@ -94,7 +85,6 @@ var Popup = Class.extend( {
 	 * Set the location of the popup.
 	 * @param {Number[]} location Upper left corner of the popup ([x, y])
 	 */
-	//* public void setLocation( Number[] location );
 	setLocation: function( location ) {
 		this.$popup.offset( {
 			'left': location[0],
@@ -105,7 +95,6 @@ var Popup = Class.extend( {
 	/**
 	 * Hide the popup after a fading animation.
 	 */
-	//* public void fadeOut();
 	fadeOut: function() {
 		var that = this;
 		this.$popup.fadeOut( this.fadeoutTime, function() {
@@ -116,7 +105,6 @@ var Popup = Class.extend( {
 	/**
 	 * Hide the popup.
 	 */
-	//* public void destroy();
 	destroy: function() {
 		this.$popup.detach();
 		this.visible = false;
@@ -127,7 +115,6 @@ var Popup = Class.extend( {
  * Popup that is currently being displayed.
  * @var {Popup} currentPopup
  */
-//* protected static Popup currentPopup;
 Popup.currentPopup = null;
 
 /**
@@ -135,7 +122,6 @@ Popup.currentPopup = null;
  * @param {Place} place Place from which the information to display will be extracted
  * @param {Number[]} location Lower left corner of the popup ([x, y])
  */
-//* public static Popup show( Place place, Number[] location );
 Popup.show = function( place, location ) {
 	if ( Popup.currentPopup !== null ) {
 		Popup.currentPopup.destroy();
@@ -145,5 +131,4 @@ Popup.show = function( place, location ) {
 	return Popup.currentPopup;
 };
 
-//* }
 

@@ -12,13 +12,11 @@
  * @class Utils
  */
 // TODO: Make this an object.
-//* class Utils {
 
 /**
  * Radians in a degree.
  * @var {Number} DEG2RAD
  */
-//* public static Number DEG2RAD;
 var DEG2RAD = Math.PI/180;
 
 /**
@@ -31,7 +29,6 @@ var DEG2RAD = Math.PI/180;
  * cannot be loaded
  * @return $Image Image node that was passed as a parameter
  */
-//* public static $Image loadImage( $Image $img, String src, function onLoad, function onError );
 var loadImage = ( function() {
 	var reallyLoad, loadEnded;
 	var loading = false;
@@ -96,7 +93,6 @@ var loadImage = ( function() {
  * @param {Number} height Maximum possible height of the elements after resizing
  * @return $HTML Original elements (modified in place)
  */
-//* public static $HTML resizeToFit( $HTML $elements, Number width, Number height );
 var resizeToFit = function( $elements, width, height ) {
 	var nativeWidth = $elements.data( 'nativeWidth' );
 	var nativeHeight = $elements.data( 'nativeHeight' );
@@ -120,7 +116,6 @@ var resizeToFit = function( $elements, width, height ) {
  * @param {$HTML} $parent jQuery object containing the parent node
  * @return $HTML Original node (modified in place)
  */
-//* public static $HTML center( $HTML $node, $HTML $parent );
 var center = function( $node, $parent ) {
 	$node.addClass( 'vtour-centered' );
 	if ( $parent.height() > $node.height() ) {
@@ -149,7 +144,6 @@ var center = function( $node, $parent ) {
  * {"x": left coordinate of the box, "y": top coordinate of the box,
  * "width": width of the box, "height": height of the box}
  */
-//* public static Object calculateBoundingBox( Number[][] points );
 var calculateBoundingBox = function( points ) {
 	var maxX = -Infinity;
 	var maxY = -Infinity;
@@ -177,7 +171,6 @@ var calculateBoundingBox = function( points ) {
  * @param {Number[]} v2 Seconde vector
  * @return Number Dot product
  */
-//* public static Number dotProduct( Number[] v1, Number[] v2 );
 var dotProduct = function(v1, v2){
 	var product = 0;
 	var index;
@@ -197,7 +190,6 @@ var dotProduct = function(v1, v2){
  * @param {Number} c2 Lenght of the other cathetus
  * @return Number Lenght of the hypotenuse
  */
-//* public static Number hypotenuse( Number c1, Number c2 );
 var hypotenuse = function( c1, c2 ) {
 	var powC1 = c1 * c1;
 	var powC2 = c2 * c2;
@@ -212,7 +204,6 @@ var hypotenuse = function( c1, c2 ) {
  * on the given coordinates, false if the upper left corner of the element
  * will be put there. The default value is true
  */
-//* public static void setPosition( $HTML $element, Number[] position, Boolean center );
 var setPosition = function( $element, position, center ) {
 	if ( center === undefined ) {
 		center = true;
@@ -231,7 +222,6 @@ var setPosition = function( $element, position, center ) {
  * @param {Boolean} isAbsolute If true, the first argument is the new
  * center of the view. Otherwise, it is added to the current position
  */
-//* public static void scroll( $HTML $element, Number[] movement, Boolean isAbsolute );
 var scroll = function( $element, movement, isAbsolute ) {
 	var topLeftScroll;
 	if ( isAbsolute ) {
@@ -254,7 +244,6 @@ var scroll = function( $element, movement, isAbsolute ) {
  * (in radians)
  * @return Number[] Coordinates of the point in the circumference ([x, y])
  */
-//* public static Number[] calculateCircumferencePoint( Number[] center, Number radius, Number angle );
 var calculateCircumferencePoint = function( center, radius, angle ) {
 	return [
 		center[0] + radius * Math.cos( angle - Math.PI / 2 ),
@@ -269,7 +258,6 @@ var calculateCircumferencePoint = function( center, radius, angle ) {
  * @param {Number[]} point Other point ([x, y])
  * @return {Number} Angle (in radians), or NaN if the two points are the same
  */
-//* public static Number calculateAngle( Number[] reference, Number[] point );
 var calculateAngle = function( reference, point ) {
 	var delta = sum( point, mult( reference, -1 ) );
 
@@ -287,7 +275,6 @@ var calculateAngle = function( reference, point ) {
  * @param {Number[]|Number} b Second array or number
  * @return Number[] Result
  */
-//* public static Number[] sum( Number[] a, Number[] b );
 var sum = function( a, b ) {
 	var tmp, index;
 	var c = [];
@@ -315,7 +302,6 @@ var sum = function( a, b ) {
  * @param {Number} factor Factor
  * @return Number[] Result
  */
-//* public static Number[] mult( Number[] array, Number factor );
 var mult = function( array, factor ) {
 	var result = [];
 	var index;
@@ -333,7 +319,6 @@ var mult = function( array, factor ) {
  * @param {Object} object Object that will be cloned
  * @return Object New object
  */
-//* public static Object clone( Object object );
 var clone = function( object ) {
 	var Clone = function(){};
 	Clone.prototype = object;
@@ -346,7 +331,6 @@ var clone = function( object ) {
  * @param {String} path URL
  * @return String Name of the image
  */
-//* public static String imageNameFromPath( String path );
 var imageNameFromPath = function( path ) {
 	// MediaWiki image names can't contain slashes, so this should work
 	var lastSlash = path.lastIndexOf( '/' );
@@ -359,7 +343,6 @@ var imageNameFromPath = function( path ) {
  * @param {Number} angle Angle in radians
  * @return Number "Normalized" angle in radians
  */
-//* public static Number normalizeAngle( Number angle );
 var normalizeAngle = function( angle ) {
 	angle %= Math.PI * 2;
 	if ( angle < 0 ) {
@@ -374,7 +357,6 @@ var normalizeAngle = function( angle ) {
  * @param {Number[][]} points Array of points (pairs of coordinates: [x, y])
  * @return Number[] Mean point ([x, y])
  */
-//* public static Number[] calculateMeanPoint( Number[][] points );
 var calculateMeanPoint = function( points ) {
 	var total = [0, 0];
 	var ii, jj;
@@ -393,7 +375,6 @@ var calculateMeanPoint = function( points ) {
  * [lat, lon] by default
  * @return Number[] Array of coordinates in the internal format
  */
-//* public static Number[] translateGeographicCoordinates( Number[] coordinates );
 var translateGeographicCoordinates = function( coordinates ) {
 	coordinates = [coordinates[0], coordinates[1]];
 	if ( mw.config.get( 'wgVtourStandardLatLngOrder' ) ) {
@@ -407,10 +388,8 @@ var translateGeographicCoordinates = function( coordinates ) {
  * @return Boolean true if the browser supports the Canvas element,
  * false otherwise
  */
-//* public static Boolean supports2DCanvas();
 var supports2DCanvas = function() {
 	return !!window.CanvasRenderingContext2D;
 };
 
-//* }
 

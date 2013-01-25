@@ -10,17 +10,14 @@
 /**
  * Link from a single point in a Map to a Place contained in it.
  */
-//* class MapLink extends PointLink {
 var MapLink = PointLink.extend( {
 
-	//* protected Number rotationAngle;
 	rotationAngle: 0,
 
 	/**
 	 * Angle marker of the map link, if an angle has been set.
 	 * @var {AngleMarker} angleMarker
 	 */
-	//* protected angleMarker angleMarker;
 	angleMarker: null,
 
 	/**
@@ -30,12 +27,10 @@ var MapLink = PointLink.extend( {
 	 * @param {Number[]} location Location of the link ([x, y]) on the map
 	 * @constructor
 	 */
-	//* public void init( VirtualTour tour, Place destination, Number[] location );
 	init: function( tour, destination, location ) {
 		this._super( tour, destination, location );
 	},
 
-	//* public void setRotationAngle( Number rotationAngle );
 	setRotationAngle: function( rotationAngle ) {
 		this.rotationAngle = rotationAngle;
 	},
@@ -44,7 +39,6 @@ var MapLink = PointLink.extend( {
 	 * Get the HTML for the icon.
 	 * @return {$HTML} icon HTML node for the icon
 	 */
-	//* public $HTML getIconNode();
 	getIconNode: function() {
 		var markerLeft, markerTop;
 		var $icon = $('<div></div>').addClass(this.destination.getIconClass()).css( {
@@ -66,12 +60,10 @@ var MapLink = PointLink.extend( {
 		} ).append( $icon, this.$currentPlaceMarker );
 	},
 
-	//* public Boolean isSelected();
 	isSelected: function(){
 		return this.tour.currentPlace === this.destination;
 	},
 
-	//* protected void updatePosition();
 	updatePosition : function() {
 		if ( this._super() ) {
 			this.$currentPlaceMarker.toggle( this.isSelected() );
@@ -88,7 +80,6 @@ var MapLink = PointLink.extend( {
 		}
 	},
 
-	//* protected void updateAngleMarker();
 	updateAngleMarker: function() {
 		var htmlLocation = this.posCallback( this.location );
 		if ( htmlLocation !== null ) {
@@ -98,7 +89,6 @@ var MapLink = PointLink.extend( {
 		}
 	},
 
-	//* public $HTML getHTML();
 	getHTML: function() {
 		var that = this;
 		var AngleMarkerToUse;
@@ -125,5 +115,4 @@ var MapLink = PointLink.extend( {
 		return ret;
 	}
 } );
-//* }
 

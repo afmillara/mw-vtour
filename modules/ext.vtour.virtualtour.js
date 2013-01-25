@@ -11,42 +11,36 @@
  * A single virtual tour, containing Places and Maps.
  * @class VirtualTour
  */
-//* class VirtualTour {
 var VirtualTour = Class.extend( {
 
 	/**
 	 * ID of the VirtualTour.
 	 * @var {Number} id
 	 */
-	//* protected Number id;
 	id: null,
 
 	/**
 	 * Place that is being displayed currently.
 	 * @var {Place} currentPlace
 	 */
-	//* protected Place currentPlace;
 	currentPlace: null,
 
 	/**
 	 * id -> place map.
 	 * @var {Object} placesById
 	 */
-	//* protected Object placesById;
 	placesById: null,
 
 	/**
 	 * name -> place map.
 	 * @var {Object} placesByName
 	 */
-	//* protected Object placesByName;
 	placesByName: null,
 
 	/**
 	 * Array of all the TextPlaces in the tour
 	 * @var {TextPlace[]} textPlaces
 	 */
-	//* protected TextPlace[] textPlaces;
 	textPlaces: null,
 
 	/**
@@ -57,7 +51,6 @@ var VirtualTour = Class.extend( {
 	 * tours in this page
 	 * @constructor
 	 */
-	//* public void init( Object tourData, $HTML[] htmlElements, $Anchor $localLinks );
 	init: function( tourData, htmlElements, $localLinks ) {
 		var that = this;
 		this.htmlElements = htmlElements;
@@ -104,7 +97,6 @@ var VirtualTour = Class.extend( {
 	 * @param {$HTML} map HTML node for the map panel
 	 * @param {$HTML} error HTML node where error messages will be appended if needed
 	 */
-	//* public void start( $HTML main, $HTML secondary, $HTML map, $HTML error );
 	start: function( main, secondary, map, error ) {
 		var that = this;
 
@@ -122,7 +114,6 @@ var VirtualTour = Class.extend( {
 	 * Show an error message in the appropriate container.
 	 * @param {Message} message MediaWiki message object
 	 */
-	//* protected void showError( Message message );
 	showError: function( message ) {
 		var errorContent = mw.message( 'vtour-warning', message.toString() ).toString();
 		var errorHTML = mw.message( 'vtour-erroroutside', errorContent.toString() ).toString();
@@ -135,7 +126,6 @@ var VirtualTour = Class.extend( {
 	 * @param {String|Place} place Place object or id/name string
 	 * @return Place|null Place object, or null if it doesn't exist in this tour
 	 */
-	//* protected Place normalizePlace( String place );
 	normalizePlace: function( place ) {
 		if ( place === null ) {
 			return null;
@@ -154,7 +144,6 @@ var VirtualTour = Class.extend( {
 	 * Change the current place.
 	 * @param {Place|String} place New place (Place object or id/name)
 	 */
-	//* public void move( Place place );
 	move: function( place ) {
 		place = this.normalizePlace( place );
 		if ( place === null ) {
@@ -190,7 +179,6 @@ var VirtualTour = Class.extend( {
 	 * @param {Object} jsonTour Tour data
 	 * @return Place Place where the tour will start
 	 */
-	//* protected Place createNodesFromJSON( Object jsonTour );
 	createNodesFromJSON: function( jsonTour ) {
 		var maps = [];
 		var places = [];
@@ -296,7 +284,6 @@ var VirtualTour = Class.extend( {
 		this.initialNode = places[jsonTour.start];
 	},
 
-	//* public void setInitialPlace( Place place );
 	setInitialPlace: function( place ) {
 		this.initialNode = this.normalizePlace( place ) || this.initialNode;
 	},
@@ -305,7 +292,6 @@ var VirtualTour = Class.extend( {
 	 * Set the position in the current place.
 	 * @param {Position} position Object: {center: Array ([x, y]), zoom: number}
 	 */
-	//* public void setPosition( Position position );
 	setPosition: function( position ) {
 		this.currentPlace.setPosition( position );
 	},
@@ -314,7 +300,6 @@ var VirtualTour = Class.extend( {
 	 * Set the position in the current place from a position string.
 	 * @param String strPosition Position string
 	 */
-	//* public void setPositionFromStrings( String strPosition );
 	setPositionFromStrings: function( positionStrings ) {
 		this.currentPlace.setPosition
 			( this.createPositionFromStrings( positionStrings ) );
@@ -327,7 +312,6 @@ var VirtualTour = Class.extend( {
 	 * @return Position Created position object
 	 * ({center: Number[], zoom: Number})
 	 */
-	//* protected Position createPositionFromStrings( Object positionStrings );
 	createPositionFromStrings: function( positionStrings ) {
 		var centerArr;
 		var position = {
@@ -354,7 +338,6 @@ var VirtualTour = Class.extend( {
 	 * @param {Element} place Element object to which the links will be added
 	 * @param {Object} jsonPlace Tour data
 	 */
-	//* public void addLinks( Place[] places, Element place, Object jsonPlace );
 	addLinks: function( places, place, jsonPlace ) {
 		var jsonLinksArray = jsonPlace.links;
 		var that = this;
@@ -401,7 +384,6 @@ var VirtualTour = Class.extend( {
 	 * "center": center position
 	 * "zoom": zoom value
 	 */
-	//* protected Object extractTextLinkParams( String, Boolean );
 	extractTextLinkParams: function( url, internal ) {
 		var tour = mw.util.getParamValue( 'vtourId', url );
 		var place = mw.util.getParamValue( 'vtourPlace', url );
@@ -429,7 +411,6 @@ var VirtualTour = Class.extend( {
 	 * @param {String} place ID or name of the Place
 	 * @return Place Place with the given ID or name
 	 */
-	//* protected Place findPlace( String place );
 	findPlace: function( place ) {
 		return this.placesById[place] || this.placesByName[place];
 	},
@@ -439,10 +420,8 @@ var VirtualTour = Class.extend( {
 	 * @param {Number} index Index of the element
 	 * @return $HTML jQuery collection wrapping an HTML element
 	 */
-	//* protected $HTML getHTMLElement( Number index );
 	getHTMLElement: function( index ) {
 		return $( this.htmlElements[index] );
 	}
 } );
-//* }
 

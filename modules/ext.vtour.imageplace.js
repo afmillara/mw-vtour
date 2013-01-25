@@ -11,16 +11,12 @@
  * Place whose main content is an image.
  * @class ImagePlace
  */
-//* class ImagePlace extends Place {
 var ImagePlace = Place.extend( {
 
-	//* protected String spClass;
 	spClass: 'vtour-imagenode',
 
-	//* protected String iconClass;
 	iconClass: 'vtour-imageplacemarker',
 
-	//* protected Position initialPosition;
 	initialPosition: {
 		zoom: null,
 		center: [0, 0]
@@ -30,10 +26,8 @@ var ImagePlace = Place.extend( {
 	 * ImageView used in this ImagePlace.
 	 * @var {ImageView} view
 	 */
-	//* protected ImageView view;
 	view: null,
 
-	//* protected String imageSrc;
 	imageSrc: null,
 
 	/**
@@ -47,24 +41,19 @@ var ImagePlace = Place.extend( {
 	 * @param {String} imageSrc URL of the image
 	 * @constructor
 	 */
-	//* public void init( VirtualTour tour, String name, String description, Boolean visible,
-	//*	Number[] location, Map map, String imageSrc );
 	init: function( tour, name, description, visible, location, map, imageSrc ) {
 		this._super( tour, name, description, visible, location, map);
 		this.imageSrc = imageSrc;
 	},
 
-	//* public void changeZoom( Number zoom );
 	changeZoom: function( zoom ) {
 		this.view.changeExternalZoom( zoom );
 	},
 
-	//* public void move( Number[] center );
 	move: function( center ) {
 		this.view.move( center, true );
 	},
 
-	//* public void addTo( $HTML parent );
 	addTo: function( parent ) {
 		var that = this;
 		if ( this.view === null ) {
@@ -82,7 +71,6 @@ var ImagePlace = Place.extend( {
 		this._super( parent );
 	},
 
-	//* protected void applyPosition( Position position );
 	applyPosition: function( position ) {
 		var that = this;
 		var _super = that._super;
@@ -95,10 +83,8 @@ var ImagePlace = Place.extend( {
 	 * Create a view for this place.
 	 * @return GraphicView New view
 	 */
-	//* protected ImageView createView();
 	createView: function() {
 		return new ImageView( this.imageSrc );
 	}
 } );
-//* }
 

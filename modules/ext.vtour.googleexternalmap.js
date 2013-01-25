@@ -14,14 +14,12 @@
  * ExternalMap implementation that uses Google Maps Javascript API v3.
  * @class GoogleExternalMap
  */
-//* class GoogleExternalMap extends ExternalMap {
 var GoogleExternalMap = ExternalMap.extend( {
 
 	/**
 	 * Whether UI controls should be shown.
 	 * @var {Boolean} showUIControls
 	 */
-	//* protected Boolean showUIControls;
 	showUIControls: null,
 
 	/**
@@ -29,31 +27,26 @@ var GoogleExternalMap = ExternalMap.extend( {
 	 * otherwise unreachable.
 	 * @var {Google.Maps.OverlayView} dummyOverlay
 	 */
-	//* protected Google.Maps.OverlayView dummyOverlay;
 	dummyOverlay: null,
 
 	/**
 	 * Container element for the map.
 	 * @var {$HTML} $mapContainer
 	 */
-	//* protected $HTML $mapContainer;
 	$mapContainer: null,
 
 	/**
 	 * Google Map.
 	 * @var {Google.Maps.Map} map
 	 */
-	//* protected Google.Maps.Map map;
 	map: null,
 
 	/**
 	 * Maximum zoom for this area.
 	 * @var {Number} maxZoomHere
 	 */
-	//* protected Number maxZoomHere;
 	maxZoomHere: 22,
 
-	//* public void init( $HTML $mapContainer, function onLoad, function onError, Boolean showControls );
 	init: function( $mapContainer, onLoad, onError, showUIControls ) {
 		var that = this;
 		this.$mapContainer = $mapContainer;
@@ -66,7 +59,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		} );
 	},
 
-	//* public void setBounds( Number[][] bounds );
 	setBounds: function( bounds, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var map = this.map;
@@ -85,7 +77,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		}
 	},
 
-	//* public Number[] geoToPixel( Number[][] geoCoords, Boolean insideMap );
 	geoToPixel: function( geo, insideMap ) {
 		if ( !this.isReady() ) {
 			return null;
@@ -102,7 +93,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return [point.x, point.y];
 	},
 
-	//* public Number[] pixelToGeo( Number[] pixel );
 	pixelToGeo: function( pixel ) {
 		if ( !this.isReady() ) {
 			return null;
@@ -114,14 +104,11 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return [latLng.lng(), latLng.lat()];
 	},
 
-	//* public Number[] getZoomInterval();
 	getZoomInterval: function() {
 		this.updateMaxZoom();
 		return [1, this.maxZoomHere];
 	},
 
-	//* public Object addMarker( String title, String description, Number[] location,
-	//*	function callback );
 	addMarker: function( title, description, location, callback ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var map = this.map;
@@ -149,24 +136,20 @@ var GoogleExternalMap = ExternalMap.extend( {
 		return marker;
 	},
 
-	//* public void removeMarker( Object marker );
 	removeMarker: function( marker ) {
 		marker.setMap( null );
 	},
 
-	//* public void moveBy( Number[] delta );
 	moveBy: function( delta ) {
 		this.map.panBy( delta[0], delta[1] );
 	},
 
-	//* public void moveTo( Number[] location );
 	moveTo: function( location ) {
 		var gmaps = GoogleExternalMap.gmaps;
 		var latLng = new gmaps.LatLng( location[1], location[0] );
 		this.map.panTo( latLng );
 	},
 
-	//* public void zoom( Number zoom );
 	zoom: function( newZoom ) {
 		this.map.setZoom( newZoom );
 
@@ -176,7 +159,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		this.moveBy( [-0.01, 0] );
 	},
 
-	//* protected Boolean updateBounds();
 	updateBounds: function() {
 		var gmaps = GoogleExternalMap.gmaps;
 		var swBounds = new gmaps.LatLng( this.bounds[0][1], this.bounds[0][0] );
@@ -191,7 +173,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 		}
 	},
 
-	//* public void addElement( $HTML $element );
 	addElement: function( element ) {
 		var that = this;
 		var overlay = new GoogleExternalMap.MapOverlay( element );
@@ -201,7 +182,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 	/**
 	 * Update the value for the maximum zoom.
 	 */
-	//* protected void updateMaxZoom();
 	updateMaxZoom: function() {
 		var service = new GoogleExternalMap.gmaps.MaxZoomService();
 		var that = this;
@@ -216,7 +196,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 	/**
 	 * Initialize the map.
 	 */
-	//* protected void prepareContainer();
 	prepareContainer: function() {
 		var gmaps = GoogleExternalMap.gmaps;
 
@@ -244,7 +223,6 @@ var GoogleExternalMap = ExternalMap.extend( {
 	 * @return Boolean true if the API has been loaded and the map can be
 	 * used, false otherwise
 	 */
-	//* protected Boolean isReady();
 	isReady: function() {
 		return !!GoogleExternalMap.gmaps && !!this.dummyOverlay.getProjection();
 	}
@@ -254,25 +232,21 @@ var GoogleExternalMap = ExternalMap.extend( {
  * Google Maps API.
  * @var {Google.Maps} gmaps
  */
-//* protected static Google.Maps gmaps;
 GoogleExternalMap.gmaps = null;
 
 /**
  * Path to the GoogleMaps API (including a callback).
  * @var {string} APIUrl
  */
-//* protected static String APIUrl;
 GoogleExternalMap.APIUrl = mw.config.get( 'wgVtourGoogleExternalMapAPIUrl' )
 	+ '&callback=wfVtourGMapsApiLoaded';
 
-//* protected static Number APITimeout;
 GoogleExternalMap.APITimeout = mw.config.get( 'wgVtourGoogleExternalMapTimeout' );
 
 /**
  * Whether GoogleExternalMap is currently loading.
  * @var {Boolean} loadStarted
  */
-//* protected static Boolean loadStarted;
 GoogleExternalMap.loadStarted = false;
 
 /**
@@ -281,7 +255,6 @@ GoogleExternalMap.loadStarted = false;
  * or immediately if it is already available
  * @param {function()} onError Function that will be called if an error occurs
  */
-//* protected static void loadGoogleMaps( function onLoad, function onError );
 GoogleExternalMap.loadGoogleMaps = function( onLoad, onError ){
 	var callback;
 	GoogleExternalMap.gmaps = GoogleExternalMap.gmaps
@@ -312,7 +285,6 @@ GoogleExternalMap.loadGoogleMaps = function( onLoad, onError ){
 /**
  * Function to call after the Google Maps API finishes loading.
  */
-//* protected static void apiLoaded();
 GoogleExternalMap.apiLoaded = function() {
 	GoogleExternalMap.gmaps = window.google.maps;
 	$(GoogleExternalMap).trigger( 'gmapsApiLoaded.vtour' );
@@ -322,7 +294,6 @@ window.wfVtourGMapsApiLoaded = GoogleExternalMap.apiLoaded;
 /**
  * Initialize the MapOverlay class.
  */
-//* protected static MapOverlay initMapOverlay();
 GoogleExternalMap.initMapOverlay = function() {
 	var MapOverlay = function( element ) {
 		this.element = element;
@@ -342,10 +313,8 @@ GoogleExternalMap.initMapOverlay = function() {
 	return MapOverlay;
 };
 
-//* public static Boolean canAddHTML;
 GoogleExternalMap.canAddHTML = true;
 
 ExternalMap.classes.Google = GoogleExternalMap;
 
-//* }
 

@@ -11,7 +11,6 @@
  * Link to a Place in the same page. Used both inside TextPlaces and outside Vtours.
  * @class TextLink
  */
-//* class TextLink {
 var TextLink = Link.extend( {
 
 	/**
@@ -21,7 +20,6 @@ var TextLink = Link.extend( {
 	 * @param {$HTML} $link DOM node for the link
 	 * @constructor
 	 */
-	//* public void init( VirtualTour tour, Place destination );
 	init: function( tour, destination, $link ) {
 		this._super( tour, destination );
 		this.$link = $link;
@@ -29,7 +27,6 @@ var TextLink = Link.extend( {
 		$link.removeAttr( 'title' );
 	},
 
-	//* public $HTML getHTML();
 	getHTML: function() {
 		var that = this;
 		this.$link.click( function( event ) {
@@ -45,5 +42,4 @@ var TextLink = Link.extend( {
 		return this.$link;
 	}
 } );
-//* }
 

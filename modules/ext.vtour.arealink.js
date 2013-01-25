@@ -11,42 +11,36 @@
  * Link in the shape of a polygon.
  * @class CanvasAreaLink
  */
-//* class CanvasAreaLink extends Link {
 var CanvasAreaLink = Link.extend( {
 
 	/**
 	 * Opacity when the mouse pointer is over the area (0-1).
 	 * @var {Number} hoverOpacity
 	 */
-	//* protected Number hoverOpacity;
 	hoverOpacity: 0.7,
 
 	/**
 	 * Opacity when the mouse pointer is not over the area (0-1).
 	 * @var {Number} noHoverOpacity
 	 */
-	//* protected Number noHoverOpacity;
 	noHoverOpacity: 0.1,
 
 	/**
 	 * Polygon object that controls the canvas.
 	 * @var {Polygon} polygon
 	 */
-	//* protected Polygon polygon;
 	polygon: null,
 
 	/**
 	 * jQuery collection wrapping the area canvas.
 	 * @var {$Canvas} $canvas
 	 */
-	//* protected $Canvas $canvas;
 	$canvas: null,
 
 	/**
 	 * Whether the polygon can be seen.
 	 * @var {Boolean} visible
 	 */
-	//* protected Boolean visible;
 	visible: true,
 
 	/**
@@ -56,7 +50,6 @@ var CanvasAreaLink = Link.extend( {
 	 * @param {Number[]} location Array of vertices of the polygon
 	 * @constructor
 	 */
-	//* public void init( VirtualTour tour, Place destination, Number[] location );
 	init: function( tour, destination, location ) {
 		this._super( tour, destination );
 		this.location = location;
@@ -67,7 +60,6 @@ var CanvasAreaLink = Link.extend( {
 	 * Change the polygon visibility.
 	 * @param {Boolean} visible true if the polygon will be displayed
 	 */
-	//* public void setVisible( Boolean visible );
 	setVisible: function( visible ) {
 		this.visible = visible;
 	},
@@ -76,7 +68,6 @@ var CanvasAreaLink = Link.extend( {
 	 * Generate the HTML for this AreaLink.
 	 * @return {$Canvas} generated HTML for the link
 	 */
-	//* protected $Canvas generate();
 	generate: function() {
 		var that = this;
 		var $polygon = $( this.polygon );
@@ -99,7 +90,6 @@ var CanvasAreaLink = Link.extend( {
 		return $canvas;
 	},
 
-	//* public $Canvas getHTML();
 	getHTML: function() {
 		if ( this.$canvas === null ) {
 			this.$canvas = this.generate();
@@ -108,7 +98,6 @@ var CanvasAreaLink = Link.extend( {
 		return this.$canvas;
 	},
 
-	//* public Boolean updatePosition();
 	updatePosition: function() {
 		var htmlPos = this.posCallback ? this.posCallback( this.location ) : null;
 		this.$canvas.toggle( htmlPos !== null );
@@ -124,7 +113,6 @@ var CanvasAreaLink = Link.extend( {
 	/**
 	 * Draw the polygon in the HTML node.
 	 */
-	//* protected void drawCanvas();
 	drawCanvas: function() {
 		var color, opacity;
 		if ( this.visible ) {
@@ -139,14 +127,12 @@ var CanvasAreaLink = Link.extend( {
 		this.polygon.drawCanvas( opacity );
 	}
 } );
-//* }
 
 /**
  * Fallback "AreaLink" for browsers where CanvasAreaLink cannot be used.
  * It simply shows a PointLink at the mean X and Y coordinates of the vertices.
  * @class FallbackAreaLink
  */
-//* class FallbackAreaLink extends PointLink {
 var FallbackAreaLink = PointLink.extend( {
 
 	/**
@@ -156,13 +142,11 @@ var FallbackAreaLink = PointLink.extend( {
 	 * @param {Number[]} location Array of vertices of the polygon ([x, y])
 	 * @constructor
 	 */
-	//* public void init( VirtualTour tour, Place destination, Number[] location );
 	init: function( tour, destination, location ) {
 		this._super( tour, destination );
 		this.location = location;
 	},
 
-	//* public void updatePosition();
 	updatePosition: function() {
 		var htmlPos = this.posCallback ? this.posCallback( this.location ) : null;
 		this.$nodeIcon.toggle( htmlPos !== null );
@@ -171,7 +155,6 @@ var FallbackAreaLink = PointLink.extend( {
 		}
 	}
 } );
-//* }
 
 /**
  * Best available AreaLink implementation.
