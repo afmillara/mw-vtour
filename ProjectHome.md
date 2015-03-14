@@ -1,0 +1,1 @@
+A MediaWiki extension that adds a virtual tour feature that can be used to display interconnected places on one or more maps, using images and spherical panoramas. See http://www.mediawiki.org/wiki/Extension:Vtour.
